@@ -7,12 +7,20 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "gen": "buf generate proto"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "nuxt": "^3.8.2",
     "vue": "^3.3.8",
     "vue-router": "^4.2.5"
+  },
+  "dependencies": {
+    "@bufbuild/buf": "^1.28.1",
+    "@bufbuild/protobuf": "^1.5.0",
+    "@bufbuild/protoc-gen-es": "^1.5.0",
+    "@connectrpc/connect": "^1.1.3",
+    "@connectrpc/protoc-gen-connect-es": "^1.1.3"
   }
 }
