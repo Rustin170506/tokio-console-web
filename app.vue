@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <NuxtWelcome />
-  </div>
+    <div>
+        <NuxtWelcome />
+    </div>
 </template>
 
 <script>
@@ -11,15 +11,15 @@ import { Instrument } from "./gen/instrument_connect";
 import { InstrumentRequest } from "./gen/instrument_pb";
 
 const transport = createGrpcWebTransport({
-  baseUrl: "http://127.0.0.1:9091",
-  useBinaryFormat: true,
+    baseUrl: "http://127.0.0.1:9091",
+    useBinaryFormat: true,
 });
 
 const client = createPromiseClient(Instrument, transport);
 const stream = client.watchUpdates(new InstrumentRequest());
 (async () => {
-  for await (const value of stream) {
-    console.log(value);
-  }
+    for await (const value of stream) {
+        console.log(value);
+    }
 })();
 </script>
