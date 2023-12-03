@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  console:
+    build:
+      context: .
+      dockerfile: console.Dockerfile
+    ports:
+      - 8888:8888
+    environment:
+      - TOKIO_CONSOLE_BIND=0.0.0.0:8888
