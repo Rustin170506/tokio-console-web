@@ -1,75 +1,24 @@
-# Nuxt 3 Minimal Starter
+# console-web
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A Web Interface for the Tokio Console.
 
-## Setup
+## Prerequisites
 
-Make sure to install the dependencies:
+-   [Node.js](https://nodejs.org/en/)
+-   [pnpm](https://pnpm.js.org/)
 
-```bash
-# npm
-npm install
+## Installation
 
-# pnpm
+```sh
 pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
+## Development
 
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+```sh
+pnpm dev
 ```
 
-## Production
+## Contributing
 
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Contributions are welcome! Please feel free to submit a Pull Request.
