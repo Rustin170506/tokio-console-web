@@ -12,7 +12,8 @@
         "lint": "eslint --ext .js,.vue,.ts --ignore-path .gitignore .",
         "lint:fix": "eslint --fix --ext .js,.vue,.ts --ignore-path .gitignore .",
         "fmt": "prettier --check **.*",
-        "fmt:fix": "prettier --write **.*"
+        "fmt:fix": "prettier --write **.*",
+        "prepare": "husky install"
     },
     "devDependencies": {
         "@nuxt/devtools": "latest",
@@ -22,6 +23,7 @@
         "eslint-plugin-nuxt": "^4.0.0",
         "eslint-plugin-prettier": "^5.0.1",
         "eslint-plugin-vue": "9.19.2",
+        "husky": "^8.0.3",
         "nuxt": "^3.8.2",
         "prettier": "3.1.0",
         "vue": "^3.3.8",
