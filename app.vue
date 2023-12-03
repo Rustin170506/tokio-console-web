@@ -11,8 +11,7 @@ import { Instrument } from "./gen/instrument_connect";
 import { InstrumentRequest } from "./gen/instrument_pb";
 
 const transport = createGrpcWebTransport({
-    baseUrl: "http://127.0.0.1:9091",
-    useBinaryFormat: true,
+    baseUrl: "http://127.0.0.1:8888",
 });
 
 const client = createPromiseClient(Instrument, transport);
