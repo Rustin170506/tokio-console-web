@@ -4,14 +4,16 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import { createPromiseClient } from "@connectrpc/connect";
 import { createGrpcWebTransport } from "@connectrpc/connect-web";
 import { Instrument } from "./gen/instrument_connect";
 import { InstrumentRequest } from "./gen/instrument_pb";
 
+const config = useRuntimeConfig();
+
 const transport = createGrpcWebTransport({
-    baseUrl: "http://127.0.0.1:8888",
+    baseUrl: config.public.SUBSCRIBER_BASE_URL,
 });
 
 const client = createPromiseClient(Instrument, transport);

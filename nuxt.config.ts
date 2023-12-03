@@ -2,4 +2,9 @@
 export default defineNuxtConfig({
     devtools: { enabled: true },
     ssr: false,
+    runtimeConfig: {
+        public: {
+            SUBSCRIBER_BASE_URL: process.env.SUBSCRIBER_BASE_URL,
+        },
+    },
 });
