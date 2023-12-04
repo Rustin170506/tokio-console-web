@@ -1,11 +1,8 @@
 <template>
-    <UTable :columns="columns" :rows="[]" />
+    <UTable :columns="columns" :rows="tasks" />
 </template>
 
 <script setup lang="ts">
-import { InstrumentRequest, Update } from "../gen/instrument_pb";
-import { useGrpcClient } from "../composables/useGrpcClient";
-
 const columns = [
     {
         key: "id",
@@ -53,17 +50,9 @@ const columns = [
     },
 ];
 
-const client = useGrpcClient();
+const { tasksData } = useTasks();
 
-onMounted(() => {
-    const updateStream: AsyncIterable<Update> = client.watchUpdates(
-        new InstrumentRequest(),
-    );
-
-    (async () => {
-        for await (const value of updateStream) {
-            console.log(value);
-        }
-    })();
+const tasks = computed(() => {
+    return tasksData.value;
 });
 </script>
