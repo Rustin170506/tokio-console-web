@@ -1,18 +1,13 @@
 <template>
-    <div>
-        <NuxtWelcome />
-    </div>
+    <UCard>
+        <template #header>
+            <Placeholder class="h-8" />
+        </template>
+
+        <TasksTable />
+
+        <template #footer>
+            <Placeholder class="h-8" />
+        </template>
+    </UCard>
 </template>
-
-<script setup>
-import { InstrumentRequest } from "./gen/instrument_pb";
-
-const client = useGrpcClient();
-
-const stream = client.watchUpdates(new InstrumentRequest());
-(async () => {
-    for await (const value of stream) {
-        console.log(value);
-    }
-})();
-</script>
