@@ -7,4 +7,5 @@ export default defineNuxtConfig({
             SUBSCRIBER_BASE_URL: process.env.SUBSCRIBER_BASE_URL,
         },
     },
+    modules: ["@nuxt/ui"],
 });
