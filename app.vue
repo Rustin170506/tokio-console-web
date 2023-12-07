@@ -1,7 +1,7 @@
 <template>
     <UCard>
         <template #header>
-            <Placeholder class="h-8" />
+            <ConsoleHeader />
         </template>
         <Placeholder class="h-8" />
         <template #footer>
