@@ -6,8 +6,9 @@ import { InstrumentRequest, type Update } from "~/gen/instrument_pb";
 import type { TaskUpdate } from "~/gen/tasks_pb";
 
 export interface TaskData {
-    id: string | null | undefined;
+    id: bigint;
     name: string | null | undefined;
+    idStr: string | null | undefined;
     state: string;
     total: number;
     sched: bigint;
@@ -19,6 +20,8 @@ export interface TaskData {
 }
 
 const metas: Map<bigint, Metadata> = new Map();
+let nextID = BigInt(0);
+const ids: Map<bigint, bigint> = new Map();
 
 const taskUpdateToTaskData = (update: TaskUpdate): TaskData[] => {
     const result = new Array<TaskData>();
@@ -36,11 +39,13 @@ const taskUpdateToTaskData = (update: TaskUpdate): TaskData[] => {
             console.warn("Task has no metadata ID", task);
             return result;
         }
+
         const meta = metas.get(metaId);
         if (!meta) {
             console.warn("Task has no metadata", task);
             return result;
         }
+
         let name;
         let taskID;
         let kind;
@@ -54,6 +59,7 @@ const taskUpdateToTaskData = (update: TaskUpdate): TaskData[] => {
                 case: "strVal",
             },
         });
+
         const fields: Field[] = [];
         for (let i = 0; i < task.fields.length; i++) {
             // TODO: validate fields.
@@ -76,12 +82,25 @@ const taskUpdateToTaskData = (update: TaskUpdate): TaskData[] => {
                     break;
             }
         }
+
         fields.push(targetField);
+        if (!task.id) {
+            console.warn("Task has no ID", task);
+            return result;
+        }
         const spanId = task.id.id;
         const stats = statsUpdate[spanId.toString()];
         if (!stats) {
             return result;
         }
+
+        let id = ids.get(spanId);
+        if (!id) {
+            const newID = nextID++;
+            ids.set(spanId, newID);
+            id = newID;
+        }
+
         const droppedAt = stats.droppedAt || Timestamp.now();
         const createdAt = stats.createdAt || Timestamp.now();
         const total = droppedAt
@@ -92,9 +111,11 @@ const taskUpdateToTaskData = (update: TaskUpdate): TaskData[] => {
         const scheduled = stats.scheduledTime || new Duration();
         const schedMs: bigint = scheduled.seconds * BigInt(1000);
         const idle = BigInt(total) - busyMs - schedMs;
+
         const t: TaskData = {
-            id: taskID?.value.toString(),
+            id,
             name: name?.value?.toString(),
+            idStr: taskID?.value?.toString(),
             state: "running",
             total,
             sched: schedMs,
@@ -116,7 +137,7 @@ export function useTasks() {
         new InstrumentRequest(),
     );
 
-    const tasksData = ref<TaskData[]>([]);
+    const tasksData = ref<Map<bigint, TaskData>>(new Map());
 
     const addTask = (update: Update) => {
         if (update.newMetadata) {
@@ -130,7 +151,9 @@ export function useTasks() {
         }
         if (update.taskUpdate) {
             const tasks = taskUpdateToTaskData(update.taskUpdate);
-            tasksData.value = tasksData.value.concat(tasks);
+            for (const task of tasks) {
+                tasksData.value.set(task.id, task);
+            }
         }
     };
 
