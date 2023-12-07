@@ -1,0 +1,36 @@
+<template>
+    <CHeader>
+        <template #left> <TokioLogo /> </template>
+
+        <template #right>
+            <UButton
+                color="gray"
+                variant="ghost"
+                to="https://github.com/hi-rustin/console-web"
+                target="_blank"
+                size="lg"
+                icon="i-simple-icons-github"
+                aria-label="GitHub"
+            />
+            <UButton
+                color="gray"
+                variant="ghost"
+                to="https://discord.com/channels/500028886025895936/838895414455435335"
+                target="_blank"
+                size="lg"
+                icon="i-simple-icons-discord"
+                aria-label="GitHub"
+            />
+        </template>
+    </CHeader>
+</template>
+
+<script>
+import CHeader from "./CHeader.vue";
+
+export default {
+    components: {
+        CHeader,
+    },
+};
+</script>
