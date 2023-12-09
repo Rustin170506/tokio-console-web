@@ -30,20 +30,20 @@ const taskUpdateToTaskData = (update: TaskUpdate): TaskData[] => {
     for (const task of tasks) {
         if (!task.id) {
             console.warn("Task has no ID", task);
-            return result;
+            continue;
         }
         let metaId;
         if (task.metadata) {
             metaId = task.metadata.id;
         } else {
             console.warn("Task has no metadata ID", task);
-            return result;
+            continue;
         }
 
         const meta = metas.get(metaId);
         if (!meta) {
             console.warn("Task has no metadata", task);
-            return result;
+            continue;
         }
 
         let name;
@@ -63,9 +63,7 @@ const taskUpdateToTaskData = (update: TaskUpdate): TaskData[] => {
         const fields: Field[] = [];
         for (let i = 0; i < task.fields.length; i++) {
             // TODO: validate fields.
-            const field = fields[i];
-            if (!field) continue;
-
+            const field = task.fields[i];
             // the `task.name` field gets its own column, if it's present.
             switch (field.name.value) {
                 case "task.name":
@@ -84,15 +82,13 @@ const taskUpdateToTaskData = (update: TaskUpdate): TaskData[] => {
         }
 
         fields.push(targetField);
-        if (!task.id) {
-            console.warn("Task has no ID", task);
-            return result;
-        }
         const spanId = task.id.id;
         const stats = statsUpdate[spanId.toString()];
         if (!stats) {
-            return result;
+            continue;
         }
+        // Delete
+        delete statsUpdate[spanId.toString()];
 
         let id = ids.get(spanId);
         if (!id) {
@@ -151,7 +147,11 @@ export function useTasks() {
         }
         if (update.taskUpdate) {
             const tasks = taskUpdateToTaskData(update.taskUpdate);
+
             for (const task of tasks) {
+                if (task.name === "wait") {
+                    continue;
+                }
                 tasksData.value.set(task.id, task);
             }
         }
@@ -165,6 +165,5 @@ export function useTasks() {
 
     return {
         tasksData,
-        addTask,
     };
 }
