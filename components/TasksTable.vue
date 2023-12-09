@@ -1,5 +1,5 @@
 <template>
-    <UTable :columns="columns" :rows="[]" />
+    <UTable :columns="columns" :rows="tasks" />
 </template>
 
 <script setup lang="ts">
@@ -49,4 +49,10 @@ const columns = [
         label: "Fields",
     },
 ];
+
+const { tasksData } = useTasks();
+const tasks = computed(() => {
+    // Map to array.
+    return Array.from(tasksData.value.values());
+});
 </script>
