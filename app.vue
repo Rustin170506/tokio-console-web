@@ -3,7 +3,7 @@
         <template #header>
             <ConsoleHeader />
         </template>
-        <Placeholder class="h-8" />
+        <TasksTable />
         <template #footer>
             <Placeholder class="h-8" />
         </template>
