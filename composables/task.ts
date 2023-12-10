@@ -1,8 +1,8 @@
 import { Duration } from "./duration";
-import { Location } from "./../gen/common_pb";
+import { Location } from "~/gen/common_pb";
 import type { Stats as ProtoTaskStats } from "~/gen/tasks_pb";
 
-export interface TaskStats {
+export interface TokioTaskStats {
     polls: bigint;
     createdAt: Date;
     droppedAt?: Date;
@@ -69,7 +69,7 @@ export function fromProtoTaskStats(stats: ProtoTaskStats) {
     };
 }
 
-export interface Task {
+export class TokioTask {
     // The task's pretty (console-generated, sequential) task ID.
     //
     // This is NOT the `tracing::span::Id` for the task's tracing span on the
@@ -86,7 +86,7 @@ export interface Task {
     // Fields that don't have their own column, pre-formatted
     formattedFields: Array<string>;
     // The task statistics that are updated over the lifetime of the task.
-    stats: TaskStats;
+    stats: TokioTaskStats;
     // The target of the span representing the task.
     target: string;
     // The name of the task
@@ -95,6 +95,91 @@ export interface Task {
     location: string;
     // The kind of task, currently one of task, blocking, block_on, local
     kind: string;
+
+    constructor(
+        id: bigint,
+        taskId: bigint | undefined,
+        spanId: bigint,
+        shortDesc: string,
+        formattedFields: Array<string>,
+        stats: TokioTaskStats,
+        target: string,
+        name: string | undefined,
+        location: string,
+        kind: string,
+    ) {
+        this.id = id;
+        this.taskId = taskId;
+        this.spanId = spanId;
+        this.shortDesc = shortDesc;
+        this.formattedFields = formattedFields;
+        this.stats = stats;
+        this.target = target;
+        this.name = name;
+        this.location = location;
+        this.kind = kind;
+    }
+
+    totalDuration(since: Date): Duration {
+        const durationInMilliseconds =
+            since.getTime() - this.stats.createdAt.getTime();
+        const durationInSeconds = Math.floor(durationInMilliseconds / 1000);
+
+        const duration = new Duration(BigInt(durationInSeconds), 0);
+        return this.stats.total ?? duration;
+    }
+
+    busyDuration(since: Date): Duration {
+        if (this.stats.lastPollStarted && this.stats.lastPollEnded) {
+            if (this.stats.lastPollStarted > this.stats.lastPollEnded) {
+                // In this case the task is being polled at the moment.
+                const currentTimeInPoll =
+                    since.getTime() - this.stats.lastPollStarted.getTime();
+                const currentTimeInPollInSeconds = Math.floor(
+                    currentTimeInPoll / 1000,
+                );
+                const currentTimeInPollDuration = new Duration(
+                    BigInt(currentTimeInPollInSeconds),
+                    0,
+                );
+                return this.stats.busy.add(currentTimeInPollDuration);
+            }
+        }
+        return this.stats.busy;
+    }
+
+    scheduledDuration(since: Date): Duration {
+        if (this.stats.lastWake && this.stats.lastPollStarted) {
+            if (this.stats.lastWake > this.stats.lastPollStarted) {
+                // In this case the task is scheduled, but has not yet been polled.
+                const currentTimeSinceWake =
+                    since.getTime() - this.stats.lastWake.getTime();
+                const currentTimeSinceWakeInSeconds = Math.floor(
+                    currentTimeSinceWake / 1000,
+                );
+                const currentTimeSinceWakeDuration = new Duration(
+                    BigInt(currentTimeSinceWakeInSeconds),
+                    0,
+                );
+                return this.stats.scheduled.add(currentTimeSinceWakeDuration);
+            }
+        }
+        return this.stats.scheduled;
+    }
+
+    idleDuration(since: Date): Duration {
+        if (this.stats.idle) {
+            return this.stats.idle;
+        } else {
+            const total = this.totalDuration(since);
+            const busy = this.busyDuration(since);
+            const scheduled = this.scheduledDuration(since);
+            if (total.greaterThan(busy.add(scheduled))) {
+                return total.subtract(busy.add(scheduled));
+            }
+        }
+        return new Duration(BigInt(0), 0);
+    }
 }
 
 function truncateRegistryPath(s: string): string {
@@ -127,16 +212,16 @@ export interface TaskData {
     fields: Array<string>;
 }
 
-export function toTaskData(task: Task): TaskData {
+export function toTaskData(task: TokioTask): TaskData {
     return {
         id: task.id,
         name: task.name ?? "",
         // FIXME: use real state.
         state: "running",
-        total: (task.stats.total ?? new Duration(BigInt(0), 0)).toString(),
-        busy: task.stats.busy.toString(),
-        sched: task.stats.scheduled.toString(),
-        idle: (task.stats.idle ?? new Duration(BigInt(0), 0)).toString(),
+        total: task.totalDuration(new Date()).toString(),
+        busy: task.busyDuration(new Date()).toString(),
+        sched: task.scheduledDuration(new Date()).toString(),
+        idle: task.idleDuration(new Date()).toString(),
         pools: task.stats.polls,
         kind: task.kind,
         location: task.location,

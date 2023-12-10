@@ -1,4 +1,4 @@
-import { formatLocation, fromProtoTaskStats, type Task } from "./task";
+import { formatLocation, fromProtoTaskStats, TokioTask } from "./task";
 import { Metadata } from "~/gen/common_pb";
 import { InstrumentRequest, type Update } from "~/gen/instrument_pb";
 import type { TaskUpdate } from "~/gen/tasks_pb";
@@ -11,8 +11,12 @@ const ids = {
     ids: new Map(),
 };
 
-const taskUpdateToTask = (update: TaskUpdate): Task[] => {
-    const result = new Array<Task>();
+// How long to retain tasks after they're dropped.
+// TODO: make this configurable.
+const retainFor = 6000; // 6 seconds
+
+const taskUpdateToTask = (update: TaskUpdate): TokioTask[] => {
+    const result = new Array<TokioTask>();
     const tasks = update.newTasks;
     const statsUpdate = update.statsUpdate;
 
@@ -47,7 +51,10 @@ const taskUpdateToTask = (update: TaskUpdate): Task[] => {
                     name = field.value.value!.toString();
                     break;
                 case "task.id":
-                    taskId = field.value.case === "u64Val" ? field.value : null;
+                    taskId =
+                        field.value?.case === "u64Val"
+                            ? field.value?.value
+                            : undefined;
                     break;
                 case "kind":
                     kind = field.value.value!.toString();
@@ -86,17 +93,18 @@ const taskUpdateToTask = (update: TaskUpdate): Task[] => {
         }
         const location = formatLocation(meta.location);
 
-        const t: Task = {
+        const t: TokioTask = new TokioTask(
             id,
+            taskId,
             spanId,
             shortDesc,
-            formattedFields: fields,
-            stats: taskStats,
-            target: meta.target,
+            fields,
+            taskStats,
+            meta.target,
             name,
             location,
             kind,
-        };
+        );
         result.push(t);
     }
 
@@ -109,7 +117,7 @@ export function useTasks() {
         new InstrumentRequest(),
     );
 
-    const tasksData = ref<Map<bigint, Task>>(new Map());
+    const tasksData = ref<Map<bigint, TokioTask>>(new Map());
 
     const addTask = (update: Update) => {
         if (update.newMetadata) {
@@ -127,20 +135,38 @@ export function useTasks() {
             for (const task of tasks) {
                 tasksData.value.set(task.id, task);
             }
+
             for (const k in update.taskUpdate.statsUpdate) {
-                const task = tasksData.value.get(BigInt(k));
+                const task = tasksData.value.get(ids.ids.get(BigInt(k)));
                 if (task) {
                     task.stats = fromProtoTaskStats(
                         update.taskUpdate.statsUpdate[k],
                     );
+                    tasksData.value.set(task.id, task);
                 }
             }
         }
     };
 
+    const retainTasks = (retainFor: number) => {
+        const newTasks = new Map<bigint, TokioTask>();
+        for (const [id, task] of tasksData.value) {
+            if (task.stats.droppedAt) {
+                if (Date.now() - task.stats.droppedAt.getTime() < retainFor) {
+                    newTasks.set(id, task);
+                }
+            } else {
+                newTasks.set(id, task);
+            }
+        }
+
+        tasksData.value = newTasks;
+    };
+
     (async () => {
         for await (const value of updateStream) {
             addTask(value);
+            retainTasks(retainFor);
         }
     })();
 
