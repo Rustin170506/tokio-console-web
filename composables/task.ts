@@ -265,20 +265,15 @@ export function formatLocation(loc?: Location): string {
 }
 
 function renderTaskState(state: TaskState): string {
-    const RUNNING_UTF8 = "\u{25B6}";
-    const SCHEDULED_UTF8 = "\u{23EB}";
-    const IDLE_UTF8 = "\u{23F8}";
-    const COMPLETED_UTF8 = "\u{23F9}";
-
     switch (state) {
         case TaskState.Running:
-            return RUNNING_UTF8;
+            return "i-heroicons-play";
         case TaskState.Scheduled:
-            return SCHEDULED_UTF8;
+            return "i-heroicons-arrow-small-up";
         case TaskState.Idle:
-            return IDLE_UTF8;
+            return "i-heroicons-pause";
         case TaskState.Completed:
-            return COMPLETED_UTF8;
+            return "i-heroicons-stop";
         default:
             throw new Error("unreachable");
     }
