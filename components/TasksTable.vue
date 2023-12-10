@@ -1,5 +1,9 @@
 <template>
-    <UTable :columns="columns" :rows="tasks">
+    <UTable
+        :columns="columns"
+        :rows="tasks"
+        :sort="{ column: 'total', direction: 'desc' }"
+    >
         <template #fields-data="{ row }">
             <div
                 v-for="(item, index) in row.fields"
@@ -24,38 +28,47 @@ const columns = [
     {
         key: "id",
         label: "ID",
+        sortable: true,
     },
     {
         key: "name",
         label: "Name",
+        sortable: true,
     },
     {
         key: "state",
         label: "State",
+        sortable: true,
     },
     {
         key: "total",
         label: "Total",
+        sortable: true,
     },
     {
         key: "busy",
         label: "Busy",
+        sortable: true,
     },
     {
         key: "sched",
         label: "Scheduled",
+        sortable: true,
     },
     {
         key: "idle",
         label: "Idle",
+        sortable: true,
     },
     {
         key: "pools",
         label: "Pools",
+        sortable: true,
     },
     {
         key: "kind",
         label: "Kind",
+        sortable: true,
     },
     {
         key: "location",

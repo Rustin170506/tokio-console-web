@@ -90,4 +90,9 @@ export class Duration {
 
         return str || `${this.nanos}ns`;
     }
+
+    // Custom valueOf() method to allow for easy comparison of durations.
+    valueOf(): number {
+        return this.asMicroseconds();
+    }
 }
