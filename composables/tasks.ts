@@ -1,4 +1,9 @@
-import { formatLocation, fromProtoTaskStats, TokioTask } from "./task";
+import {
+    formatLocation,
+    fromProtoTaskStats,
+    TokioTask,
+    type FormattedField,
+} from "./task";
 import { Metadata } from "~/gen/common_pb";
 import { InstrumentRequest, type Update } from "~/gen/instrument_pb";
 import type { TaskUpdate } from "~/gen/tasks_pb";
@@ -39,9 +44,12 @@ const taskUpdateToTask = (update: TaskUpdate): TokioTask[] => {
         let name;
         let taskId;
         let kind = "";
-        const targetField = `target = ${meta.target}`;
+        const targetField = {
+            name: "target",
+            value: meta.target,
+        };
 
-        const fields: string[] = [];
+        const fields: FormattedField[] = [];
         for (let i = 0; i < task.fields.length; i++) {
             // TODO: validate fields.
             const field = task.fields[i];
@@ -60,9 +68,10 @@ const taskUpdateToTask = (update: TaskUpdate): TokioTask[] => {
                     kind = field.value.value!.toString();
                     break;
                 default:
-                    fields.push(
-                        `${field.name.toString()} = ${field.value.toString()}`,
-                    );
+                    fields.push({
+                        name: field.name.value!.toString(),
+                        value: field.value.value!.toString(),
+                    });
                     break;
             }
         }
