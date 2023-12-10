@@ -1,11 +1,6 @@
-import type { Duration } from "dayjs/plugin/duration";
-import dayjs from "dayjs";
-import duration from "dayjs/plugin/duration";
+import { Duration } from "./duration";
 import { Location } from "./../gen/common_pb";
 import type { Stats as ProtoTaskStats } from "~/gen/tasks_pb";
-
-// eslint-disable-next-line import/no-named-as-default-member
-dayjs.extend(duration);
 
 export interface TaskStats {
     polls: bigint;
@@ -36,22 +31,24 @@ export function fromProtoTaskStats(stats: ProtoTaskStats) {
 
     const droppedAt = stats.droppedAt?.toDate();
     const total = droppedAt
-        ? dayjs.duration(dayjs(droppedAt).diff(dayjs(createdAt)))
+        ? new Duration(
+              BigInt(
+                  Math.floor(
+                      (droppedAt.getTime() - createdAt.getTime()) / 1000,
+                  ),
+              ),
+              0,
+          )
         : undefined;
 
     const pollStats = stats.pollStats!;
-    // FIXME: handle the nanos field.
     const busy = pollStats.busyTime
-        ? dayjs.duration(
-              (pollStats.busyTime.seconds * BigInt(1000)) as unknown as number,
-          )
-        : dayjs.duration(0);
+        ? new Duration(pollStats.busyTime.seconds, pollStats.busyTime.nanos)
+        : new Duration(BigInt(0), 0);
 
     const scheduled = stats.scheduledTime
-        ? dayjs.duration(
-              (stats.scheduledTime.seconds * BigInt(1000)) as unknown as number,
-          )
-        : dayjs.duration(0);
+        ? new Duration(stats.scheduledTime.seconds, stats.scheduledTime.nanos)
+        : new Duration(BigInt(0), 0);
     const idle = total ? total.subtract(busy).subtract(scheduled) : undefined;
 
     return {
@@ -130,30 +127,16 @@ export interface TaskData {
     fields: Array<string>;
 }
 
-function formatLargestUnit(duration: Duration): string {
-    if (duration.asDays() >= 1) {
-        return `${Math.floor(duration.asDays())}d`;
-    } else if (duration.asHours() >= 1) {
-        return `${Math.floor(duration.asHours())}h`;
-    } else if (duration.asMinutes() >= 1) {
-        return `${Math.floor(duration.asMinutes())}m`;
-    } else if (duration.asSeconds() >= 1) {
-        return `${Math.floor(duration.asSeconds())}s`;
-    } else {
-        return `${Math.floor(duration.asMilliseconds())}ms`;
-    }
-}
-
 export function toTaskData(task: Task): TaskData {
     return {
         id: task.id,
         name: task.name ?? "",
         // FIXME: use real state.
         state: "running",
-        total: formatLargestUnit(task.stats.total ?? dayjs.duration(0)),
-        busy: formatLargestUnit(task.stats.busy),
-        sched: formatLargestUnit(task.stats.scheduled),
-        idle: formatLargestUnit(task.stats.idle ?? dayjs.duration(0)),
+        total: (task.stats.total ?? new Duration(BigInt(0), 0)).toString(),
+        busy: task.stats.busy.toString(),
+        sched: task.stats.scheduled.toString(),
+        idle: (task.stats.idle ?? new Duration(BigInt(0), 0)).toString(),
         pools: task.stats.polls,
         kind: task.kind,
         location: task.location,

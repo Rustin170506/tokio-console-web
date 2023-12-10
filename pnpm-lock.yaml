@@ -37,9 +37,6 @@ devDependencies:
   '@nuxtjs/eslint-config-typescript':
     specifier: ^12.0.0
     version: 12.1.0(eslint@8.55.0)(typescript@4.5.2)
-  dayjs-nuxt:
-    specifier: ^2.1.9
-    version: 2.1.9
   eslint:
     specifier: 8.55.0
     version: 8.55.0
@@ -3268,20 +3265,6 @@ packages:
 
   /csstype@3.1.2:
     resolution: {integrity: sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==}
-
-  /dayjs-nuxt@2.1.9:
-    resolution: {integrity: sha512-7L1X8Wm+O2s2o+YK8RH1GK0SUUsh7l0lnIzsjaLGvyu64asLs2KVNoh25J4tQurdILp2TyrFaTo/k3k/ZPub9Q==}
-    dependencies:
-      '@nuxt/kit': 3.8.2
-      dayjs: 1.11.10
-    transitivePeerDependencies:
-      - rollup
-      - supports-color
-    dev: true
-
-  /dayjs@1.11.10:
-    resolution: {integrity: sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==}
-    dev: true
 
   /debug@2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
