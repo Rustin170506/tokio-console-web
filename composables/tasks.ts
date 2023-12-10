@@ -91,7 +91,7 @@ const taskUpdateToTask = (update: TaskUpdate): TokioTask[] => {
         } else if (name) {
             shortDesc = name;
         }
-        const location = formatLocation(meta.location);
+        const location = formatLocation(task.location);
 
         const t: TokioTask = new TokioTask(
             id,

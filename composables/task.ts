@@ -189,11 +189,25 @@ function truncateRegistryPath(s: string): string {
 
 export function formatLocation(loc?: Location): string {
     if (loc) {
-        if (loc.file) {
+        let result = "";
+        if (loc.modulePath) {
+            result = loc.modulePath;
+        } else if (loc.file) {
             const truncated = truncateRegistryPath(loc.file);
-            loc.file = truncated;
+            result = truncated;
+        } else {
+            return "<unknown location>";
         }
-        return loc.file ?? "<unknown file>";
+
+        if (loc.line !== undefined) {
+            result += `:${loc.line}`;
+
+            if (loc.column !== undefined) {
+                result += `:${loc.column}`;
+            }
+        }
+
+        return result;
     }
     return "<unknown location>";
 }
