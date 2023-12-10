@@ -1,8 +1,8 @@
 import { Duration } from "./duration";
-import { Location } from "./../gen/common_pb";
+import { Location } from "~/gen/common_pb";
 import type { Stats as ProtoTaskStats } from "~/gen/tasks_pb";
 
-export interface TaskStats {
+export interface TokioTaskStats {
     polls: bigint;
     createdAt: Date;
     droppedAt?: Date;
@@ -69,7 +69,7 @@ export function fromProtoTaskStats(stats: ProtoTaskStats) {
     };
 }
 
-export class Task {
+export class TokioTask {
     // The task's pretty (console-generated, sequential) task ID.
     //
     // This is NOT the `tracing::span::Id` for the task's tracing span on the
@@ -86,7 +86,7 @@ export class Task {
     // Fields that don't have their own column, pre-formatted
     formattedFields: Array<string>;
     // The task statistics that are updated over the lifetime of the task.
-    stats: TaskStats;
+    stats: TokioTaskStats;
     // The target of the span representing the task.
     target: string;
     // The name of the task
@@ -102,7 +102,7 @@ export class Task {
         spanId: bigint,
         shortDesc: string,
         formattedFields: Array<string>,
-        stats: TaskStats,
+        stats: TokioTaskStats,
         target: string,
         name: string | undefined,
         location: string,
@@ -212,7 +212,7 @@ export interface TaskData {
     fields: Array<string>;
 }
 
-export function toTaskData(task: Task): TaskData {
+export function toTaskData(task: TokioTask): TaskData {
     return {
         id: task.id,
         name: task.name ?? "",

@@ -1,4 +1,4 @@
-import { formatLocation, fromProtoTaskStats, Task } from "./task";
+import { formatLocation, fromProtoTaskStats, TokioTask } from "./task";
 import { Metadata } from "~/gen/common_pb";
 import { InstrumentRequest, type Update } from "~/gen/instrument_pb";
 import type { TaskUpdate } from "~/gen/tasks_pb";
@@ -15,8 +15,8 @@ const ids = {
 // TODO: make this configurable.
 const retainFor = 6000; // 6 seconds
 
-const taskUpdateToTask = (update: TaskUpdate): Task[] => {
-    const result = new Array<Task>();
+const taskUpdateToTask = (update: TaskUpdate): TokioTask[] => {
+    const result = new Array<TokioTask>();
     const tasks = update.newTasks;
     const statsUpdate = update.statsUpdate;
 
@@ -93,7 +93,7 @@ const taskUpdateToTask = (update: TaskUpdate): Task[] => {
         }
         const location = formatLocation(meta.location);
 
-        const t: Task = new Task(
+        const t: TokioTask = new TokioTask(
             id,
             taskId,
             spanId,
@@ -117,7 +117,7 @@ export function useTasks() {
         new InstrumentRequest(),
     );
 
-    const tasksData = ref<Map<bigint, Task>>(new Map());
+    const tasksData = ref<Map<bigint, TokioTask>>(new Map());
 
     const addTask = (update: Update) => {
         if (update.newMetadata) {
@@ -149,7 +149,7 @@ export function useTasks() {
     };
 
     const retainTasks = (retainFor: number) => {
-        const newTasks = new Map<bigint, Task>();
+        const newTasks = new Map<bigint, TokioTask>();
         for (const [id, task] of tasksData.value) {
             if (task.stats.droppedAt) {
                 if (Date.now() - task.stats.droppedAt.getTime() < retainFor) {
