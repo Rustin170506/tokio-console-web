@@ -47,6 +47,13 @@ export class Duration {
         return result;
     }
 
+    greaterThan(other: Duration): boolean {
+        return (
+            this.seconds > other.seconds ||
+            (this.seconds === other.seconds && this.nanos > other.nanos)
+        );
+    }
+
     toString(): string {
         const totalSeconds = this.asSeconds();
         const units = [
