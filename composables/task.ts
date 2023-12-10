@@ -264,7 +264,7 @@ export function formatLocation(loc?: Location): string {
     return "<unknown location>";
 }
 
-function renderTaskState(state: TaskState): string {
+function getTaskStateIconName(state: TaskState): string {
     switch (state) {
         case TaskState.Running:
             return "i-heroicons-play";
@@ -298,7 +298,7 @@ export function toTaskData(task: TokioTask): TaskData {
     return {
         id: task.id,
         name: task.name ?? "",
-        state: renderTaskState(task.state()),
+        state: getTaskStateIconName(task.state()),
         total: task.totalDuration(new Date()).toString(),
         busy: task.busyDuration(new Date()).toString(),
         sched: task.scheduledDuration(new Date()).toString(),
