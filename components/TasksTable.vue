@@ -13,6 +13,9 @@
                 </p>
             </div>
         </template>
+        <template #state-data="{ row }">
+            <UIcon :name="row.state" />
+        </template>
     </UTable>
 </template>
 
