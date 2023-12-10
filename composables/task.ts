@@ -74,6 +74,13 @@ export interface FormattedField {
     value: string;
 }
 
+export enum TaskState {
+    Completed,
+    Running,
+    Scheduled,
+    Idle,
+}
+
 export class TokioTask {
     // The task's pretty (console-generated, sequential) task ID.
     //
@@ -185,6 +192,46 @@ export class TokioTask {
         }
         return new Duration(BigInt(0), 0);
     }
+
+    protected isRunning(): boolean {
+        if (this.stats.lastPollStarted && this.stats.lastPollEnded) {
+            return (
+                this.stats.lastPollStarted.getTime() >
+                this.stats.lastPollEnded.getTime()
+            );
+        }
+        return false;
+    }
+
+    protected isScheduled(): boolean {
+        if (this.stats.lastWake && this.stats.lastPollStarted) {
+            return (
+                this.stats.lastWake.getTime() >
+                this.stats.lastPollStarted.getTime()
+            );
+        }
+        return false;
+    }
+
+    protected isCompleted(): boolean {
+        return this.stats.total !== undefined;
+    }
+
+    state(): TaskState {
+        if (this.isCompleted()) {
+            return TaskState.Completed;
+        }
+
+        if (this.isRunning()) {
+            return TaskState.Running;
+        }
+
+        if (this.isScheduled()) {
+            return TaskState.Scheduled;
+        }
+
+        return TaskState.Idle;
+    }
 }
 
 function truncateRegistryPath(s: string): string {
@@ -217,6 +264,26 @@ export function formatLocation(loc?: Location): string {
     return "<unknown location>";
 }
 
+function renderTaskState(state: TaskState): string {
+    const RUNNING_UTF8 = "\u{25B6}";
+    const SCHEDULED_UTF8 = "\u{23EB}";
+    const IDLE_UTF8 = "\u{23F8}";
+    const COMPLETED_UTF8 = "\u{23F9}";
+
+    switch (state) {
+        case TaskState.Running:
+            return RUNNING_UTF8;
+        case TaskState.Scheduled:
+            return SCHEDULED_UTF8;
+        case TaskState.Idle:
+            return IDLE_UTF8;
+        case TaskState.Completed:
+            return COMPLETED_UTF8;
+        default:
+            throw new Error("unreachable");
+    }
+}
+
 export interface TaskData {
     id: bigint;
     name: string;
@@ -229,14 +296,14 @@ export interface TaskData {
     kind: string;
     location: string;
     fields: Array<FormattedField>;
+    class?: string;
 }
 
 export function toTaskData(task: TokioTask): TaskData {
     return {
         id: task.id,
         name: task.name ?? "",
-        // FIXME: use real state.
-        state: "running",
+        state: renderTaskState(task.state()),
         total: task.totalDuration(new Date()).toString(),
         busy: task.busyDuration(new Date()).toString(),
         sched: task.scheduledDuration(new Date()).toString(),
@@ -245,5 +312,9 @@ export function toTaskData(task: TokioTask): TaskData {
         kind: task.kind,
         location: task.location,
         fields: task.formattedFields,
+        class:
+            task.state() === TaskState.Completed
+                ? "bg-slate-50 animate-pulse"
+                : undefined,
     };
 }
