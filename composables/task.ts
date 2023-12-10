@@ -69,6 +69,11 @@ export function fromProtoTaskStats(stats: ProtoTaskStats) {
     };
 }
 
+export interface FormattedField {
+    name: string;
+    value: string;
+}
+
 export class TokioTask {
     // The task's pretty (console-generated, sequential) task ID.
     //
@@ -84,7 +89,7 @@ export class TokioTask {
     // A precomputed short description string used in the async ops table
     shortDesc: string;
     // Fields that don't have their own column, pre-formatted
-    formattedFields: Array<string>;
+    formattedFields: Array<FormattedField>;
     // The task statistics that are updated over the lifetime of the task.
     stats: TokioTaskStats;
     // The target of the span representing the task.
@@ -101,7 +106,7 @@ export class TokioTask {
         taskId: bigint | undefined,
         spanId: bigint,
         shortDesc: string,
-        formattedFields: Array<string>,
+        formattedFields: Array<FormattedField>,
         stats: TokioTaskStats,
         target: string,
         name: string | undefined,
@@ -223,7 +228,7 @@ export interface TaskData {
     pools: bigint;
     kind: string;
     location: string;
-    fields: Array<string>;
+    fields: Array<FormattedField>;
 }
 
 export function toTaskData(task: TokioTask): TaskData {
