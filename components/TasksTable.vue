@@ -53,6 +53,10 @@ const columns = [
 const { tasksData } = useTasks();
 const tasks = computed(() => {
     // Map to array.
-    return Array.from(tasksData.value.values());
+    const tasks = Array.from(tasksData.value.values());
+    const taskData: Array<TaskData> = tasks.map((task) => {
+        return toTaskData(task);
+    });
+    return taskData;
 });
 </script>

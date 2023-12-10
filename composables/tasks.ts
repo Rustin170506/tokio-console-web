@@ -1,10 +1,4 @@
-import {
-    formatLocation,
-    fromProtoTaskStats,
-    type Task,
-    toTaskData,
-    type TaskData,
-} from "./task";
+import { formatLocation, fromProtoTaskStats, type Task } from "./task";
 import { Metadata } from "~/gen/common_pb";
 import { InstrumentRequest, type Update } from "~/gen/instrument_pb";
 import type { TaskUpdate } from "~/gen/tasks_pb";
@@ -115,7 +109,7 @@ export function useTasks() {
         new InstrumentRequest(),
     );
 
-    const tasksData = ref<Map<bigint, TaskData>>(new Map());
+    const tasksData = ref<Map<bigint, Task>>(new Map());
 
     const addTask = (update: Update) => {
         if (update.newMetadata) {
@@ -131,8 +125,15 @@ export function useTasks() {
             const tasks = taskUpdateToTask(update.taskUpdate);
 
             for (const task of tasks) {
-                const t = toTaskData(task);
-                tasksData.value.set(task.id, t);
+                tasksData.value.set(task.id, task);
+            }
+            for (const k in update.taskUpdate.statsUpdate) {
+                const task = tasksData.value.get(BigInt(k));
+                if (task) {
+                    task.stats = fromProtoTaskStats(
+                        update.taskUpdate.statsUpdate[k],
+                    );
+                }
             }
         }
     };
