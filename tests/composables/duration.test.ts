@@ -76,7 +76,7 @@ describe("Duration", () => {
     });
 
     test("toString for milliseconds", () => {
-        const duration = new Duration(BigInt(0), 500000000); // 1 second and 500 milliseconds
+        const duration = new Duration(BigInt(0), 500000000); // 500 milliseconds
         expect(duration.toString()).toBe("500ms");
     });
 
