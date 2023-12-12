@@ -5,7 +5,7 @@ import {
     TaskState,
     formatLocation,
 } from "./task/tokioTask";
-import { Duration } from "./task/duration";
+import { Duration, Timestamp } from "./task/duration";
 import { fromProtoTaskStats } from "./task/tokioTaskStats";
 import { Metadata } from "~/gen/common_pb";
 import { InstrumentRequest, type Update } from "~/gen/instrument_pb";
@@ -31,10 +31,10 @@ export function toTaskData(task: TokioTask): TaskData {
         id: task.id,
         name: task.name ?? "",
         state: getTaskStateIconName(task.state()),
-        total: task.totalDuration(new Date()),
-        busy: task.busyDuration(new Date()),
-        sched: task.scheduledDuration(new Date()),
-        idle: task.idleDuration(new Date()),
+        total: task.totalDuration(Timestamp.now()),
+        busy: task.busyDuration(Timestamp.now()),
+        sched: task.scheduledDuration(Timestamp.now()),
+        idle: task.idleDuration(Timestamp.now()),
         pools: task.stats.polls,
         kind: task.kind,
         location: task.location,
@@ -56,7 +56,7 @@ const ids = {
 
 // How long to retain tasks after they're dropped.
 // TODO: make this configurable.
-const retainFor = 6000; // 6 seconds
+const retainFor = new Duration(6n, 0); // 6 seconds
 
 const taskUpdateToTask = (update: TaskUpdate): TokioTask[] => {
     const result = new Array<TokioTask>();
@@ -195,11 +195,15 @@ export function useTasks() {
         }
     };
 
-    const retainTasks = (retainFor: number) => {
+    const retainTasks = (retainFor: Duration) => {
         const newTasks = new Map<bigint, TokioTask>();
         for (const [id, task] of tasksData.value) {
             if (task.stats.droppedAt) {
-                if (Date.now() - task.stats.droppedAt.getTime() < retainFor) {
+                if (
+                    !Timestamp.now()
+                        .subtract(task.stats.droppedAt)
+                        .greaterThan(retainFor)
+                ) {
                     newTasks.set(id, task);
                 }
             } else {

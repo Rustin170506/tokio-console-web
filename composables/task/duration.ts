@@ -32,11 +32,15 @@ export class Duration {
     }
 
     subtract(other: Duration): Duration {
-        const result = new Duration(
-            this.seconds - other.seconds,
-            this.nanos - other.nanos,
-        );
-        return result;
+        let seconds = this.seconds - other.seconds;
+        let nanos = this.nanos - other.nanos;
+
+        if (nanos < 0) {
+            seconds -= 1n;
+            nanos += 1e9;
+        }
+
+        return new Duration(seconds, nanos);
     }
 
     add(other: Duration): Duration {
@@ -95,4 +99,14 @@ export class Duration {
     valueOf(): number {
         return this.asMicroseconds();
     }
+
+    static now(): Duration {
+        return new Duration(
+            BigInt(/* seconds */ Math.floor(Date.now() / 1000)),
+            /* nanos */ 0,
+        );
+    }
 }
+
+// It can aslo be used as a timestamp.
+export { Duration as Timestamp };

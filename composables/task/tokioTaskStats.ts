@@ -1,14 +1,14 @@
-import { Duration } from "./duration";
+import { Duration, Timestamp } from "./duration";
 import type { Stats as ProtoTaskStats } from "~/gen/tasks_pb";
 
 export interface TokioTaskStats {
     polls: bigint;
-    createdAt: Date;
-    droppedAt?: Date;
+    createdAt: Timestamp;
+    droppedAt?: Timestamp;
     busy: Duration;
     scheduled: Duration;
-    lastPollStarted?: Date;
-    lastPollEnded?: Date;
+    lastPollStarted?: Timestamp;
+    lastPollEnded?: Timestamp;
     idle?: Duration;
     total?: Duration;
 
@@ -20,25 +20,20 @@ export interface TokioTaskStats {
     // Total number of times the task's waker has been dropped.
     wakerDrops: bigint;
     // The timestamp of when the task was last woken.
-    lastWake?: Date;
+    lastWake?: Timestamp;
     // Total number of times the task has woken itself.
     selfWakes: bigint;
 }
 
-export function fromProtoTaskStats(stats: ProtoTaskStats) {
-    const createdAt = stats.createdAt!.toDate();
-
-    const droppedAt = stats.droppedAt?.toDate();
-    const total = droppedAt
-        ? new Duration(
-              BigInt(
-                  Math.floor(
-                      (droppedAt.getTime() - createdAt.getTime()) / 1000,
-                  ),
-              ),
-              0,
-          )
+export function fromProtoTaskStats(stats: ProtoTaskStats): TokioTaskStats {
+    const createdAt = new Timestamp(
+        stats.createdAt!.seconds,
+        stats.createdAt!.nanos,
+    );
+    const droppedAt = stats.droppedAt
+        ? new Timestamp(stats.droppedAt.seconds, stats.droppedAt.nanos)
         : undefined;
+    const total = droppedAt ? droppedAt.subtract(createdAt) : undefined;
 
     const pollStats = stats.pollStats!;
     const busy = pollStats.busyTime
@@ -48,6 +43,7 @@ export function fromProtoTaskStats(stats: ProtoTaskStats) {
     const scheduled = stats.scheduledTime
         ? new Duration(stats.scheduledTime.seconds, stats.scheduledTime.nanos)
         : new Duration(BigInt(0), 0);
+
     const idle = total ? total.subtract(busy).subtract(scheduled) : undefined;
 
     return {
@@ -56,14 +52,26 @@ export function fromProtoTaskStats(stats: ProtoTaskStats) {
         droppedAt,
         busy,
         scheduled,
-        lastPollStarted: pollStats.lastPollStarted?.toDate(),
-        lastPollEnded: pollStats.lastPollEnded?.toDate(),
+        lastPollStarted: pollStats.lastPollStarted
+            ? new Timestamp(
+                  pollStats.lastPollStarted.seconds,
+                  pollStats.lastPollStarted.nanos,
+              )
+            : undefined,
+        lastPollEnded: pollStats.lastPollEnded
+            ? new Timestamp(
+                  pollStats.lastPollEnded.seconds,
+                  pollStats.lastPollEnded.nanos,
+              )
+            : undefined,
         idle,
         total,
         wakes: stats.wakes,
         wakerClones: stats.wakerClones,
         wakerDrops: stats.wakerDrops,
-        lastWake: stats.lastWake?.toDate(),
+        lastWake: stats.lastWake
+            ? new Timestamp(stats.lastWake.seconds, stats.lastWake.nanos)
+            : undefined,
         selfWakes: stats.selfWakes,
     };
 }

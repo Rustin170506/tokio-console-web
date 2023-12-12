@@ -1,5 +1,5 @@
 import type { TokioTaskStats } from "./tokioTaskStats";
-import { Duration } from "./duration";
+import { Duration, Timestamp } from "./duration";
 import { Location } from "~/gen/common_pb";
 
 export enum TaskState {
@@ -80,27 +80,17 @@ export class TokioTask {
         this.kind = kind;
     }
 
-    totalDuration(since: Date): Duration {
-        const durationInMilliseconds =
-            since.getTime() - this.stats.createdAt.getTime();
-        const durationInSeconds = Math.floor(durationInMilliseconds / 1000);
-
-        const duration = new Duration(BigInt(durationInSeconds), 0);
+    totalDuration(since: Timestamp): Duration {
+        const duration = since.subtract(this.stats.createdAt);
         return this.stats.total ?? duration;
     }
 
-    busyDuration(since: Date): Duration {
+    busyDuration(since: Timestamp): Duration {
         if (this.stats.lastPollStarted && this.stats.lastPollEnded) {
             if (this.stats.lastPollStarted > this.stats.lastPollEnded) {
                 // In this case the task is being polled at the moment.
-                const currentTimeInPoll =
-                    since.getTime() - this.stats.lastPollStarted.getTime();
-                const currentTimeInPollInSeconds = Math.floor(
-                    currentTimeInPoll / 1000,
-                );
-                const currentTimeInPollDuration = new Duration(
-                    BigInt(currentTimeInPollInSeconds),
-                    0,
+                const currentTimeInPollDuration = since.subtract(
+                    this.stats.lastPollStarted,
                 );
                 return this.stats.busy.add(currentTimeInPollDuration);
             }
@@ -108,18 +98,12 @@ export class TokioTask {
         return this.stats.busy;
     }
 
-    scheduledDuration(since: Date): Duration {
+    scheduledDuration(since: Timestamp): Duration {
         if (this.stats.lastWake && this.stats.lastPollStarted) {
             if (this.stats.lastWake > this.stats.lastPollStarted) {
                 // In this case the task is scheduled, but has not yet been polled.
-                const currentTimeSinceWake =
-                    since.getTime() - this.stats.lastWake.getTime();
-                const currentTimeSinceWakeInSeconds = Math.floor(
-                    currentTimeSinceWake / 1000,
-                );
-                const currentTimeSinceWakeDuration = new Duration(
-                    BigInt(currentTimeSinceWakeInSeconds),
-                    0,
+                const currentTimeSinceWakeDuration = since.subtract(
+                    this.stats.lastWake,
                 );
                 return this.stats.scheduled.add(currentTimeSinceWakeDuration);
             }
@@ -127,7 +111,7 @@ export class TokioTask {
         return this.stats.scheduled;
     }
 
-    idleDuration(since: Date): Duration {
+    idleDuration(since: Timestamp): Duration {
         if (this.stats.idle) {
             return this.stats.idle;
         } else {
@@ -143,9 +127,8 @@ export class TokioTask {
 
     protected isRunning(): boolean {
         if (this.stats.lastPollStarted && this.stats.lastPollEnded) {
-            return (
-                this.stats.lastPollStarted.getTime() >
-                this.stats.lastPollEnded.getTime()
+            return this.stats.lastPollStarted.greaterThan(
+                this.stats.lastPollEnded,
             );
         }
         return false;
@@ -153,10 +136,7 @@ export class TokioTask {
 
     protected isScheduled(): boolean {
         if (this.stats.lastWake && this.stats.lastPollStarted) {
-            return (
-                this.stats.lastWake.getTime() >
-                this.stats.lastPollStarted.getTime()
-            );
+            return this.stats.lastWake.greaterThan(this.stats.lastPollStarted);
         }
         return false;
     }
