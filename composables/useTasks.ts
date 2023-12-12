@@ -1,12 +1,50 @@
 import {
-    formatLocation,
-    fromProtoTaskStats,
-    TokioTask,
+    getTaskStateIconName,
     type FormattedField,
-} from "./task";
+    TokioTask,
+    TaskState,
+    formatLocation,
+} from "./task/tokioTask";
+import { Duration } from "./task/duration";
+import { fromProtoTaskStats } from "./task/tokioTaskStats";
 import { Metadata } from "~/gen/common_pb";
 import { InstrumentRequest, type Update } from "~/gen/instrument_pb";
 import type { TaskUpdate } from "~/gen/tasks_pb";
+
+export interface TaskData {
+    id: bigint;
+    name: string;
+    state: string;
+    total: Duration;
+    busy: Duration;
+    sched: Duration;
+    idle: Duration;
+    pools: bigint;
+    kind: string;
+    location: string;
+    fields: Array<FormattedField>;
+    class?: string;
+}
+
+export function toTaskData(task: TokioTask): TaskData {
+    return {
+        id: task.id,
+        name: task.name ?? "",
+        state: getTaskStateIconName(task.state()),
+        total: task.totalDuration(new Date()),
+        busy: task.busyDuration(new Date()),
+        sched: task.scheduledDuration(new Date()),
+        idle: task.idleDuration(new Date()),
+        pools: task.stats.polls,
+        kind: task.kind,
+        location: task.location,
+        fields: task.formattedFields,
+        class:
+            task.state() === TaskState.Completed
+                ? "bg-slate-50 animate-pulse"
+                : undefined,
+    };
+}
 
 // Metadata about a task.
 const metas: Map<bigint, Metadata> = new Map();
