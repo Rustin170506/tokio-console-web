@@ -1,9 +1,9 @@
 import {
     formatLocation,
-    fromProtoTaskStats,
     TokioTask,
     type FormattedField,
-} from "./task";
+} from "./task/tokioTask";
+import { fromProtoTaskStats } from "./task/tokioTaskStats";
 import { Metadata } from "~/gen/common_pb";
 import { InstrumentRequest, type Update } from "~/gen/instrument_pb";
 import type { TaskUpdate } from "~/gen/tasks_pb";

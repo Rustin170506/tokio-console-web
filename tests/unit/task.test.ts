@@ -1,5 +1,5 @@
 import { Location } from "../../gen/common_pb";
-import { formatLocation } from "../../composables/task";
+import { formatLocation } from "../../composables/task/tokioTask";
 
 describe("formatLocation", () => {
     test('should return "<unknown location>" when location is undefined', () => {

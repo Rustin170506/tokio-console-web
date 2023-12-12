@@ -1,4 +1,4 @@
-import { Duration } from "../../composables/duration";
+import { Duration } from "../../composables/task/duration";
 
 describe("Duration", () => {
     test("constructor", () => {
