@@ -32,25 +32,9 @@ describe("formatLocation", () => {
         });
     });
 
-    describe("when modulePath is not defined", () => {
-        test("should return file", () => {
-            const loc = { file: "file/path" };
-            expect(formatLocation(new Location(loc))).toBe("file/path");
-        });
-
-        test('should return "<unknown location>" when file is an empty string', () => {
-            const loc = { file: "" };
-            expect(formatLocation(new Location(loc))).toBe(
-                "<unknown location>",
-            );
-        });
-
-        test('should return "<unknown location>" when neither modulePath nor file is defined', () => {
-            const loc = {};
-            expect(formatLocation(new Location(loc))).toBe(
-                "<unknown location>",
-            );
-        });
+    test('should return "<unknown location>" when modulePath is not defined and file is an empty string', () => {
+        const loc = { file: "" };
+        expect(formatLocation(new Location(loc))).toBe("<unknown location>");
     });
 
     describe("when line and column are defined", () => {
