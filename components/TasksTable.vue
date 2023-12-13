@@ -5,6 +5,13 @@
         :sort="{ column: 'total', direction: 'desc' }"
         :loading="pending"
     >
+        <template #loading-state>
+            <div class="flex justify-center items-center h-full">
+                <TokioSvg
+                    class="w-8 h-auto mr-2 fill-black dark:fill-white my-8 animate-spin"
+                />
+            </div>
+        </template>
         <template #fields-data="{ row }">
             <div v-for="(item, index) in row.fields" :key="index" class="mb-1">
                 <p>
