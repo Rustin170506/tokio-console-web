@@ -21,6 +21,7 @@
                 icon="i-simple-icons-discord"
                 aria-label="GitHub"
             />
+            <CColorMode />
         </template>
     </CHeader>
 </template>
