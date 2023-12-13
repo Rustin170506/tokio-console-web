@@ -3,6 +3,7 @@
         :columns="columns"
         :rows="tasks"
         :sort="{ column: 'total', direction: 'desc' }"
+        :loading="pending"
     >
         <template #fields-data="{ row }">
             <div v-for="(item, index) in row.fields" :key="index" class="mb-1">
@@ -100,7 +101,7 @@ const columns = [
     },
 ];
 
-const { tasksData } = useTasks();
+const { pending, tasksData } = useTasks();
 const tasks = computed(() => {
     // Map to array.
     const tasks = Array.from(tasksData.value.values());
