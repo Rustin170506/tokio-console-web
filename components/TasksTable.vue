@@ -30,22 +30,22 @@
         </template>
         <template #total-data="{ row }">
             <p :class="row.total.class">
-                {{ row.total.value.toString() }}
+                {{ row.total.toString() }}
             </p>
         </template>
         <template #busy-data="{ row }">
             <p :class="row.busy.class">
-                {{ row.busy.value.toString() }}
+                {{ row.busy.toString() }}
             </p>
         </template>
         <template #sched-data="{ row }">
             <p :class="row.sched.class">
-                {{ row.sched.value.toString() }}
+                {{ row.sched.toString() }}
             </p>
         </template>
         <template #idle-data="{ row }">
             <p :class="row.idle.class">
-                {{ row.idle.value.toString() }}
+                {{ row.idle.toString() }}
             </p>
         </template>
     </UTable>
