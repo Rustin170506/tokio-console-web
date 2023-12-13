@@ -11,14 +11,48 @@ import { Metadata } from "~/gen/common_pb";
 import { InstrumentRequest, type Update } from "~/gen/instrument_pb";
 import type { TaskUpdate } from "~/gen/tasks_pb";
 
+export interface DurationWithStyle {
+    value: string;
+    // The tailwind class to use for this duration.
+    class: string;
+}
+
+function getDurationWithClass(duration: Duration): DurationWithStyle {
+    const days = duration.asDays();
+    const hours = duration.asHours();
+    const minutes = duration.asMinutes();
+    const seconds = duration.asSeconds();
+    const milliseconds = duration.asMilliseconds();
+
+    let className: string;
+
+    if (days >= 1) {
+        className = "text-blue-500 dark:text-blue-300";
+    } else if (hours >= 1) {
+        className = "text-cyan-500 dark:text-cyan-300";
+    } else if (minutes >= 1) {
+        className = "text-green-500 dark:text-green-300";
+    } else if (seconds >= 1) {
+        className = "text-yellow-500 dark:text-yellow-300";
+    } else if (milliseconds >= 1) {
+        className = "text-red-500 dark:text-red-300";
+    } else {
+        className = "text-gray-500 dark:text-gray-300";
+    }
+
+    return {
+        value: duration.toString(),
+        class: className,
+    };
+}
 export interface TaskData {
     id: bigint;
     name: string;
     state: string;
-    total: Duration;
-    busy: Duration;
-    sched: Duration;
-    idle: Duration;
+    total: DurationWithStyle;
+    busy: DurationWithStyle;
+    sched: DurationWithStyle;
+    idle: DurationWithStyle;
     pools: bigint;
     kind: string;
     location: string;
@@ -31,10 +65,10 @@ export function toTaskData(task: TokioTask): TaskData {
         id: task.id,
         name: task.name ?? "",
         state: getTaskStateIconName(task.state()),
-        total: task.totalDuration(Timestamp.now()),
-        busy: task.busyDuration(Timestamp.now()),
-        sched: task.scheduledDuration(Timestamp.now()),
-        idle: task.idleDuration(Timestamp.now()),
+        total: getDurationWithClass(task.totalDuration(Timestamp.now())),
+        busy: getDurationWithClass(task.busyDuration(Timestamp.now())),
+        sched: getDurationWithClass(task.scheduledDuration(Timestamp.now())),
+        idle: getDurationWithClass(task.idleDuration(Timestamp.now())),
         pools: task.stats.polls,
         kind: task.kind,
         location: task.location,
