@@ -111,10 +111,7 @@ export class Duration {
     }
 
     static now(): Duration {
-        return new Duration(
-            BigInt(/* seconds */ Math.floor(Date.now() / 1000)),
-            /* nanos */ 0,
-        );
+        return new Duration(BigInt(Math.floor(Date.now() / 1000)), 0);
     }
 }
 
