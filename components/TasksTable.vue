@@ -5,15 +5,15 @@
         :sort="{ column: 'total', direction: 'desc' }"
     >
         <template #fields-data="{ row }">
-            <div
-                v-for="(item, index) in row.fields"
-                :key="index"
-                class="field-item"
-            >
+            <div v-for="(item, index) in row.fields" :key="index" class="mb-1">
                 <p>
-                    <span class="field-name">{{ item.name }}</span>
-                    <span class="equals-sign">=</span>
-                    <span class="field-value">{{ item.value }}</span>
+                    <span class="text-blue-600 dark:text-blue-400">{{
+                        item.name
+                    }}</span>
+                    <span class="text-gray-500 dark:text-gray-400">=</span>
+                    <span class="text-green-600 dark:text-green-400">{{
+                        item.value
+                    }}</span>
                 </p>
             </div>
         </template>
@@ -110,21 +110,3 @@ const tasks = computed(() => {
     return taskData;
 });
 </script>
-
-<style scoped>
-.field-item {
-    margin: 5px 0;
-}
-
-.field-name {
-    color: #1f78b4;
-}
-
-.equals-sign {
-    color: #999;
-}
-
-.field-value {
-    color: #33a02c;
-}
-</style>
