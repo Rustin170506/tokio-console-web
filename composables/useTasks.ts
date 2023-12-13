@@ -193,11 +193,7 @@ const taskUpdateToTask = (update: TaskUpdate): TokioTask[] => {
 };
 
 export function useTasks() {
-    const client = useGrpcClient();
-    const updateStream: AsyncIterable<Update> = client.watchUpdates(
-        new InstrumentRequest(),
-    );
-
+    const pending = ref<boolean>(true);
     const tasksData = ref<Map<bigint, TokioTask>>(new Map());
 
     const addTask = (update: Update) => {
@@ -248,14 +244,28 @@ export function useTasks() {
         tasksData.value = newTasks;
     };
 
+    // Async function to watch for updates.
     (async () => {
-        for await (const value of updateStream) {
-            addTask(value);
-            retainTasks(retainFor);
+        try {
+            const client = useGrpcClient();
+            const updateStream = client.watchUpdates(new InstrumentRequest());
+
+            for await (const value of updateStream) {
+                if (pending.value) {
+                    pending.value = false;
+                }
+                addTask(value);
+                retainTasks(retainFor);
+            }
+        } catch (error) {
+            // TODO: handle error
+        } finally {
+            pending.value = false;
         }
     })();
 
     return {
+        pending,
         tasksData,
     };
 }
