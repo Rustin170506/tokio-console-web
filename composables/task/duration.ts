@@ -118,5 +118,5 @@ export class Duration {
     }
 }
 
-// It can aslo be used as a timestamp.
+// It can also be used as a timestamp.
 export { Duration as Timestamp };
