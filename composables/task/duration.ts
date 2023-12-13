@@ -5,6 +5,21 @@ export class Duration {
     constructor(seconds: bigint, nanos: number) {
         this.seconds = seconds;
         this.nanos = nanos;
+        this.normalize();
+    }
+
+    normalize(): Duration {
+        let adjustment = 0;
+        if (this.nanos >= 1e9) {
+            adjustment = Math.floor(this.nanos / 1e9);
+            this.seconds += BigInt(adjustment);
+            this.nanos -= adjustment * 1e9;
+        } else if (this.nanos < 0) {
+            adjustment = Math.floor(-this.nanos / 1e9) + 1;
+            this.seconds -= BigInt(adjustment);
+            this.nanos += adjustment * 1e9;
+        }
+        return this;
     }
 
     asDays(): number {
@@ -32,15 +47,10 @@ export class Duration {
     }
 
     subtract(other: Duration): Duration {
-        let seconds = this.seconds - other.seconds;
-        let nanos = this.nanos - other.nanos;
-
-        if (nanos < 0) {
-            seconds -= 1n;
-            nanos += 1e9;
-        }
-
-        return new Duration(seconds, nanos);
+        const seconds = this.seconds - other.seconds;
+        const nanos = this.nanos - other.nanos;
+        const result = new Duration(seconds, nanos);
+        return result.normalize();
     }
 
     add(other: Duration): Duration {
@@ -48,7 +58,7 @@ export class Duration {
             this.seconds + other.seconds,
             this.nanos + other.nanos,
         );
-        return result;
+        return result.normalize();
     }
 
     greaterThan(other: Duration): boolean {

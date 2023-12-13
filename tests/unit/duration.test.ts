@@ -84,4 +84,27 @@ describe("Duration", () => {
         const duration = new Duration(BigInt(0), 500); // 500 nanoseconds
         expect(duration.toString()).toBe("500ns");
     });
+
+    test("normalize for nanoseconds greater than 1e9", () => {
+        const duration = new Duration(BigInt(0), 1.5e9);
+        duration.normalize();
+        expect(duration.seconds).toBe(BigInt(1));
+        expect(duration.nanos).toBe(0.5e9);
+    });
+
+    test("subtract and normalize negative result", () => {
+        const duration1 = new Duration(BigInt(2), 449);
+        const duration2 = new Duration(BigInt(1), 500);
+        const result = duration1.subtract(duration2);
+        expect(result.seconds).toBe(BigInt(0));
+        expect(result.nanos).toBe(999999949);
+    });
+
+    test("add and normalize", () => {
+        const duration1 = new Duration(BigInt(2), 999999949);
+        const duration2 = new Duration(BigInt(1), 500);
+        const result = duration1.add(duration2);
+        expect(result.seconds).toBe(BigInt(4));
+        expect(result.nanos).toBe(449);
+    });
 });
