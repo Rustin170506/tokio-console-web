@@ -11,10 +11,23 @@ import { Metadata } from "~/gen/common_pb";
 import { InstrumentRequest, type Update } from "~/gen/instrument_pb";
 import type { TaskUpdate } from "~/gen/tasks_pb";
 
-export interface DurationWithStyle {
-    value: string;
+export class DurationWithStyle {
+    value: Duration;
     // The tailwind class to use for this duration.
     class: string;
+
+    constructor(value: Duration, className: string) {
+        this.value = value;
+        this.class = className;
+    }
+
+    toString(): string {
+        return this.value.toString();
+    }
+
+    valueOf(): number {
+        return this.value.valueOf();
+    }
 }
 
 function getDurationWithClass(duration: Duration): DurationWithStyle {
@@ -40,10 +53,7 @@ function getDurationWithClass(duration: Duration): DurationWithStyle {
         className = "text-gray-500 dark:text-gray-300";
     }
 
-    return {
-        value: duration.toString(),
-        class: className,
-    };
+    return new DurationWithStyle(duration, className);
 }
 export interface TaskData {
     id: bigint;
