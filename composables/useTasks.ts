@@ -41,7 +41,7 @@ export function toTaskData(task: TokioTask): TaskData {
         fields: task.formattedFields,
         class:
             task.state() === TaskState.Completed
-                ? "bg-slate-50 animate-pulse"
+                ? "bg-slate-50 dark:bg-slate-950 animate-pulse"
                 : undefined,
     };
 }
