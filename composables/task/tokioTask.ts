@@ -8,22 +8,6 @@ export enum TaskState {
     Scheduled,
     Idle,
 }
-
-export function getTaskStateIconName(state: TaskState): string {
-    switch (state) {
-        case TaskState.Running:
-            return "i-heroicons-play";
-        case TaskState.Scheduled:
-            return "i-heroicons-arrow-small-up";
-        case TaskState.Idle:
-            return "i-heroicons-pause";
-        case TaskState.Completed:
-            return "i-heroicons-stop";
-        default:
-            throw new Error("unreachable");
-    }
-}
-
 export interface FormattedField {
     name: string;
     value: string;
@@ -125,7 +109,7 @@ export class TokioTask {
         return new Duration(BigInt(0), 0);
     }
 
-    protected isRunning(): boolean {
+    isRunning(): boolean {
         if (this.stats.lastPollStarted && this.stats.lastPollEnded) {
             return this.stats.lastPollStarted.greaterThan(
                 this.stats.lastPollEnded,
@@ -134,14 +118,14 @@ export class TokioTask {
         return false;
     }
 
-    protected isScheduled(): boolean {
+    isScheduled(): boolean {
         if (this.stats.lastWake && this.stats.lastPollStarted) {
             return this.stats.lastWake.greaterThan(this.stats.lastPollStarted);
         }
         return false;
     }
 
-    protected isCompleted(): boolean {
+    isCompleted(): boolean {
         return this.stats.total !== undefined;
     }
 
