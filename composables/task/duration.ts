@@ -1,20 +1,28 @@
+// The Duration class represents a duration of time.
 export class Duration {
+    // The number of seconds in the duration.
     seconds: bigint;
+    // The number of nanoseconds in the duration.
     nanos: number;
 
+    // The constructor takes the number of seconds and nanoseconds.
     constructor(seconds: bigint, nanos: number) {
         this.seconds = seconds;
         this.nanos = nanos;
+        // Normalize the duration so that nanos is less than 1e9 and non-negative.
         this.normalize();
     }
 
+    // Normalize ensures that nanos is less than 1e9 and non-negative.
     normalize(): Duration {
         let adjustment = 0;
+        // If nanos is 1e9 or more, we need to adjust seconds and nanos.
         if (this.nanos >= 1e9) {
             adjustment = Math.floor(this.nanos / 1e9);
             this.seconds += BigInt(adjustment);
             this.nanos -= adjustment * 1e9;
         } else if (this.nanos < 0) {
+            // If nanos is negative, we need to adjust seconds and nanos.
             adjustment = Math.floor(-this.nanos / 1e9) + 1;
             this.seconds -= BigInt(adjustment);
             this.nanos += adjustment * 1e9;
@@ -46,6 +54,7 @@ export class Duration {
         return Number(this.seconds) * 1e6 + this.nanos / 1000;
     }
 
+    // subtract returns a new Duration that represents the difference between this duration and another.
     subtract(other: Duration): Duration {
         const seconds = this.seconds - other.seconds;
         const nanos = this.nanos - other.nanos;
@@ -53,6 +62,7 @@ export class Duration {
         return result.normalize();
     }
 
+    // add returns a new Duration that represents the sum of this duration and another.
     add(other: Duration): Duration {
         const result = new Duration(
             this.seconds + other.seconds,
@@ -61,6 +71,7 @@ export class Duration {
         return result.normalize();
     }
 
+    // greaterThan checks if this duration is greater than another.
     greaterThan(other: Duration): boolean {
         return (
             this.seconds > other.seconds ||
@@ -105,15 +116,17 @@ export class Duration {
         return str || `${this.nanos}ns`;
     }
 
-    // Custom valueOf() method to allow for easy comparison of durations.
+    // valueOf returns the duration as a number of microseconds.
+    // Used for sorting.
     valueOf(): number {
         return this.asMicroseconds();
     }
 
+    // now returns the current time as a Duration from the Unix epoch.
     static now(): Duration {
         return new Duration(BigInt(Math.floor(Date.now() / 1000)), 0);
     }
 }
 
-// It can also be used as a timestamp.
+// The Duration class can also be used as a timestamp.
 export { Duration as Timestamp };
