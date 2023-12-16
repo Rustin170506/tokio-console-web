@@ -1,5 +1,4 @@
 import {
-    getTaskStateIconName,
     type FormattedField,
     TokioTask,
     TaskState,
@@ -55,6 +54,22 @@ function getDurationWithClass(duration: Duration): DurationWithStyle {
 
     return new DurationWithStyle(duration, className);
 }
+
+function getTaskStateIconName(state: TaskState): string {
+    switch (state) {
+        case TaskState.Running:
+            return "i-heroicons-play";
+        case TaskState.Scheduled:
+            return "i-heroicons-arrow-small-up";
+        case TaskState.Idle:
+            return "i-heroicons-pause";
+        case TaskState.Completed:
+            return "i-heroicons-stop";
+        default:
+            throw new Error("unreachable");
+    }
+}
+
 export interface TaskData {
     id: bigint;
     name: string;

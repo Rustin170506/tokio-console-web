@@ -8,22 +8,6 @@ export enum TaskState {
     Scheduled,
     Idle,
 }
-
-export function getTaskStateIconName(state: TaskState): string {
-    switch (state) {
-        case TaskState.Running:
-            return "i-heroicons-play";
-        case TaskState.Scheduled:
-            return "i-heroicons-arrow-small-up";
-        case TaskState.Idle:
-            return "i-heroicons-pause";
-        case TaskState.Completed:
-            return "i-heroicons-stop";
-        default:
-            throw new Error("unreachable");
-    }
-}
-
 export interface FormattedField {
     name: string;
     value: string;
