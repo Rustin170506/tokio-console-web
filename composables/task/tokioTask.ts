@@ -109,7 +109,7 @@ export class TokioTask {
         return new Duration(BigInt(0), 0);
     }
 
-    protected isRunning(): boolean {
+    isRunning(): boolean {
         if (this.stats.lastPollStarted && this.stats.lastPollEnded) {
             return this.stats.lastPollStarted.greaterThan(
                 this.stats.lastPollEnded,
@@ -118,14 +118,14 @@ export class TokioTask {
         return false;
     }
 
-    protected isScheduled(): boolean {
+    isScheduled(): boolean {
         if (this.stats.lastWake && this.stats.lastPollStarted) {
             return this.stats.lastWake.greaterThan(this.stats.lastPollStarted);
         }
         return false;
     }
 
-    protected isCompleted(): boolean {
+    isCompleted(): boolean {
         return this.stats.total !== undefined;
     }
 

@@ -11,5 +11,8 @@ module.exports = {
             },
         ],
     },
+    moduleNameMapper: {
+        "(.+)\\.js": "$1",
+    },
     testEnvironment: "node",
 };
