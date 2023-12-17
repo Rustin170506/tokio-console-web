@@ -1,4 +1,5 @@
-import { Duration } from "../../composables/task/duration";
+import { describe, test, expect } from "vitest";
+import { Duration } from "~/composables/task/duration";
 
 describe("Duration", () => {
     test("constructor", () => {
