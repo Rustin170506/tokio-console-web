@@ -11,10 +11,12 @@ mockNuxtImport("useTasks", () => {
         const formattedFields = [{ name: "target", value: "tokio:task" }];
         const stats = {
             polls: 100n,
-            createdAt: new Timestamp(0n, 0),
+            // Use relative times to avoid test flakiness.
+            createdAt: Timestamp.now().subtract(new Duration(1000n, 0)),
             busy: new Duration(500n, 0),
             scheduled: new Duration(300n, 0),
-            lastPollStarted: new Timestamp(1000n, 0),
+            // Use relative times to avoid test flakiness.
+            lastPollStarted: Timestamp.now().subtract(new Duration(1000n, 0)),
             lastPollEnded: new Timestamp(0n, 0),
             idle: new Duration(200n, 0),
             wakes: 1n,
@@ -24,7 +26,7 @@ mockNuxtImport("useTasks", () => {
             lastWake: new Timestamp(1000n, 0),
         };
         tasksData.value.set(
-            BigInt(1),
+            1n,
             new TokioTask(
                 1n,
                 1n,
