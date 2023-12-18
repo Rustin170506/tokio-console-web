@@ -13,7 +13,7 @@ RUN git clone -b rustin-patch-grpc-web https://github.com/hi-rustin/console.git 
 WORKDIR /opt/console
 
 # Start app example with web feature enabled
-CMD ["cargo", "run", "--release", "--example", "app", "--features", "web"]
+CMD ["cargo", "run", "--release", "--example", "grpc_web", "--features", "grpc-web"]
 
 # Expose port 8888
 EXPOSE 8888
