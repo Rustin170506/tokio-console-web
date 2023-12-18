@@ -29,22 +29,22 @@
             <UIcon :name="row.state" />
         </template>
         <template #total-data="{ row }">
-            <p :class="row.total.class">
+            <p :class="`${row.total.class} w-10`">
                 {{ row.total.toString() }}
             </p>
         </template>
         <template #busy-data="{ row }">
-            <p :class="row.busy.class">
+            <p :class="`${row.busy.class} w-10`">
                 {{ row.busy.toString() }}
             </p>
         </template>
         <template #sched-data="{ row }">
-            <p :class="row.sched.class">
+            <p :class="`${row.sched.class} w-10`">
                 {{ row.sched.toString() }}
             </p>
         </template>
         <template #idle-data="{ row }">
-            <p :class="row.idle.class">
+            <p :class="`${row.idle.class} w-10`">
                 {{ row.idle.toString() }}
             </p>
         </template>
