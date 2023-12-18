@@ -1,24 +1,10 @@
 <template>
-    <header class="u-header">
-        <div class="u-header__left">
+    <header class="flex justify-between p-4">
+        <div class="flex items-center">
             <slot name="left"></slot>
         </div>
-        <div class="u-header__right">
+        <div class="flex items-center">
             <slot name="right"></slot>
         </div>
     </header>
 </template>
-
-<style scoped>
-.u-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 1em;
-}
-
-.u-header__left,
-.u-header__right {
-    display: flex;
-    align-items: center;
-}
-</style>
