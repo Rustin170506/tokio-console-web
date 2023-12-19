@@ -1,3 +1,4 @@
+import { ConnectError } from "@connectrpc/connect";
 import {
     type FormattedField,
     TokioTask,
@@ -218,6 +219,7 @@ const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
 };
 
 export function useTasks() {
+    const toast = useToast();
     const pending = ref<boolean>(true);
     const tasksData = ref<Map<bigint, TokioTask>>(new Map());
 
@@ -282,8 +284,14 @@ export function useTasks() {
                 addTasks(value);
                 retainTasks(retainFor);
             }
-        } catch (error) {
-            // TODO: handle error
+        } catch (err) {
+            if (err instanceof ConnectError) {
+                toast.add({
+                    title: err.name,
+                    description: err.rawMessage,
+                    color: "red",
+                });
+            }
         } finally {
             pending.value = false;
         }
