@@ -109,8 +109,8 @@ export function toTaskData(task: TokioTask): TaskData {
 const metas: Map<bigint, Metadata> = new Map();
 
 const ids = {
-    nextId: BigInt(0),
-    ids: new Map(),
+    nextId: 1n,
+    map: new Map(),
 };
 
 // How long to retain tasks after they're dropped.
@@ -183,10 +183,10 @@ const taskUpdateToTask = (update: TaskUpdate): TokioTask[] => {
         delete statsUpdate[spanId.toString()];
         const taskStats = fromProtoTaskStats(stats);
 
-        let id = ids.ids.get(spanId);
+        let id = ids.map.get(spanId);
         if (!id) {
             const newID = ids.nextId++;
-            ids.ids.set(spanId, newID);
+            ids.map.set(spanId, newID);
             id = newID;
         }
         let shortDesc = "";
@@ -239,7 +239,7 @@ export function useTasks() {
             }
 
             for (const k in update.taskUpdate.statsUpdate) {
-                const task = tasksData.value.get(ids.ids.get(BigInt(k)));
+                const task = tasksData.value.get(ids.map.get(BigInt(k)));
                 if (task) {
                     task.stats = fromProtoTaskStats(
                         update.taskUpdate.statsUpdate[k],
