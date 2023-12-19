@@ -71,7 +71,7 @@ function getTaskStateIconName(state: TaskState): string {
 }
 
 export interface TaskData {
-    id: bigint;
+    id: string;
     name: string;
     state: string;
     total: DurationWithStyle;
@@ -87,7 +87,7 @@ export interface TaskData {
 
 export function toTaskData(task: TokioTask): TaskData {
     return {
-        id: task.id,
+        id: task.taskId?.toString() ?? "",
         name: task.name ?? "",
         state: getTaskStateIconName(task.state()),
         total: getDurationWithClass(task.totalDuration(Timestamp.now())),

@@ -28,7 +28,7 @@ mockNuxtImport("useTasks", () => {
         tasksData.value.set(
             1n,
             new TokioTask(
-                1n,
+                2n,
                 1n,
                 1n,
                 "some task",
