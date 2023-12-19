@@ -117,7 +117,7 @@ const ids = {
 // TODO: make this configurable.
 const retainFor = new Duration(6n, 0); // 6 seconds
 
-const taskUpdateToTask = (update: TaskUpdate): TokioTask[] => {
+const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
     const result = new Array<TokioTask>();
     const tasks = update.newTasks;
     const statsUpdate = update.statsUpdate;
@@ -221,7 +221,7 @@ export function useTasks() {
     const pending = ref<boolean>(true);
     const tasksData = ref<Map<bigint, TokioTask>>(new Map());
 
-    const addTask = (update: Update) => {
+    const addTasks = (update: Update) => {
         if (update.newMetadata) {
             update.newMetadata.metadata.forEach((meta) => {
                 const id = meta.id?.id;
@@ -232,7 +232,7 @@ export function useTasks() {
             });
         }
         if (update.taskUpdate) {
-            const tasks = taskUpdateToTask(update.taskUpdate);
+            const tasks = taskUpdateToTasks(update.taskUpdate);
 
             for (const task of tasks) {
                 tasksData.value.set(task.id, task);
@@ -279,7 +279,7 @@ export function useTasks() {
                 if (pending.value) {
                     pending.value = false;
                 }
-                addTask(value);
+                addTasks(value);
                 retainTasks(retainFor);
             }
         } catch (error) {
