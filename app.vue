@@ -4,5 +4,6 @@
             <ConsoleHeader />
         </template>
         <TasksTable />
+        <UNotifications />
     </UCard>
 </template>
