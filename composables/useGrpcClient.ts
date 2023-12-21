@@ -8,8 +8,6 @@ export function useGrpcClient() {
     const config = useRuntimeConfig();
     const transport = createGrpcWebTransport({
         baseUrl: config.public.SUBSCRIBER_BASE_URL,
-        // TODO: Make this configurable.
-        defaultTimeoutMs: 60000, // 1 minute
     });
 
     if (!client) {
