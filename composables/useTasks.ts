@@ -8,8 +8,12 @@ import {
 import { Duration, Timestamp } from "./task/duration";
 import { fromProtoTaskStats } from "./task/tokioTaskStats";
 import { Metadata } from "~/gen/common_pb";
-import { InstrumentRequest, type Update } from "~/gen/instrument_pb";
-import type { TaskUpdate } from "~/gen/tasks_pb";
+import {
+    InstrumentRequest,
+    TaskDetailsRequest,
+    type Update,
+} from "~/gen/instrument_pb";
+import type { TaskDetails, TaskUpdate } from "~/gen/tasks_pb";
 
 export class DurationWithStyle {
     value: Duration;
@@ -72,9 +76,8 @@ function getTaskStateIconName(state: TaskState): string {
 }
 
 export interface TaskData {
-    id: string;
-    // Used to watch for task details.
-    spanId: bigint;
+    id: bigint;
+    idString: string;
     name: string;
     state: string;
     total: DurationWithStyle;
@@ -90,8 +93,8 @@ export interface TaskData {
 
 export function toTaskData(task: TokioTask): TaskData {
     return {
-        id: task.taskId?.toString() ?? "",
-        spanId: task.spanId,
+        id: task.id,
+        idString: task.taskId?.toString() ?? "",
         name: task.name ?? "",
         state: getTaskStateIconName(task.state()),
         total: getDurationWithClass(task.totalDuration(Timestamp.now())),
@@ -221,10 +224,33 @@ const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
     return result;
 };
 
-export function useTasks() {
+const tasksData = ref<Map<bigint, TokioTask>>(new Map());
+
+let updateStreamInstance: AsyncIterable<Update> | null = null;
+
+const handleConnectError = (err: any) => {
     const toast = useToast();
+
+    if (err instanceof ConnectError) {
+        toast.add({
+            title: err.name,
+            description: err.rawMessage,
+            color: "red",
+        });
+    }
+};
+
+let isTaskStarted = false;
+
+export function useTasks() {
+    if (isTaskStarted) {
+        return {
+            pending: ref<boolean>(false),
+            tasksData,
+        };
+    }
+
     const pending = ref<boolean>(true);
-    const tasksData = ref<Map<bigint, TokioTask>>(new Map());
 
     const addTasks = (update: Update) => {
         if (update.newMetadata) {
@@ -274,11 +300,18 @@ export function useTasks() {
         tasksData.value = newTasks;
     };
 
-    // Async function to watch for updates.
-    (async () => {
-        try {
+    const getUpdateStream = () => {
+        if (!updateStreamInstance) {
             const client = useGrpcClient();
-            const updateStream = client.watchUpdates(new InstrumentRequest());
+            updateStreamInstance = client.watchUpdates(new InstrumentRequest());
+        }
+        return updateStreamInstance;
+    };
+
+    // Async function to watch for updates.
+    const watchForUpdates = async () => {
+        try {
+            const updateStream = getUpdateStream();
 
             for await (const value of updateStream) {
                 if (pending.value) {
@@ -288,20 +321,58 @@ export function useTasks() {
                 retainTasks(retainFor);
             }
         } catch (err) {
-            if (err instanceof ConnectError) {
-                toast.add({
-                    title: err.name,
-                    description: err.rawMessage,
-                    color: "red",
-                });
-            }
+            handleConnectError(err);
         } finally {
             pending.value = false;
         }
-    })();
+    };
+
+    const startWatchTaskUpdates = () => {
+        if (!isTaskStarted) {
+            watchForUpdates();
+            isTaskStarted = true;
+        }
+    };
+
+    startWatchTaskUpdates();
 
     return {
         pending,
         tasksData,
     };
+}
+
+export function useTaskDetails(id: bigint) {
+    const pending = ref<boolean>(true);
+    const task = tasksData.value.get(id)!;
+    const taskDetails = ref<TaskDetails | null>(null);
+
+    // Async function to watch for details.
+    const watchForDetails = async () => {
+        try {
+            const client = useGrpcClient();
+            const detailsStream = client.watchTaskDetails(
+                new TaskDetailsRequest({
+                    id: {
+                        id: task.spanId,
+                    },
+                }),
+            );
+
+            for await (const value of detailsStream) {
+                if (pending.value) {
+                    pending.value = false;
+                }
+                taskDetails.value = value;
+            }
+        } catch (err) {
+            handleConnectError(err);
+        } finally {
+            pending.value = false;
+        }
+    };
+
+    watchForDetails();
+
+    return { pending, task, taskDetails };
 }

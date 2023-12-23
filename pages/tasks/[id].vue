@@ -1,3 +1,1 @@
-<template>
-    <p>Task Details</p>
-</template>
+<template><TaskDetails /></template>
