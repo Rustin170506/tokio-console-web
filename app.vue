@@ -3,7 +3,7 @@
         <template #header>
             <ConsoleHeader />
         </template>
-        <TasksTable />
+        <NuxtPage />
         <UNotifications />
     </UCard>
 </template>

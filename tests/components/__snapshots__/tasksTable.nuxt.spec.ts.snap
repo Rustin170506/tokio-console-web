@@ -6,7 +6,7 @@ exports[`TasksTable View 1`] = `
 >
   
   <tr
-    class=""
+    class="hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer"
   >
     <!--v-if-->
     
