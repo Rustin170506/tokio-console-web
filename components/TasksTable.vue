@@ -55,7 +55,7 @@
 <script setup lang="ts">
 const columns = [
     {
-        key: "id",
+        key: "idString",
         label: "ID",
         sortable: true,
     },
@@ -112,7 +112,7 @@ const columns = [
 const router = useRouter();
 
 const select = (row: TaskData) => {
-    router.push(`/tasks/${row.spanId}`);
+    router.push(`/tasks/${row.id}`);
 };
 
 const { pending, tasksData } = useTasks();
