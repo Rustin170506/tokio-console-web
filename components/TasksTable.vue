@@ -4,6 +4,7 @@
         :rows="tasks"
         :sort="{ column: 'total', direction: 'desc' }"
         :loading="pending"
+        @select="select"
     >
         <template #loading-state>
             <div class="flex justify-center items-center h-full">
@@ -107,6 +108,12 @@ const columns = [
         label: "Fields",
     },
 ];
+
+const router = useRouter();
+
+const select = (row: TaskData) => {
+    router.push(`/tasks/${row.spanId}`);
+};
 
 const { pending, tasksData } = useTasks();
 const tasks = computed(() => {
