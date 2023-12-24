@@ -111,7 +111,7 @@ const columns = [
 
 const router = useRouter();
 
-const select = (row: TaskData) => {
+const select = (row: TaskTableItemData) => {
     router.push(`/tasks/${row.id}`);
 };
 
@@ -119,8 +119,8 @@ const { pending, tasksData } = useTasks();
 const tasks = computed(() => {
     // Map to array.
     const tasks = Array.from(tasksData.value.values());
-    const taskData: Array<TaskData> = tasks.map((task) => {
-        return toTaskData(task);
+    const taskData: Array<TaskTableItemData> = tasks.map((task) => {
+        return toTaskTableItemData(task);
     });
     return taskData;
 });

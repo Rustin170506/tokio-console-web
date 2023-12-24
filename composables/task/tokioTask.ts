@@ -144,6 +144,32 @@ export class TokioTask {
 
         return TaskState.Idle;
     }
+
+    wakerCount(): bigint {
+        return this.stats.wakerClones - this.stats.wakerDrops > 0n
+            ? this.stats.wakerClones - this.stats.wakerDrops
+            : 0n;
+    }
+
+    lastWakeDuration(): Duration | null {
+        if (this.stats.lastWake) {
+            return this.stats.lastWake.subtract(this.stats.createdAt);
+        }
+
+        return null;
+    }
+
+    durationPercent(amt: Duration): number {
+        let percent =
+            (amt.asSeconds() /
+                this.totalDuration(Timestamp.now()).asSeconds()) *
+            100;
+        if (percent > 100) {
+            percent = 100;
+        }
+
+        return percent;
+    }
 }
 
 function truncateRegistryPath(s: string): string {

@@ -75,7 +75,7 @@ function getTaskStateIconName(state: TaskState): string {
     }
 }
 
-export interface TaskData {
+export interface TaskTableItemData {
     id: bigint;
     idString: string;
     name: string;
@@ -91,7 +91,7 @@ export interface TaskData {
     class?: string;
 }
 
-export function toTaskData(task: TokioTask): TaskData {
+export function toTaskTableItemData(task: TokioTask): TaskTableItemData {
     return {
         id: task.id,
         idString: task.taskId?.toString() ?? "",
@@ -111,7 +111,6 @@ export function toTaskData(task: TokioTask): TaskData {
                 : undefined,
     };
 }
-
 // Metadata about a task.
 const metas: Map<bigint, Metadata> = new Map();
 
@@ -339,6 +338,49 @@ export function useTasks() {
     return {
         pending,
         tasksData,
+    };
+}
+
+export interface TaskDetailsData extends TaskTableItemData {
+    busyPercentage: string;
+    scheduledPercentage: string;
+    idlePercentage: string;
+    wakes: bigint;
+    wakerClones: bigint;
+    wakerDrops: bigint;
+    lastWake?: Timestamp;
+    selfWakes: bigint;
+    wakerCount: bigint;
+    lastWokenDuration?: DurationWithStyle;
+}
+
+function formatPercentage(value: number): string {
+    return value.toFixed(2) + "%";
+}
+
+export function toTaskDetailsData(task: TokioTask): TaskDetailsData {
+    const stats = task.stats;
+    const taskTableItemData = toTaskTableItemData(task);
+    return {
+        ...taskTableItemData,
+        busyPercentage: formatPercentage(
+            task.durationPercent(taskTableItemData.busy.value),
+        ),
+        scheduledPercentage: formatPercentage(
+            task.durationPercent(taskTableItemData.sched.value),
+        ),
+        idlePercentage: formatPercentage(
+            task.durationPercent(taskTableItemData.idle.value),
+        ),
+        wakes: stats.wakes,
+        wakerClones: stats.wakerClones,
+        wakerDrops: stats.wakerDrops,
+        lastWake: stats.lastWake,
+        selfWakes: stats.selfWakes,
+        wakerCount: task.wakerCount(),
+        lastWokenDuration: task.lastWakeDuration()
+            ? getDurationWithClass(task.lastWakeDuration()!)
+            : undefined,
     };
 }
 
