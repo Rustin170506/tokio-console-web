@@ -11,3 +11,15 @@ exports[`InfoField without slot 1`] = `
   <div class=\\"flex\\"><span class=\\"font-bold text-black dark:text-white\\">Test Name</span><span class=\\"mr-1\\">: </span><span class=\\"\\">Test Value</span></div>
 </div>"
 `;
+
+exports[`TaskInfoField with slot 1`] = `
+"<div id=\\"test-wrapper\\">
+  <div class=\\"flex\\"><span class=\\"font-bold text-black dark:text-white\\">Test Name</span><span class=\\"mr-1\\">: </span>Test Slot Content</div>
+</div>"
+`;
+
+exports[`TaskInfoField without slot 1`] = `
+"<div id=\\"test-wrapper\\">
+  <div class=\\"flex\\"><span class=\\"font-bold text-black dark:text-white\\">Test Name</span><span class=\\"mr-1\\">: </span><span class=\\"\\">Test Value</span></div>
+</div>"
+`;
