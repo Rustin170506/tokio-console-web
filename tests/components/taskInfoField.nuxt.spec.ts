@@ -1,9 +1,9 @@
 import { expect, it } from "vitest";
 import { renderSuspended } from "nuxt-vitest/utils";
-import InfoField from "~/components/InfoField.vue";
+import TaskInfoField from "~/components/TaskInfoField.vue";
 
-it("InfoField without slot", async () => {
-    const component = await renderSuspended(InfoField, {
+it("TaskInfoField without slot", async () => {
+    const component = await renderSuspended(TaskInfoField, {
         props: {
             name: "Test Name",
             value: "Test Value",
@@ -12,8 +12,8 @@ it("InfoField without slot", async () => {
     expect(component.html()).toMatchSnapshot();
 });
 
-it("InfoField with slot", async () => {
-    const component = await renderSuspended(InfoField, {
+it("TaskInfoField with slot", async () => {
+    const component = await renderSuspended(TaskInfoField, {
         props: {
             name: "Test Name",
         },

@@ -18,11 +18,14 @@
                             label: 'text-black dark:text-white font-bold text-md',
                         }"
                     />
-                    <InfoField name="ID" :value="taskDetails.idString" />
-                    <InfoField name="Name" :value="taskDetails.name" />
-                    <InfoField name="Location" :value="taskDetails.location" />
-                    <InfoField name="Total" :value="taskDetails.total" />
-                    <InfoField name="Busy">
+                    <TaskInfoField name="ID" :value="taskDetails.idString" />
+                    <TaskInfoField name="Name" :value="taskDetails.name" />
+                    <TaskInfoField
+                        name="Location"
+                        :value="taskDetails.location"
+                    />
+                    <TaskInfoField name="Total" :value="taskDetails.total" />
+                    <TaskInfoField name="Busy">
                         <div class="flex">
                             <span :class="taskDetails.busy.class">{{
                                 taskDetails.busy.value
@@ -31,8 +34,8 @@
                                 ({{ taskDetails.busyPercentage }})
                             </span>
                         </div>
-                    </InfoField>
-                    <InfoField name="Scheduled">
+                    </TaskInfoField>
+                    <TaskInfoField name="Scheduled">
                         <div class="flex">
                             <span :class="taskDetails.sched.class">{{
                                 taskDetails.sched.value
@@ -41,8 +44,8 @@
                                 ({{ taskDetails.scheduledPercentage }})
                             </span>
                         </div>
-                    </InfoField>
-                    <InfoField name="Idle">
+                    </TaskInfoField>
+                    <TaskInfoField name="Idle">
                         <div class="flex">
                             <span :class="taskDetails.idle.class">{{
                                 taskDetails.idle.value
@@ -51,7 +54,7 @@
                                 ({{ taskDetails.idlePercentage }})
                             </span>
                         </div>
-                    </InfoField>
+                    </TaskInfoField>
                 </div>
 
                 <UDivider
@@ -68,30 +71,30 @@
                             label: 'text-black dark:text-white font-bold text-md',
                         }"
                     />
-                    <InfoField class="ml-4" name="Current wakers">
+                    <TaskInfoField class="ml-4" name="Current wakers">
                         <div class="flex">
                             <span class="mr-1">{{
                                 taskDetails.wakerCount
                             }}</span>
                             (
-                            <InfoField
+                            <TaskInfoField
                                 name="Clones"
                                 :value="taskDetails.wakerClones"
                             />
                             <span class="mr-2">, </span>
-                            <InfoField
+                            <TaskInfoField
                                 name="Drops"
                                 :value="taskDetails.wakerDrops"
                             />
                             )
                         </div>
-                    </InfoField>
-                    <InfoField class="ml-4" name="Woken">
+                    </TaskInfoField>
+                    <TaskInfoField class="ml-4" name="Woken">
                         <div class="flex">
                             <span class="mr-2">{{
                                 `${taskDetails.wakes} times,`
                             }}</span>
-                            <InfoField
+                            <TaskInfoField
                                 v-if="
                                     taskDetails.lastWokenDuration !== undefined
                                 "
@@ -107,9 +110,9 @@
                                     }}
                                 </span>
                                 <span class="mx-1">ago</span>
-                            </InfoField>
+                            </TaskInfoField>
                         </div>
-                    </InfoField>
+                    </TaskInfoField>
                 </div>
             </UCard>
         </div>
