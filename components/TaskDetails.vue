@@ -121,6 +121,6 @@ const route = useRoute();
 const { pending, task } = useTaskDetails(BigInt(route.params.id as string));
 
 const taskDetails = computed(() => {
-    return toTaskDetailsData(task);
+    return toTaskBasicInfo(task);
 });
 </script>

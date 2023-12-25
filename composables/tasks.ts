@@ -16,22 +16,7 @@ import {
 } from "~/gen/instrument_pb";
 import type { TaskDetails, TaskUpdate } from "~/gen/tasks_pb";
 
-function getTaskStateIconName(state: TaskState): string {
-    switch (state) {
-        case TaskState.Running:
-            return "i-heroicons-play";
-        case TaskState.Scheduled:
-            return "i-heroicons-arrow-small-up";
-        case TaskState.Idle:
-            return "i-heroicons-pause";
-        case TaskState.Completed:
-            return "i-heroicons-stop";
-        default:
-            throw new Error("unreachable");
-    }
-}
-
-export interface TaskTableItemData {
+export interface TaskTableItem {
     id: bigint;
     idString: string;
     name: string;
@@ -47,7 +32,7 @@ export interface TaskTableItemData {
     class?: string;
 }
 
-export function toTaskTableItemData(task: TokioTask): TaskTableItemData {
+export function toTaskTableItem(task: TokioTask): TaskTableItem {
     return {
         id: task.id,
         idString: task.taskId?.toString() ?? "",
@@ -67,6 +52,22 @@ export function toTaskTableItemData(task: TokioTask): TaskTableItemData {
                 : undefined,
     };
 }
+
+function getTaskStateIconName(state: TaskState): string {
+    switch (state) {
+        case TaskState.Running:
+            return "i-heroicons-play";
+        case TaskState.Scheduled:
+            return "i-heroicons-arrow-small-up";
+        case TaskState.Idle:
+            return "i-heroicons-pause";
+        case TaskState.Completed:
+            return "i-heroicons-stop";
+        default:
+            throw new Error("unreachable");
+    }
+}
+
 // Metadata about a task.
 const metas: Map<bigint, Metadata> = new Map();
 
@@ -179,6 +180,8 @@ const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
     return result;
 };
 
+// TODO: find a better way to share this between composables.
+// Then we can spilt different composables into different files.
 const tasksData = ref<Map<bigint, TokioTask>>(new Map());
 
 let updateStreamInstance: AsyncIterable<Update> | null = null;
@@ -297,7 +300,7 @@ export function useTasks() {
     };
 }
 
-export interface TaskDetailsData extends TaskTableItemData {
+export interface TaskBasicInfo extends TaskTableItem {
     busyPercentage: string;
     scheduledPercentage: string;
     idlePercentage: string;
@@ -310,13 +313,9 @@ export interface TaskDetailsData extends TaskTableItemData {
     lastWokenDuration?: DurationWithStyle;
 }
 
-function formatPercentage(value: number): string {
-    return value.toFixed(2) + "%";
-}
-
-export function toTaskDetailsData(task: TokioTask): TaskDetailsData {
+export function toTaskBasicInfo(task: TokioTask): TaskBasicInfo {
     const stats = task.stats;
-    const taskTableItemData = toTaskTableItemData(task);
+    const taskTableItemData = toTaskTableItem(task);
     return {
         ...taskTableItemData,
         busyPercentage: formatPercentage(
@@ -338,6 +337,10 @@ export function toTaskDetailsData(task: TokioTask): TaskDetailsData {
             ? getDurationWithClass(task.lastWakeDuration()!)
             : undefined,
     };
+}
+
+function formatPercentage(value: number): string {
+    return value.toFixed(2) + "%";
 }
 
 export function useTaskDetails(id: bigint) {
