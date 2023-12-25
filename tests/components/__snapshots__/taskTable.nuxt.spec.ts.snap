@@ -1,5 +1,138 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`TaskTable View 1`] = `
+<tbody
+  class="divide-y divide-gray-200 dark:divide-gray-800"
+>
+  
+  <tr
+    class="hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer"
+  >
+    <!--v-if-->
+    
+    <td
+      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+    >
+      
+      1
+      
+    </td>
+    <td
+      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+    >
+      
+      task1
+      
+    </td>
+    <td
+      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+    >
+      
+      <span
+        class="i-heroicons-play"
+      />
+      
+    </td>
+    <td
+      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm text-green-500 dark:text-green-300"
+    >
+      
+      <p
+        class="text-green-500 dark:text-green-300 w-10"
+      >
+        16m 40s 
+      </p>
+      
+    </td>
+    <td
+      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm text-green-500 dark:text-green-300"
+    >
+      
+      <p
+        class="text-green-500 dark:text-green-300 w-10"
+      >
+        25m 
+      </p>
+      
+    </td>
+    <td
+      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm text-green-500 dark:text-green-300"
+    >
+      
+      <p
+        class="text-green-500 dark:text-green-300 w-10"
+      >
+        5m 
+      </p>
+      
+    </td>
+    <td
+      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm text-green-500 dark:text-green-300"
+    >
+      
+      <p
+        class="text-green-500 dark:text-green-300 w-10"
+      >
+        3m 20s 
+      </p>
+      
+    </td>
+    <td
+      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+    >
+      
+      100
+      
+    </td>
+    <td
+      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+    >
+      
+      task
+      
+    </td>
+    <td
+      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+    >
+      
+      app.rs/68:10
+      
+    </td>
+    <td
+      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+    >
+      
+      
+      <div
+        class="mb-1"
+      >
+        <p>
+          <span
+            class="text-blue-600 dark:text-blue-400"
+          >
+            target
+          </span>
+          <span
+            class="text-gray-500 dark:text-gray-400"
+          >
+            =
+          </span>
+          <span
+            class="text-green-600 dark:text-green-400"
+          >
+            tokio:task
+          </span>
+        </p>
+      </div>
+      
+      
+    </td>
+    
+  </tr>
+  
+</tbody>
+`;
+
 exports[`TasksTable View 1`] = `
 <tbody
   class="divide-y divide-gray-200 dark:divide-gray-800"

@@ -123,6 +123,7 @@ export class Duration {
     }
 
     // now returns the current time as a Duration from the Unix epoch.
+    // TODO: use more precise time source. For example, performance.now() in browsers.
     static now(): Duration {
         return new Duration(BigInt(Math.floor(Date.now() / 1000)), 0);
     }

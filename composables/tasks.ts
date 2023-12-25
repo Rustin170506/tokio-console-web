@@ -5,6 +5,7 @@ import {
     TaskState,
     formatLocation,
 } from "./task/tokioTask";
+import type { DurationWithStyle } from "./durationWithStyle";
 import { Duration, Timestamp } from "./task/duration";
 import { fromProtoTaskStats } from "./task/tokioTaskStats";
 import { Metadata } from "~/gen/common_pb";
@@ -15,67 +16,7 @@ import {
 } from "~/gen/instrument_pb";
 import type { TaskDetails, TaskUpdate } from "~/gen/tasks_pb";
 
-export class DurationWithStyle {
-    value: Duration;
-    // The tailwind class to use for this duration.
-    class: string;
-
-    constructor(value: Duration, className: string) {
-        this.value = value;
-        this.class = className;
-    }
-
-    toString(): string {
-        return this.value.toString();
-    }
-
-    valueOf(): number {
-        return this.value.valueOf();
-    }
-}
-
-function getDurationWithClass(duration: Duration): DurationWithStyle {
-    const days = duration.asDays();
-    const hours = duration.asHours();
-    const minutes = duration.asMinutes();
-    const seconds = duration.asSeconds();
-    const milliseconds = duration.asMilliseconds();
-
-    let className: string;
-
-    if (days >= 1) {
-        className = "text-blue-500 dark:text-blue-300";
-    } else if (hours >= 1) {
-        className = "text-cyan-500 dark:text-cyan-300";
-    } else if (minutes >= 1) {
-        className = "text-green-500 dark:text-green-300";
-    } else if (seconds >= 1) {
-        className = "text-yellow-500 dark:text-yellow-300";
-    } else if (milliseconds >= 1) {
-        className = "text-red-500 dark:text-red-300";
-    } else {
-        className = "text-gray-500 dark:text-gray-300";
-    }
-
-    return new DurationWithStyle(duration, className);
-}
-
-function getTaskStateIconName(state: TaskState): string {
-    switch (state) {
-        case TaskState.Running:
-            return "i-heroicons-play";
-        case TaskState.Scheduled:
-            return "i-heroicons-arrow-small-up";
-        case TaskState.Idle:
-            return "i-heroicons-pause";
-        case TaskState.Completed:
-            return "i-heroicons-stop";
-        default:
-            throw new Error("unreachable");
-    }
-}
-
-export interface TaskData {
+export interface TaskTableItem {
     id: bigint;
     idString: string;
     name: string;
@@ -91,7 +32,7 @@ export interface TaskData {
     class?: string;
 }
 
-export function toTaskData(task: TokioTask): TaskData {
+export function toTaskTableItem(task: TokioTask): TaskTableItem {
     return {
         id: task.id,
         idString: task.taskId?.toString() ?? "",
@@ -110,6 +51,21 @@ export function toTaskData(task: TokioTask): TaskData {
                 ? "bg-slate-50 dark:bg-slate-950 animate-pulse"
                 : undefined,
     };
+}
+
+function getTaskStateIconName(state: TaskState): string {
+    switch (state) {
+        case TaskState.Running:
+            return "i-heroicons-play";
+        case TaskState.Scheduled:
+            return "i-heroicons-arrow-small-up";
+        case TaskState.Idle:
+            return "i-heroicons-pause";
+        case TaskState.Completed:
+            return "i-heroicons-stop";
+        default:
+            throw new Error("unreachable");
+    }
 }
 
 // Metadata about a task.
@@ -224,6 +180,8 @@ const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
     return result;
 };
 
+// TODO: find a better way to share this between composables.
+// Then we can spilt different composables into different files.
 const tasksData = ref<Map<bigint, TokioTask>>(new Map());
 
 let updateStreamInstance: AsyncIterable<Update> | null = null;
@@ -340,6 +298,49 @@ export function useTasks() {
         pending,
         tasksData,
     };
+}
+
+export interface TaskBasicInfo extends TaskTableItem {
+    busyPercentage: string;
+    scheduledPercentage: string;
+    idlePercentage: string;
+    wakes: bigint;
+    wakerClones: bigint;
+    wakerDrops: bigint;
+    lastWake?: Timestamp;
+    selfWakes: bigint;
+    wakerCount: bigint;
+    lastWokenDuration?: DurationWithStyle;
+}
+
+export function toTaskBasicInfo(task: TokioTask): TaskBasicInfo {
+    const stats = task.stats;
+    const taskTableItemData = toTaskTableItem(task);
+    return {
+        ...taskTableItemData,
+        busyPercentage: formatPercentage(
+            task.durationPercent(taskTableItemData.busy.value),
+        ),
+        scheduledPercentage: formatPercentage(
+            task.durationPercent(taskTableItemData.sched.value),
+        ),
+        idlePercentage: formatPercentage(
+            task.durationPercent(taskTableItemData.idle.value),
+        ),
+        wakes: stats.wakes,
+        wakerClones: stats.wakerClones,
+        wakerDrops: stats.wakerDrops,
+        lastWake: stats.lastWake,
+        selfWakes: stats.selfWakes,
+        wakerCount: task.wakerCount(),
+        lastWokenDuration: task.lastWakeDuration()
+            ? getDurationWithClass(task.lastWakeDuration()!)
+            : undefined,
+    };
+}
+
+function formatPercentage(value: number): string {
+    return value.toFixed(2) + "%";
 }
 
 export function useTaskDetails(id: bigint) {
