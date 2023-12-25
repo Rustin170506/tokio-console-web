@@ -119,9 +119,9 @@ const { pending, tasksData } = useTasks();
 const tasks = computed(() => {
     // Map to array.
     const tasks = Array.from(tasksData.value.values());
-    const taskData: Array<TaskTableItem> = tasks.map((task) => {
+    const taskList: Array<TaskTableItem> = tasks.map((task) => {
         return toTaskTableItem(task);
     });
-    return taskData;
+    return taskList;
 });
 </script>

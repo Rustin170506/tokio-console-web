@@ -1,6 +1,6 @@
 import { expect, it } from "vitest";
 import { mountSuspended, mockNuxtImport } from "nuxt-vitest/utils";
-import TasksTable from "~/components/TasksTable.vue";
+import TaskTable from "~/components/TaskTable.vue";
 import { TokioTask } from "~/composables/task/tokioTask";
 import { Timestamp, Duration } from "~/composables/task/duration";
 
@@ -44,7 +44,7 @@ mockNuxtImport("useTasks", () => {
     };
 });
 
-it("TasksTable View", async () => {
-    const component = await mountSuspended(TasksTable);
+it("TaskTable View", async () => {
+    const component = await mountSuspended(TaskTable);
     expect(component.element.querySelector("tbody")).toMatchSnapshot();
 });

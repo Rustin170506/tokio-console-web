@@ -12,19 +12,19 @@ exports[`TaskDetails 1`] = `
             <div class=\\"font-medium text-gray-700 dark:text-gray-200 flex mx-3 whitespace-nowrap\\"><span class=\\"text-black dark:text-white font-bold text-md\\">Task</span></div>
             <div class=\\"flex border-gray-200 dark:border-gray-800 w-full border-t border-dotted\\"></div>
           </div>
-          <taskinfofield name=\\"ID\\" value=\\"1\\"></taskinfofield>
-          <taskinfofield name=\\"Name\\" value=\\"task1\\"></taskinfofield>
-          <taskinfofield name=\\"Location\\" value=\\"app.rs/68:10\\"></taskinfofield>
-          <taskinfofield name=\\"Total\\" value=\\"16m 40s \\"></taskinfofield>
-          <taskinfofield name=\\"Busy\\">
+          <div class=\\"flex\\"><span class=\\"font-bold text-black dark:text-white\\">ID</span><span class=\\"mr-1\\">: </span><span class=\\"\\">1</span></div>
+          <div class=\\"flex\\"><span class=\\"font-bold text-black dark:text-white\\">Name</span><span class=\\"mr-1\\">: </span><span class=\\"\\">task1</span></div>
+          <div class=\\"flex\\"><span class=\\"font-bold text-black dark:text-white\\">Location</span><span class=\\"mr-1\\">: </span><span class=\\"\\">app.rs/68:10</span></div>
+          <div class=\\"flex\\"><span class=\\"font-bold text-black dark:text-white\\">Total</span><span class=\\"mr-1\\">: </span><span class=\\"text-green-500 dark:text-green-300\\">16m 40s </span></div>
+          <div class=\\"flex\\"><span class=\\"font-bold text-black dark:text-white\\">Busy</span><span class=\\"mr-1\\">: </span>
             <div class=\\"flex\\"><span class=\\"text-green-500 dark:text-green-300\\">25m </span><span class=\\"mx-2\\"> (100.00%) </span></div>
-          </taskinfofield>
-          <taskinfofield name=\\"Scheduled\\">
+          </div>
+          <div class=\\"flex\\"><span class=\\"font-bold text-black dark:text-white\\">Scheduled</span><span class=\\"mr-1\\">: </span>
             <div class=\\"flex\\"><span class=\\"text-green-500 dark:text-green-300\\">5m </span><span class=\\"mx-2\\"> (30.00%) </span></div>
-          </taskinfofield>
-          <taskinfofield name=\\"Idle\\">
+          </div>
+          <div class=\\"flex\\"><span class=\\"font-bold text-black dark:text-white\\">Idle</span><span class=\\"mr-1\\">: </span>
             <div class=\\"flex\\"><span class=\\"text-green-500 dark:text-green-300\\">3m 20s </span><span class=\\"mx-2\\"> (20.00%) </span></div>
-          </taskinfofield>
+          </div>
         </div>
         <div class=\\"flex items-center align-center text-center flex-col w-px mx-2\\" color=\\"gray\\">
           <div class=\\"flex border-gray-200 dark:border-gray-800 h-full border-s border-solid\\"></div>
@@ -36,16 +36,16 @@ exports[`TaskDetails 1`] = `
             <div class=\\"font-medium text-gray-700 dark:text-gray-200 flex mx-3 whitespace-nowrap\\"><span class=\\"text-black dark:text-white font-bold text-md\\">Waker</span></div>
             <div class=\\"flex border-gray-200 dark:border-gray-800 w-full border-t border-dotted\\"></div>
           </div>
-          <taskinfofield class=\\"ml-4\\" name=\\"Current wakers\\">
-            <div class=\\"flex\\"><span class=\\"mr-1\\">1</span> ( <taskinfofield name=\\"Clones\\" value=\\"199\\"></taskinfofield><span class=\\"mr-2\\">, </span>
-              <taskinfofield name=\\"Drops\\" value=\\"198\\"></taskinfofield> )
+          <div class=\\"flex ml-4\\"><span class=\\"font-bold text-black dark:text-white\\">Current wakers</span><span class=\\"mr-1\\">: </span>
+            <div class=\\"flex\\"><span class=\\"mr-1\\">1</span> ( <div class=\\"flex\\"><span class=\\"font-bold text-black dark:text-white\\">Clones</span><span class=\\"mr-1\\">: </span><span class=\\"\\">199</span></div><span class=\\"mr-2\\">, </span>
+              <div class=\\"flex\\"><span class=\\"font-bold text-black dark:text-white\\">Drops</span><span class=\\"mr-1\\">: </span><span class=\\"\\">198</span></div> )
             </div>
-          </taskinfofield>
-          <taskinfofield class=\\"ml-4\\" name=\\"Woken\\">
+          </div>
+          <div class=\\"flex ml-4\\"><span class=\\"font-bold text-black dark:text-white\\">Woken</span><span class=\\"mr-1\\">: </span>
             <div class=\\"flex\\"><span class=\\"mr-2\\">1 times,</span>
-              <taskinfofield name=\\"Last woken\\"><span class=\\"text-gray-500 dark:text-gray-300\\">0ns</span><span class=\\"mx-1\\">ago</span></taskinfofield>
+              <div class=\\"flex\\"><span class=\\"font-bold text-black dark:text-white\\">Last woken</span><span class=\\"mr-1\\">: </span><span class=\\"text-gray-500 dark:text-gray-300\\">0ns</span><span class=\\"mx-1\\">ago</span></div>
             </div>
-          </taskinfofield>
+          </div>
         </div>
       </div>
       <!--v-if-->

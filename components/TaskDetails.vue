@@ -18,40 +18,40 @@
                             label: 'text-black dark:text-white font-bold text-md',
                         }"
                     />
-                    <TaskInfoField name="ID" :value="taskDetails.idString" />
-                    <TaskInfoField name="Name" :value="taskDetails.name" />
+                    <TaskInfoField name="ID" :value="taskBasicInfo.idString" />
+                    <TaskInfoField name="Name" :value="taskBasicInfo.name" />
                     <TaskInfoField
                         name="Location"
-                        :value="taskDetails.location"
+                        :value="taskBasicInfo.location"
                     />
-                    <TaskInfoField name="Total" :value="taskDetails.total" />
+                    <TaskInfoField name="Total" :value="taskBasicInfo.total" />
                     <TaskInfoField name="Busy">
                         <div class="flex">
-                            <span :class="taskDetails.busy.class">{{
-                                taskDetails.busy.value
+                            <span :class="taskBasicInfo.busy.class">{{
+                                taskBasicInfo.busy.value
                             }}</span>
                             <span class="mx-2">
-                                ({{ taskDetails.busyPercentage }})
+                                ({{ taskBasicInfo.busyPercentage }})
                             </span>
                         </div>
                     </TaskInfoField>
                     <TaskInfoField name="Scheduled">
                         <div class="flex">
-                            <span :class="taskDetails.sched.class">{{
-                                taskDetails.sched.value
+                            <span :class="taskBasicInfo.sched.class">{{
+                                taskBasicInfo.sched.value
                             }}</span>
                             <span class="mx-2">
-                                ({{ taskDetails.scheduledPercentage }})
+                                ({{ taskBasicInfo.scheduledPercentage }})
                             </span>
                         </div>
                     </TaskInfoField>
                     <TaskInfoField name="Idle">
                         <div class="flex">
-                            <span :class="taskDetails.idle.class">{{
-                                taskDetails.idle.value
+                            <span :class="taskBasicInfo.idle.class">{{
+                                taskBasicInfo.idle.value
                             }}</span>
                             <span class="mx-2">
-                                ({{ taskDetails.idlePercentage }})
+                                ({{ taskBasicInfo.idlePercentage }})
                             </span>
                         </div>
                     </TaskInfoField>
@@ -74,17 +74,17 @@
                     <TaskInfoField class="ml-4" name="Current wakers">
                         <div class="flex">
                             <span class="mr-1">{{
-                                taskDetails.wakerCount
+                                taskBasicInfo.wakerCount
                             }}</span>
                             (
                             <TaskInfoField
                                 name="Clones"
-                                :value="taskDetails.wakerClones"
+                                :value="taskBasicInfo.wakerClones"
                             />
                             <span class="mr-2">, </span>
                             <TaskInfoField
                                 name="Drops"
-                                :value="taskDetails.wakerDrops"
+                                :value="taskBasicInfo.wakerDrops"
                             />
                             )
                         </div>
@@ -92,21 +92,22 @@
                     <TaskInfoField class="ml-4" name="Woken">
                         <div class="flex">
                             <span class="mr-2">{{
-                                `${taskDetails.wakes} times,`
+                                `${taskBasicInfo.wakes} times,`
                             }}</span>
                             <TaskInfoField
                                 v-if="
-                                    taskDetails.lastWokenDuration !== undefined
+                                    taskBasicInfo.lastWokenDuration !==
+                                    undefined
                                 "
                                 name="Last woken"
                             >
                                 <span
                                     :class="
-                                        taskDetails.lastWokenDuration!.class
+                                        taskBasicInfo.lastWokenDuration!.class
                                     "
                                 >
                                     {{
-                                        taskDetails.lastWokenDuration!.toString()
+                                        taskBasicInfo.lastWokenDuration!.toString()
                                     }}
                                 </span>
                                 <span class="mx-1">ago</span>
@@ -123,7 +124,7 @@ const route = useRoute();
 
 const { pending, task } = useTaskDetails(BigInt(route.params.id as string));
 
-const taskDetails = computed(() => {
+const taskBasicInfo = computed(() => {
     return toTaskBasicInfo(task);
 });
 </script>
