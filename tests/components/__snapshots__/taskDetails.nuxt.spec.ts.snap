@@ -6,7 +6,7 @@ exports[`TaskDetails 1`] = `
     <div class=\\"overflow-hidden rounded-lg divide-y divide-gray-200 dark:divide-gray-800 ring-1 ring-gray-200 dark:ring-gray-800 shadow bg-white dark:bg-gray-900\\">
       <!--v-if-->
       <div class=\\"flex px-4 py-5 sm:p-6\\">
-        <div class=\\"space-y-2 flex-1\\">
+        <div class=\\"space-y-2 flex-1 flex-col\\">
           <div class=\\"flex items-center align-center text-center w-full flex-row\\">
             <div class=\\"flex border-gray-200 dark:border-gray-800 w-full border-t border-dotted\\"></div>
             <div class=\\"font-medium text-gray-700 dark:text-gray-200 flex mx-3 whitespace-nowrap\\"><span class=\\"text-black dark:text-white font-bold text-md\\">Task</span></div>
@@ -30,7 +30,7 @@ exports[`TaskDetails 1`] = `
           <div class=\\"flex border-gray-200 dark:border-gray-800 h-full border-s border-solid\\"></div>
           <!--v-if-->
         </div>
-        <div class=\\"space-y-2 flex-1\\">
+        <div class=\\"space-y-2 flex-1 flex-col\\">
           <div class=\\"flex items-center align-center text-center w-full flex-row\\">
             <div class=\\"flex border-gray-200 dark:border-gray-800 w-full border-t border-dotted\\"></div>
             <div class=\\"font-medium text-gray-700 dark:text-gray-200 flex mx-3 whitespace-nowrap\\"><span class=\\"text-black dark:text-white font-bold text-md\\">Waker</span></div>
@@ -47,6 +47,22 @@ exports[`TaskDetails 1`] = `
             </div>
           </div>
         </div>
+      </div>
+      <!--v-if-->
+    </div>
+    <div class=\\"overflow-hidden rounded-lg divide-y divide-gray-200 dark:divide-gray-800 ring-1 ring-gray-200 dark:ring-gray-800 shadow bg-white dark:bg-gray-900 mt-4\\">
+      <!--v-if-->
+      <div class=\\"flex px-4 py-5 sm:p-6\\">
+        <div class=\\"space-y-2 flex-1 flex flex-col\\"><canvas role=\\"img\\" class=\\"flex-grow\\">
+            <p></p>
+          </canvas></div>
+        <div class=\\"flex items-center align-center text-center flex-col w-px mx-2\\" color=\\"gray\\">
+          <div class=\\"flex border-gray-200 dark:border-gray-800 h-full border-s border-solid\\"></div>
+          <!--v-if-->
+        </div>
+        <div class=\\"space-y-2 flex-1 flex flex-col\\"><canvas role=\\"img\\" class=\\"flex-grow\\">
+            <p></p>
+          </canvas></div>
       </div>
       <!--v-if-->
     </div>

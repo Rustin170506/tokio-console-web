@@ -10,7 +10,7 @@
 
         <div v-else>
             <UCard :ui="{ body: { base: 'flex' } }">
-                <div class="space-y-2 flex-1">
+                <div class="space-y-2 flex-1 flex-col">
                     <UDivider
                         label="Task"
                         type="dotted"
@@ -63,7 +63,7 @@
                     orientation="vertical"
                 />
 
-                <div class="space-y-2 flex-1">
+                <div class="space-y-2 flex-1 flex-col">
                     <UDivider
                         label="Waker"
                         type="dotted"
@@ -116,6 +116,19 @@
                     </TaskInfoField>
                 </div>
             </UCard>
+            <UCard class="mt-4" :ui="{ body: { base: 'flex' } }">
+                <div class="space-y-2 flex-1 flex flex-col">
+                    <HistogramChart :data="data" class="flex-grow" />
+                </div>
+                <UDivider
+                    class="w-px mx-2"
+                    color="gray"
+                    orientation="vertical"
+                />
+                <div class="space-y-2 flex-1 flex flex-col">
+                    <HistogramChart :data="data" class="flex-grow" />
+                </div>
+            </UCard>
         </div>
     </div>
 </template>
@@ -127,4 +140,27 @@ const { pending, task } = useTaskDetails(BigInt(route.params.id as string));
 const taskBasicInfo = computed(() => {
     return toTaskBasicInfo(task);
 });
+
+const data = {
+    labels: [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ],
+    datasets: [
+        {
+            label: "Data One",
+            data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11],
+        },
+    ],
+};
 </script>
