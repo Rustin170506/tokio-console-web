@@ -133,11 +133,21 @@
     </div>
 </template>
 <script setup lang="ts">
+import { deserializeHistogram } from "../histogram/pkg/histogram";
 const route = useRoute();
 
-const { pending, task } = useTaskDetails(BigInt(route.params.id as string));
+const { pending, task, taskDetails } = useTaskDetails(
+    BigInt(route.params.id as string),
+);
 
 const taskBasicInfo = computed(() => {
+    if (taskDetails.value?.pollTimesHistogram.case === "histogram") {
+        console.log(
+            deserializeHistogram(
+                taskDetails.value.pollTimesHistogram.value.rawHistogram,
+            ),
+        );
+    }
     return toTaskBasicInfo(task);
 });
 
