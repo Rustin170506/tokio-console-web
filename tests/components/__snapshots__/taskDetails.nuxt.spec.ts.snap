@@ -53,16 +53,22 @@ exports[`TaskDetails 1`] = `
     <div class=\\"overflow-hidden rounded-lg divide-y divide-gray-200 dark:divide-gray-800 ring-1 ring-gray-200 dark:ring-gray-800 shadow bg-white dark:bg-gray-900 mt-4\\">
       <!--v-if-->
       <div class=\\"flex px-4 py-5 sm:p-6\\">
-        <div class=\\"space-y-2 flex-1 flex flex-col\\"><canvas role=\\"img\\" class=\\"flex-grow\\">
-            <p></p>
-          </canvas></div>
+        <div class=\\"space-y-2 flex-1 flex-col\\">
+          <div class=\\"flex m-2\\"></div>
+          <div class=\\"space-y-2 h-80\\"><canvas role=\\"img\\">
+              <p></p>
+            </canvas></div>
+        </div>
         <div class=\\"flex items-center align-center text-center flex-col w-px mx-2\\" color=\\"gray\\">
           <div class=\\"flex border-gray-200 dark:border-gray-800 h-full border-s border-solid\\"></div>
           <!--v-if-->
         </div>
-        <div class=\\"space-y-2 flex-1 flex flex-col\\"><canvas role=\\"img\\" class=\\"flex-grow\\">
-            <p></p>
-          </canvas></div>
+        <div class=\\"space-y-2 flex-1 flex-col ml-4\\">
+          <div class=\\"flex m-2\\"></div>
+          <div class=\\"space-y-2 h-80\\"><canvas role=\\"img\\">
+              <p></p>
+            </canvas></div>
+        </div>
       </div>
       <!--v-if-->
     </div>
