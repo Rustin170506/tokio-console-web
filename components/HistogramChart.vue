@@ -67,6 +67,13 @@ export default {
                         },
                     },
                 },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: isDarkMode ? "white" : "black",
+                        },
+                    },
+                },
             };
         });
 
