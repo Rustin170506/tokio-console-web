@@ -10,7 +10,7 @@
 
         <div v-else>
             <UCard :ui="{ body: { base: 'flex' } }">
-                <div class="space-y-2 flex-1">
+                <div class="space-y-2 flex-1 flex-col">
                     <UDivider
                         label="Task"
                         type="dotted"
@@ -63,7 +63,7 @@
                     orientation="vertical"
                 />
 
-                <div class="space-y-2 flex-1">
+                <div class="space-y-2 flex-1 flex-col">
                     <UDivider
                         label="Waker"
                         type="dotted"
@@ -116,15 +116,76 @@
                     </TaskInfoField>
                 </div>
             </UCard>
+            <UCard class="mt-4" :ui="{ body: { base: 'flex' } }">
+                <div class="space-y-2 flex-1 flex-col">
+                    <div class="flex m-2">
+                        <TaskInfoField
+                            v-for="percentile in taskDetailsInfo.pollTimes
+                                .percentiles"
+                            :key="percentile.percentile"
+                            :name="percentile.percentile"
+                            :value="percentile.duration"
+                            class="mr-4"
+                        />
+                    </div>
+                    <div class="space-y-2 h-80">
+                        <HistogramChart :data="histogramData" />
+                    </div>
+                </div>
+
+                <UDivider
+                    class="w-px mx-2"
+                    color="gray"
+                    orientation="vertical"
+                />
+
+                <div class="space-y-2 flex-1 flex-col ml-4">
+                    <div class="flex m-2">
+                        <TaskInfoField
+                            v-for="percentile in taskDetailsInfo.pollTimes
+                                .percentiles"
+                            :key="percentile.percentile"
+                            :name="percentile.percentile"
+                            :value="percentile.duration"
+                            class="mr-4"
+                        />
+                    </div>
+                    <div class="space-y-2 h-80">
+                        <HistogramChart :data="histogramData" />
+                    </div>
+                </div>
+            </UCard>
         </div>
     </div>
 </template>
 <script setup lang="ts">
 const route = useRoute();
 
-const { pending, task } = useTaskDetails(BigInt(route.params.id as string));
+const { pending, task, taskDetails } = useTaskDetails(
+    BigInt(route.params.id as string),
+);
 
 const taskBasicInfo = computed(() => {
     return toTaskBasicInfo(task);
+});
+
+const taskDetailsInfo = computed(() => {
+    return toTaskDetails(taskDetails.value);
+});
+
+const histogramData = computed(() => {
+    return {
+        labels: taskDetailsInfo.value.pollTimes.percentiles.map(
+            (h) => h.percentile,
+        ),
+        datasets: [
+            {
+                label: "Poll Times Histogram",
+                data: taskDetailsInfo.value.pollTimes.percentiles.map((h) =>
+                    h.duration.valueOf(),
+                ),
+            },
+        ],
+    };
 });
 </script>

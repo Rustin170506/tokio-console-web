@@ -8,13 +8,17 @@ import {
 import type { DurationWithStyle } from "./durationWithStyle";
 import { Duration, Timestamp } from "./task/duration";
 import { fromProtoTaskStats } from "./task/tokioTaskStats";
+import {
+    fromProtoTaskDetails,
+    type TokioTaskDetails,
+} from "./task/tokioTaskDetails";
 import { Metadata } from "~/gen/common_pb";
 import {
     InstrumentRequest,
     TaskDetailsRequest,
     type Update,
 } from "~/gen/instrument_pb";
-import type { TaskDetails, TaskUpdate } from "~/gen/tasks_pb";
+import type { TaskUpdate } from "~/gen/tasks_pb";
 
 export interface TaskTableItem {
     id: bigint;
@@ -343,10 +347,38 @@ function formatPercentage(value: number): string {
     return value.toFixed(2) + "%";
 }
 
+export interface TaskDetails {
+    pollTimes: {
+        percentiles: {
+            percentile: string;
+            duration: DurationWithStyle;
+        }[];
+    };
+}
+
+export function toTaskDetails(details: TokioTaskDetails): TaskDetails {
+    const percentiles = details.pollTimes.percentiles.map((p) => {
+        return {
+            percentile: `p${p.percentile}`,
+            duration: getDurationWithClass(p.duration),
+        };
+    });
+
+    return {
+        pollTimes: {
+            percentiles,
+        },
+    };
+}
+
 export function useTaskDetails(id: bigint) {
     const pending = ref<boolean>(true);
     const task = tasksData.value.get(id)!;
-    const taskDetails = ref<TaskDetails | null>(null);
+    const taskDetails = ref<TokioTaskDetails>({
+        pollTimes: {
+            percentiles: [],
+        },
+    });
 
     // Async function to watch for details.
     const watchForDetails = async () => {
@@ -364,7 +396,7 @@ export function useTaskDetails(id: bigint) {
                 if (pending.value) {
                     pending.value = false;
                 }
-                taskDetails.value = value;
+                taskDetails.value = fromProtoTaskDetails(value);
             }
         } catch (err) {
             handleConnectError(err);

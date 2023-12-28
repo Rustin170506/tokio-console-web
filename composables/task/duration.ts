@@ -127,6 +127,14 @@ export class Duration {
     static now(): Duration {
         return new Duration(BigInt(Math.floor(Date.now() / 1000)), 0);
     }
+
+    // TODO: add test for this.
+    static fromNano(nanos: number | bigint): Duration {
+        if (typeof nanos === "bigint") {
+            return new Duration(BigInt(0), Number(nanos));
+        }
+        return new Duration(BigInt(0), nanos);
+    }
 }
 
 // The Duration class can also be used as a timestamp.

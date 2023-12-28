@@ -3,6 +3,7 @@ import { mockNuxtImport, mountSuspended } from "nuxt-vitest/utils";
 import TaskDetails from "~/components/TaskDetails.vue";
 import { Duration, Timestamp } from "~/composables/task/duration";
 import { TokioTask } from "~/composables/task/tokioTask";
+import type { TokioTaskDetails } from "~/composables/task/tokioTaskDetails";
 
 mockNuxtImport("useRoute", () => {
     return () => {
@@ -46,8 +47,13 @@ mockNuxtImport("useTaskDetails", () => {
             "app.rs/68:10",
             "task",
         );
+        const taskDetails = ref<TokioTaskDetails>({
+            pollTimes: {
+                percentiles: [],
+            },
+        });
 
-        return { pending, task };
+        return { pending, task, taskDetails };
     };
 });
 
