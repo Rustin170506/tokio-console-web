@@ -48,7 +48,6 @@ export default {
             const isDarkMode = colorMode.value === "dark";
             return {
                 reactive: true,
-                maintainAspectRatio: false,
                 backgroundColor: isDarkMode ? "#F3F4F6" : "#4B5563",
                 scales: {
                     x: {

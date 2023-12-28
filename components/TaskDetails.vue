@@ -117,23 +117,48 @@
                 </div>
             </UCard>
             <UCard class="mt-4" :ui="{ body: { base: 'flex' } }">
-                <div class="space-y-2 flex-1 flex flex-col">
-                    <HistogramChart :data="data" class="flex-grow" />
+                <div class="space-y-2 flex-1 flex-col">
+                    <div class="flex m-2">
+                        <TaskInfoField
+                            v-for="percentile in taskDetailsInfo.pollTimes
+                                .percentiles"
+                            :key="percentile.percentile"
+                            :name="percentile.percentile"
+                            :value="percentile.duration"
+                            class="mr-4"
+                        />
+                    </div>
+                    <div class="space-y-2 h-80">
+                        <HistogramChart :data="histogramData" />
+                    </div>
                 </div>
+
                 <UDivider
                     class="w-px mx-2"
                     color="gray"
                     orientation="vertical"
                 />
-                <div class="space-y-2 flex-1 flex flex-col">
-                    <HistogramChart :data="data" class="flex-grow" />
+
+                <div class="space-y-2 flex-1 flex-col ml-4">
+                    <div class="flex m-2">
+                        <TaskInfoField
+                            v-for="percentile in taskDetailsInfo.pollTimes
+                                .percentiles"
+                            :key="percentile.percentile"
+                            :name="percentile.percentile"
+                            :value="percentile.duration"
+                            class="mr-4"
+                        />
+                    </div>
+                    <div class="space-y-2 h-80">
+                        <HistogramChart :data="histogramData" />
+                    </div>
                 </div>
             </UCard>
         </div>
     </div>
 </template>
 <script setup lang="ts">
-import { deserializeHistogram } from "../histogram/pkg/histogram";
 const route = useRoute();
 
 const { pending, task, taskDetails } = useTaskDetails(
@@ -141,36 +166,26 @@ const { pending, task, taskDetails } = useTaskDetails(
 );
 
 const taskBasicInfo = computed(() => {
-    if (taskDetails.value?.pollTimesHistogram.case === "histogram") {
-        console.log(
-            deserializeHistogram(
-                taskDetails.value.pollTimesHistogram.value.rawHistogram,
-            ),
-        );
-    }
     return toTaskBasicInfo(task);
 });
 
-const data = {
-    labels: [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-    ],
-    datasets: [
-        {
-            label: "Data One",
-            data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11],
-        },
-    ],
-};
+const taskDetailsInfo = computed(() => {
+    return toTaskDetails(taskDetails.value);
+});
+
+const histogramData = computed(() => {
+    return {
+        labels: taskDetailsInfo.value.pollTimes.percentiles.map(
+            (h) => h.percentile,
+        ),
+        datasets: [
+            {
+                label: "Poll Times Histogram",
+                data: taskDetailsInfo.value.pollTimes.percentiles.map((h) =>
+                    h.duration.valueOf(),
+                ),
+            },
+        ],
+    };
+});
 </script>
