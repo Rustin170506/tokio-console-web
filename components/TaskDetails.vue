@@ -9,8 +9,14 @@
         </div>
 
         <div v-else>
-            <UCard :ui="{ body: { base: 'flex' } }">
-                <div class="space-y-2 flex-1 flex-col">
+            <UCard
+                :ui="{
+                    body: {
+                        base: 'xl:flex',
+                    },
+                }"
+            >
+                <div class="space-y-2 flex-1">
                     <UDivider
                         label="Task"
                         type="dotted"
@@ -63,7 +69,7 @@
                     orientation="vertical"
                 />
 
-                <div class="space-y-2 flex-1 flex-col">
+                <div class="space-y-2 xl:ml-4 flex-1">
                     <UDivider
                         label="Waker"
                         type="dotted"
@@ -71,7 +77,7 @@
                             label: 'text-black dark:text-white font-bold text-md',
                         }"
                     />
-                    <TaskInfoField class="ml-4" name="Current wakers">
+                    <TaskInfoField name="Current wakers">
                         <div class="flex">
                             <span class="mr-1">{{
                                 taskBasicInfo.wakerCount
@@ -89,7 +95,7 @@
                             )
                         </div>
                     </TaskInfoField>
-                    <TaskInfoField class="ml-4" name="Woken">
+                    <TaskInfoField name="Woken">
                         <div class="flex">
                             <span class="mr-2">{{
                                 `${taskBasicInfo.wakes} times,`
@@ -116,8 +122,8 @@
                     </TaskInfoField>
                 </div>
             </UCard>
-            <UCard class="mt-4" :ui="{ body: { base: 'flex' } }">
-                <div class="space-y-2 flex-1 flex-col">
+            <UCard class="mt-4" :ui="{ body: { base: 'xl:flex' } }">
+                <div class="space-y-2 flex-1">
                     <div class="flex m-2">
                         <TaskInfoField
                             v-for="percentile in taskDetailsInfo.pollTimes
@@ -128,7 +134,7 @@
                             class="mr-4"
                         />
                     </div>
-                    <div class="space-y-2 h-80">
+                    <div class="space-y-2 h-80 w-11/12">
                         <HistogramChart :data="histogramData" />
                     </div>
                 </div>
@@ -139,7 +145,7 @@
                     orientation="vertical"
                 />
 
-                <div class="space-y-2 flex-1 flex-col ml-4">
+                <div class="space-y-2 flex-1 xl:ml-4">
                     <div class="flex m-2">
                         <TaskInfoField
                             v-for="percentile in taskDetailsInfo.pollTimes
@@ -150,7 +156,7 @@
                             class="mr-4"
                         />
                     </div>
-                    <div class="space-y-2 h-80">
+                    <div class="space-y-2 h-80 w-11/12">
                         <HistogramChart :data="histogramData" />
                     </div>
                 </div>
