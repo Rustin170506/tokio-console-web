@@ -373,7 +373,7 @@ export function toTaskDetails(details: TokioTaskDetails): TaskDetails {
 
 export function useTaskDetails(id: bigint) {
     const pending = ref<boolean>(true);
-    const task = tasksData.value.get(id)!;
+    const task = tasksData.value.get(id);
     const taskDetails = ref<TokioTaskDetails>({
         pollTimes: {
             percentiles: [],
@@ -387,7 +387,7 @@ export function useTaskDetails(id: bigint) {
             const detailsStream = client.watchTaskDetails(
                 new TaskDetailsRequest({
                     id: {
-                        id: task.spanId,
+                        id: task!.spanId,
                     },
                 }),
             );
@@ -405,7 +405,9 @@ export function useTaskDetails(id: bigint) {
         }
     };
 
-    watchForDetails();
+    if (task) {
+        watchForDetails();
+    }
 
     return { pending, task, taskDetails };
 }
