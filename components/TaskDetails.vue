@@ -165,14 +165,20 @@
     </div>
 </template>
 <script setup lang="ts">
+const router = useRouter();
 const route = useRoute();
 
 const { pending, task, taskDetails } = useTaskDetails(
     BigInt(route.params.id as string),
 );
 
+// If the task is undefined, redirect to the home page.
+if (task === undefined) {
+    router.push("/");
+}
+
 const taskBasicInfo = computed(() => {
-    return toTaskBasicInfo(task);
+    return toTaskBasicInfo(task!);
 });
 
 const taskDetailsInfo = computed(() => {
