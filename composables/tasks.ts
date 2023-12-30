@@ -10,7 +10,10 @@ import { Duration, Timestamp } from "./task/duration";
 import { fromProtoTaskStats } from "./task/tokioTaskStats";
 import {
     fromProtoTaskDetails,
+    type DurationDetails,
     type TokioTaskDetails,
+    type DurationCount,
+    type Percentile,
 } from "./task/tokioTaskDetails";
 import { Metadata } from "~/gen/common_pb";
 import {
@@ -347,27 +350,60 @@ function formatPercentage(value: number): string {
     return value.toFixed(2) + "%";
 }
 
-export interface TaskDetails {
-    pollTimes: {
-        percentiles: {
-            percentile: string;
-            duration: DurationWithStyle;
-        }[];
-    };
+export interface TimesDetails {
+    percentiles: {
+        percentile: string;
+        duration: DurationWithStyle;
+    }[];
+    histogram: {
+        duration: Duration;
+        count: number;
+    }[];
+    min?: DurationWithStyle;
+    max?: DurationWithStyle;
 }
 
-export function toTaskDetails(details: TokioTaskDetails): TaskDetails {
-    const percentiles = details.pollTimes.percentiles.map((p) => {
+export interface TaskDetails {
+    pollTimes: TimesDetails;
+    scheduledTimes?: TimesDetails;
+}
+
+function mapPercentiles(percentiles: Percentile[]) {
+    return percentiles.map((p) => {
         return {
             percentile: `p${p.percentile}`,
             duration: getDurationWithClass(p.duration),
         };
     });
+}
+
+function mapHistogram(histogram: DurationCount[]) {
+    return histogram.map((h) => {
+        return {
+            duration: h.duration,
+            count: Number(h.count),
+        };
+    });
+}
+
+function mapTimes(times: DurationDetails): TimesDetails {
+    return {
+        percentiles: mapPercentiles(times.percentiles),
+        histogram: mapHistogram(times.histogram),
+        min: getDurationWithClass(times.min),
+        max: getDurationWithClass(times.max),
+    };
+}
+
+export function toTaskDetails(details: TokioTaskDetails): TaskDetails {
+    const pollTimes = mapTimes(details.pollTimes);
+    const scheduledTimes = details.scheduledTimes
+        ? mapTimes(details.scheduledTimes)
+        : undefined;
 
     return {
-        pollTimes: {
-            percentiles,
-        },
+        pollTimes,
+        scheduledTimes,
     };
 }
 
@@ -377,6 +413,9 @@ export function useTaskDetails(id: bigint) {
     const taskDetails = ref<TokioTaskDetails>({
         pollTimes: {
             percentiles: [],
+            histogram: [],
+            max: new Duration(0n, 0),
+            min: new Duration(0n, 0),
         },
     });
 
