@@ -1,5 +1,5 @@
 <template>
-    <header class="flex justify-between p-4">
+    <header class="flex justify-between">
         <div class="flex items-center">
             <slot name="left"></slot>
         </div>
