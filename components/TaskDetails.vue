@@ -17,13 +17,14 @@
                 }"
             >
                 <div class="space-y-2 flex-1">
-                    <UDivider
-                        label="Task"
-                        type="dotted"
-                        :ui="{
-                            label: 'text-black dark:text-white font-bold text-md',
-                        }"
-                    />
+                    <UDivider type="dotted">
+                        <div
+                            class="flex items-center text-black dark:text-white font-bold text-md"
+                        >
+                            <span>Task</span>
+                            <UIcon :name="taskBasicInfo.state" />
+                        </div>
+                    </UDivider>
                     <TaskInfoField name="ID" :value="taskBasicInfo.idString" />
                     <TaskInfoField name="Name" :value="taskBasicInfo.name" />
                     <TaskInfoField
