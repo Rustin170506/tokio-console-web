@@ -120,6 +120,30 @@
                             </TaskInfoField>
                         </div>
                     </TaskInfoField>
+                    <UDivider
+                        label="Fields"
+                        type="dotted"
+                        :ui="{
+                            label: 'text-black dark:text-white font-bold text-md',
+                        }"
+                    />
+                    <div
+                        v-for="(item, index) in taskBasicInfo.fields"
+                        :key="index"
+                        class="mb-1"
+                    >
+                        <p>
+                            <span class="text-blue-600 dark:text-blue-400">{{
+                                item.name
+                            }}</span>
+                            <span class="text-gray-500 dark:text-gray-400"
+                                >=</span
+                            >
+                            <span class="text-green-600 dark:text-green-400">{{
+                                item.value
+                            }}</span>
+                        </p>
+                    </div>
                 </div>
             </UCard>
             <UCard class="mt-4" :ui="{ body: { base: 'xl:flex' } }">
