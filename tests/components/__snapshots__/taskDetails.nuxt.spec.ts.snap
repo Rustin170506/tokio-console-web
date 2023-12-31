@@ -9,7 +9,9 @@ exports[`TaskDetails 1`] = `
         <div class=\\"space-y-2 flex-1\\">
           <div class=\\"flex items-center align-center text-center w-full flex-row\\">
             <div class=\\"flex border-gray-200 dark:border-gray-800 w-full border-t border-dotted\\"></div>
-            <div class=\\"font-medium text-gray-700 dark:text-gray-200 flex mx-3 whitespace-nowrap\\"><span class=\\"text-black dark:text-white font-bold text-md\\">Task</span></div>
+            <div class=\\"font-medium text-gray-700 dark:text-gray-200 flex mx-3 whitespace-nowrap\\">
+              <div class=\\"flex items-center text-black dark:text-white font-bold text-md\\"><span>Task</span><span class=\\"i-heroicons-play\\"></span></div>
+            </div>
             <div class=\\"flex border-gray-200 dark:border-gray-800 w-full border-t border-dotted\\"></div>
           </div>
           <div class=\\"flex\\"><span class=\\"font-bold text-black dark:text-white\\">ID</span><span class=\\"mr-1\\">: </span><span class=\\"\\">1</span></div>
