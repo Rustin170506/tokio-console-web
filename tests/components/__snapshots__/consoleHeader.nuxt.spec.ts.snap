@@ -4,7 +4,7 @@ exports[`Console Header 1`] = `
 "<div id=\\"test-wrapper\\">
   <header class=\\"flex justify-between\\">
     <div class=\\"flex items-center\\">
-      <div class=\\"flex items-center bg-white dark:bg-gray-800 rounded-lg\\"><svg alt=\\"Tokio Logo\\" class=\\"w-10 h-auto mr-2 fill-black dark:fill-white\\" width=\\"120px\\" height=\\"108px\\" viewBox=\\"0 0 120 108\\" version=\\"1.1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\">
+      <div class=\\"flex items-center bg-white dark:bg-gray-800 p-2 rounded-lg\\"><svg alt=\\"Tokio Logo\\" class=\\"w-10 h-auto mr-2 fill-black dark:fill-white\\" width=\\"120px\\" height=\\"108px\\" viewBox=\\"0 0 120 108\\" version=\\"1.1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\">
           <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
           <title>Mark Copy</title>
           <desc>Created with Sketch.</desc>
