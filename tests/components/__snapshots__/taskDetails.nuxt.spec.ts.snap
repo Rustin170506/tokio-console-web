@@ -54,7 +54,21 @@ exports[`TaskDetails 1`] = `
       <!--v-if-->
       <div class=\\"xl:flex px-4 py-5 sm:p-6\\">
         <div class=\\"space-y-2 flex-1\\">
-          <div class=\\"flex m-2\\"></div>
+          <div class=\\"mt-2\\">
+            <div class=\\"flex justify-center\\">
+              <div class=\\"flex mr-4\\"><span class=\\"font-bold text-black dark:text-white\\">Min</span><span class=\\"mr-1\\">: </span><span class=\\"text-green-500 dark:text-green-300\\">1m 40s </span></div>
+              <div class=\\"flex mr-4\\"><span class=\\"font-bold text-black dark:text-white\\">p0.1</span><span class=\\"mr-1\\">: </span><span class=\\"text-green-500 dark:text-green-300\\">1m 40s </span></div>
+              <div class=\\"flex mr-4\\"><span class=\\"font-bold text-black dark:text-white\\">p0.25</span><span class=\\"mr-1\\">: </span><span class=\\"text-green-500 dark:text-green-300\\">3m 20s </span></div>
+              <div class=\\"flex mr-4\\"><span class=\\"font-bold text-black dark:text-white\\">p0.5</span><span class=\\"mr-1\\">: </span><span class=\\"text-green-500 dark:text-green-300\\">5m </span></div>
+            </div>
+            <div class=\\"flex justify-center\\">
+              <div class=\\"flex mr-4\\"><span class=\\"font-bold text-black dark:text-white\\">p0.75</span><span class=\\"mr-1\\">: </span><span class=\\"text-green-500 dark:text-green-300\\">6m 40s </span></div>
+              <div class=\\"flex mr-4\\"><span class=\\"font-bold text-black dark:text-white\\">p0.9</span><span class=\\"mr-1\\">: </span><span class=\\"text-green-500 dark:text-green-300\\">11m 40s </span></div>
+              <div class=\\"flex mr-4\\"><span class=\\"font-bold text-black dark:text-white\\">p0.95</span><span class=\\"mr-1\\">: </span><span class=\\"text-green-500 dark:text-green-300\\">13m 20s </span></div>
+              <div class=\\"flex mr-4\\"><span class=\\"font-bold text-black dark:text-white\\">p0.99</span><span class=\\"mr-1\\">: </span><span class=\\"text-green-500 dark:text-green-300\\">16m 30s </span></div>
+              <div class=\\"flex mr-4\\"><span class=\\"font-bold text-black dark:text-white\\">Max</span><span class=\\"mr-1\\">: </span><span class=\\"text-green-500 dark:text-green-300\\">16m 40s </span></div>
+            </div>
+          </div>
           <div class=\\"space-y-2 h-80 w-11/12\\"><canvas role=\\"img\\">
               <p></p>
             </canvas></div>
@@ -63,8 +77,22 @@ exports[`TaskDetails 1`] = `
           <div class=\\"flex border-gray-200 dark:border-gray-800 h-full border-s border-solid\\"></div>
           <!--v-if-->
         </div>
-        <div class=\\"space-y-2 flex-1 xl:ml-4\\">
-          <div class=\\"flex m-2\\"></div>
+        <div class=\\"space-y-2 xl:ml-4 flex-1\\">
+          <div class=\\"mt-2\\">
+            <div class=\\"flex justify-center\\">
+              <div class=\\"flex mr-4\\"><span class=\\"font-bold text-black dark:text-white\\">Min</span><span class=\\"mr-1\\">: </span><span class=\\"text-green-500 dark:text-green-300\\">1m 40s </span></div>
+              <div class=\\"flex mr-4\\"><span class=\\"font-bold text-black dark:text-white\\">p0.1</span><span class=\\"mr-1\\">: </span><span class=\\"text-green-500 dark:text-green-300\\">1m 40s </span></div>
+              <div class=\\"flex mr-4\\"><span class=\\"font-bold text-black dark:text-white\\">p0.25</span><span class=\\"mr-1\\">: </span><span class=\\"text-green-500 dark:text-green-300\\">3m 20s </span></div>
+              <div class=\\"flex mr-4\\"><span class=\\"font-bold text-black dark:text-white\\">p0.5</span><span class=\\"mr-1\\">: </span><span class=\\"text-green-500 dark:text-green-300\\">5m </span></div>
+            </div>
+            <div class=\\"flex justify-center\\">
+              <div class=\\"flex mr-4\\"><span class=\\"font-bold text-black dark:text-white\\">p0.75</span><span class=\\"mr-1\\">: </span><span class=\\"text-green-500 dark:text-green-300\\">6m 40s </span></div>
+              <div class=\\"flex mr-4\\"><span class=\\"font-bold text-black dark:text-white\\">p0.9</span><span class=\\"mr-1\\">: </span><span class=\\"text-green-500 dark:text-green-300\\">11m 40s </span></div>
+              <div class=\\"flex mr-4\\"><span class=\\"font-bold text-black dark:text-white\\">p0.95</span><span class=\\"mr-1\\">: </span><span class=\\"text-green-500 dark:text-green-300\\">13m 20s </span></div>
+              <div class=\\"flex mr-4\\"><span class=\\"font-bold text-black dark:text-white\\">p0.99</span><span class=\\"mr-1\\">: </span><span class=\\"text-green-500 dark:text-green-300\\">16m 30s </span></div>
+              <div class=\\"flex mr-4\\"><span class=\\"font-bold text-black dark:text-white\\">Max</span><span class=\\"mr-1\\">: </span><span class=\\"text-green-500 dark:text-green-300\\">16m 40s </span></div>
+            </div>
+          </div>
           <div class=\\"space-y-2 h-80 w-11/12\\"><canvas role=\\"img\\">
               <p></p>
             </canvas></div>

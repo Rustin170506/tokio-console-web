@@ -49,7 +49,54 @@ mockNuxtImport("useTaskDetails", () => {
         );
         const taskDetails = ref<TokioTaskDetails>({
             pollTimes: {
-                percentiles: [],
+                percentiles: [
+                    { percentile: 0.1, duration: new Duration(100n, 0) },
+                    { percentile: 0.25, duration: new Duration(200n, 0) },
+                    { percentile: 0.5, duration: new Duration(300n, 0) },
+                    { percentile: 0.75, duration: new Duration(400n, 0) },
+                    { percentile: 0.9, duration: new Duration(700n, 0) },
+                    { percentile: 0.95, duration: new Duration(800n, 0) },
+                    { percentile: 0.99, duration: new Duration(990n, 0) },
+                ],
+                histogram: [
+                    { duration: new Duration(100n, 0), count: 10n },
+                    { duration: new Duration(200n, 0), count: 10n },
+                    { duration: new Duration(300n, 0), count: 20n },
+                    { duration: new Duration(400n, 0), count: 30n },
+                    { duration: new Duration(500n, 0), count: 51n },
+                    { duration: new Duration(600n, 0), count: 0n },
+                    { duration: new Duration(700n, 0), count: 0n },
+                    { duration: new Duration(800n, 0), count: 0n },
+                    { duration: new Duration(900n, 0), count: 0n },
+                    { duration: new Duration(1000n, 0), count: 1n },
+                ],
+                min: new Duration(100n, 0),
+                max: new Duration(1000n, 0),
+            },
+            scheduledTimes: {
+                percentiles: [
+                    { percentile: 0.1, duration: new Duration(100n, 0) },
+                    { percentile: 0.25, duration: new Duration(200n, 0) },
+                    { percentile: 0.5, duration: new Duration(300n, 0) },
+                    { percentile: 0.75, duration: new Duration(400n, 0) },
+                    { percentile: 0.9, duration: new Duration(700n, 0) },
+                    { percentile: 0.95, duration: new Duration(800n, 0) },
+                    { percentile: 0.99, duration: new Duration(990n, 0) },
+                ],
+                histogram: [
+                    { duration: new Duration(100n, 0), count: 10n },
+                    { duration: new Duration(200n, 0), count: 10n },
+                    { duration: new Duration(300n, 0), count: 20n },
+                    { duration: new Duration(400n, 0), count: 30n },
+                    { duration: new Duration(500n, 0), count: 51n },
+                    { duration: new Duration(600n, 0), count: 0n },
+                    { duration: new Duration(700n, 0), count: 0n },
+                    { duration: new Duration(800n, 0), count: 0n },
+                    { duration: new Duration(900n, 0), count: 0n },
+                    { duration: new Duration(1000n, 0), count: 1n },
+                ],
+                min: new Duration(100n, 0),
+                max: new Duration(1000n, 0),
             },
         });
 

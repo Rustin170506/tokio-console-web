@@ -124,40 +124,94 @@
             </UCard>
             <UCard class="mt-4" :ui="{ body: { base: 'xl:flex' } }">
                 <div class="space-y-2 flex-1">
-                    <div class="flex m-2">
-                        <TaskInfoField
-                            v-for="percentile in taskDetailsInfo.pollTimes
-                                .percentiles"
-                            :key="percentile.percentile"
-                            :name="percentile.percentile"
-                            :value="percentile.duration"
-                            class="mr-4"
-                        />
+                    <div class="mt-2">
+                        <div class="flex justify-center">
+                            <TaskInfoField
+                                name="Min"
+                                :value="taskDetailsInfo.pollTimes.min"
+                                class="mr-4"
+                            />
+                            <TaskInfoField
+                                v-for="percentile in taskDetailsInfo.pollTimes.percentiles.slice(
+                                    0,
+                                    3,
+                                )"
+                                :key="percentile.percentile"
+                                :name="percentile.percentile"
+                                :value="percentile.duration"
+                                class="mr-4"
+                            />
+                        </div>
+                        <div class="flex justify-center">
+                            <TaskInfoField
+                                v-for="percentile in taskDetailsInfo.pollTimes.percentiles.slice(
+                                    -4,
+                                )"
+                                :key="percentile.percentile"
+                                :name="percentile.percentile"
+                                :value="percentile.duration"
+                                class="mr-4"
+                            />
+                            <TaskInfoField
+                                name="Max"
+                                :value="taskDetailsInfo.pollTimes.max"
+                                class="mr-4"
+                            />
+                        </div>
                     </div>
                     <div class="space-y-2 h-80 w-11/12">
-                        <HistogramChart :data="histogramData" />
+                        <HistogramChart :data="pollTimesHistogramData" />
                     </div>
                 </div>
 
                 <UDivider
+                    v-if="taskDetailsInfo.scheduledTimes !== undefined"
                     class="w-px mx-2"
                     color="gray"
                     orientation="vertical"
                 />
 
-                <div class="space-y-2 flex-1 xl:ml-4">
-                    <div class="flex m-2">
-                        <TaskInfoField
-                            v-for="percentile in taskDetailsInfo.pollTimes
-                                .percentiles"
-                            :key="percentile.percentile"
-                            :name="percentile.percentile"
-                            :value="percentile.duration"
-                            class="mr-4"
-                        />
+                <div
+                    v-if="taskDetailsInfo.scheduledTimes !== undefined"
+                    class="space-y-2 xl:ml-4 flex-1"
+                >
+                    <div class="mt-2">
+                        <div class="flex justify-center">
+                            <TaskInfoField
+                                name="Min"
+                                :value="taskDetailsInfo.scheduledTimes.min"
+                                class="mr-4"
+                            />
+                            <TaskInfoField
+                                v-for="percentile in taskDetailsInfo.scheduledTimes.percentiles.slice(
+                                    0,
+                                    3,
+                                )"
+                                :key="percentile.percentile"
+                                :name="percentile.percentile"
+                                :value="percentile.duration"
+                                class="mr-4"
+                            />
+                        </div>
+                        <div class="flex justify-center">
+                            <TaskInfoField
+                                v-for="percentile in taskDetailsInfo.scheduledTimes.percentiles.slice(
+                                    -4,
+                                )"
+                                :key="percentile.percentile"
+                                :name="percentile.percentile"
+                                :value="percentile.duration"
+                                class="mr-4"
+                            />
+                            <TaskInfoField
+                                name="Max"
+                                :value="taskDetailsInfo.scheduledTimes.max"
+                                class="mr-4"
+                            />
+                        </div>
                     </div>
                     <div class="space-y-2 h-80 w-11/12">
-                        <HistogramChart :data="histogramData" />
+                        <HistogramChart :data="scheduledTimesHistogramData" />
                     </div>
                 </div>
             </UCard>
@@ -185,19 +239,30 @@ const taskDetailsInfo = computed(() => {
     return toTaskDetails(taskDetails.value);
 });
 
-const histogramData = computed(() => {
+function createHistogramData(times: TimesDetails | undefined, label: string) {
+    if (times === undefined) {
+        return undefined;
+    }
+
     return {
-        labels: taskDetailsInfo.value.pollTimes.percentiles.map(
-            (h) => h.percentile,
-        ),
+        labels: times.histogram.map((h) => h.duration.toString()),
         datasets: [
             {
-                label: "Poll Times Histogram",
-                data: taskDetailsInfo.value.pollTimes.percentiles.map((h) =>
-                    h.duration.valueOf(),
-                ),
+                label,
+                data: times.histogram.map((h) => h.count),
             },
         ],
     };
+}
+
+const pollTimesHistogramData = computed(() => {
+    return createHistogramData(taskDetailsInfo.value.pollTimes, "Poll Times");
+});
+
+const scheduledTimesHistogramData = computed(() => {
+    return createHistogramData(
+        taskDetailsInfo.value.scheduledTimes,
+        "Scheduled Times",
+    );
 });
 </script>
