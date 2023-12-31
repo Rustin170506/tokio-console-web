@@ -46,6 +46,14 @@ exports[`TaskDetails 1`] = `
               <div class=\\"flex\\"><span class=\\"font-bold text-black dark:text-white\\">Last woken</span><span class=\\"mr-1\\">: </span><span class=\\"text-gray-500 dark:text-gray-300\\">0ns</span><span class=\\"mx-1\\">ago</span></div>
             </div>
           </div>
+          <div class=\\"flex items-center align-center text-center w-full flex-row\\">
+            <div class=\\"flex border-gray-200 dark:border-gray-800 w-full border-t border-dotted\\"></div>
+            <div class=\\"font-medium text-gray-700 dark:text-gray-200 flex mx-3 whitespace-nowrap\\"><span class=\\"text-black dark:text-white font-bold text-md\\">Fields</span></div>
+            <div class=\\"flex border-gray-200 dark:border-gray-800 w-full border-t border-dotted\\"></div>
+          </div>
+          <div class=\\"mb-1\\">
+            <p><span class=\\"text-blue-600 dark:text-blue-400\\">target</span><span class=\\"text-gray-500 dark:text-gray-400\\">=</span><span class=\\"text-green-600 dark:text-green-400\\">tokio:task</span></p>
+          </div>
         </div>
       </div>
       <!--v-if-->
