@@ -247,17 +247,17 @@
 const router = useRouter();
 const route = useRoute();
 
-const { pending, task, taskDetails } = useTaskDetails(
+const { pending, task, taskDetails, lastUpdatedAt } = useTaskDetails(
     BigInt(route.params.id as string),
 );
 
 // If the task is undefined, redirect to the home page.
-if (task === undefined) {
+if (task === undefined || lastUpdatedAt.value === undefined) {
     router.push("/");
 }
 
 const taskBasicInfo = computed(() => {
-    return toTaskBasicInfo(task!);
+    return toTaskBasicInfo(task!, lastUpdatedAt.value!);
 });
 
 const taskDetailsInfo = computed(() => {

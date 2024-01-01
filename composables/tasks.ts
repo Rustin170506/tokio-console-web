@@ -39,16 +39,19 @@ export interface TaskTableItem {
     class?: string;
 }
 
-export function toTaskTableItem(task: TokioTask): TaskTableItem {
+export function toTaskTableItem(
+    task: TokioTask,
+    lastUpdatedAt: Timestamp,
+): TaskTableItem {
     return {
         id: task.id,
         idString: task.taskId?.toString() ?? "",
         name: task.name ?? "",
         state: getTaskStateIconName(task.state()),
-        total: getDurationWithClass(task.totalDuration(Timestamp.now())),
-        busy: getDurationWithClass(task.busyDuration(Timestamp.now())),
-        sched: getDurationWithClass(task.scheduledDuration(Timestamp.now())),
-        idle: getDurationWithClass(task.idleDuration(Timestamp.now())),
+        total: getDurationWithClass(task.totalDuration(lastUpdatedAt)),
+        busy: getDurationWithClass(task.busyDuration(lastUpdatedAt)),
+        sched: getDurationWithClass(task.scheduledDuration(lastUpdatedAt)),
+        idle: getDurationWithClass(task.idleDuration(lastUpdatedAt)),
         pools: task.stats.polls,
         kind: task.kind,
         location: task.location,
@@ -75,17 +78,34 @@ function getTaskStateIconName(state: TaskState): string {
     }
 }
 
-// Metadata about a task.
-const metas: Map<bigint, Metadata> = new Map();
+interface State {
+    // Metadata about a task.
+    metas: Map<bigint, Metadata>;
+    // IDs for tasks.
+    ids: {
+        nextId: bigint;
+        map: Map<bigint, bigint>;
+    };
+    // How long to retain tasks after they're dropped.
+    retainFor: Duration;
+    tasks: Ref<Map<bigint, TokioTask>>;
+    lastUpdatedAt: Ref<Timestamp | undefined>;
+    isTaskStarted: boolean;
+    updateStreamInstance?: AsyncIterable<Update>;
+}
 
-const ids = {
-    nextId: 1n,
-    map: new Map(),
+const state: State = {
+    metas: new Map(),
+    ids: {
+        nextId: 1n,
+        map: new Map(),
+    },
+    // TODO: make this configurable.
+    retainFor: new Duration(6n, 0),
+    tasks: ref<Map<bigint, TokioTask>>(new Map()),
+    lastUpdatedAt: ref<Timestamp | undefined>(undefined),
+    isTaskStarted: false,
 };
-
-// How long to retain tasks after they're dropped.
-// TODO: make this configurable.
-const retainFor = new Duration(6n, 0); // 6 seconds
 
 const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
     const result = new Array<TokioTask>();
@@ -103,7 +123,7 @@ const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
             continue;
         }
 
-        const meta = metas.get(metaId);
+        const meta = state.metas.get(metaId);
         if (!meta) {
             continue;
         }
@@ -153,10 +173,10 @@ const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
         delete statsUpdate[spanId.toString()];
         const taskStats = fromProtoTaskStats(stats);
 
-        let id = ids.map.get(spanId);
+        let id = state.ids.map.get(spanId);
         if (!id) {
-            const newID = ids.nextId++;
-            ids.map.set(spanId, newID);
+            const newID = state.ids.nextId++;
+            state.ids.map.set(spanId, newID);
             id = newID;
         }
         let shortDesc = "";
@@ -187,12 +207,6 @@ const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
     return result;
 };
 
-// TODO: find a better way to share this between composables.
-// Then we can spilt different composables into different files.
-const tasksData = ref<Map<bigint, TokioTask>>(new Map());
-
-let updateStreamInstance: AsyncIterable<Update> | null = null;
-
 const handleConnectError = (err: any) => {
     const toast = useToast();
 
@@ -211,19 +225,27 @@ export function useTasks() {
     if (isTaskStarted) {
         return {
             pending: ref<boolean>(false),
-            tasksData,
+            tasksData: state.tasks,
+            lastUpdatedAt: state.lastUpdatedAt,
         };
     }
 
     const pending = ref<boolean>(true);
 
     const addTasks = (update: Update) => {
+        if (update.now !== undefined) {
+            state.lastUpdatedAt.value = new Timestamp(
+                update.now.seconds,
+                update.now.nanos,
+            );
+        }
+
         if (update.newMetadata) {
             update.newMetadata.metadata.forEach((meta) => {
                 const id = meta.id?.id;
                 const metadata = meta.metadata;
                 if (id && metadata) {
-                    metas.set(id, metadata);
+                    state.metas.set(id, metadata);
                 }
             });
         }
@@ -231,16 +253,18 @@ export function useTasks() {
             const tasks = taskUpdateToTasks(update.taskUpdate);
 
             for (const task of tasks) {
-                tasksData.value.set(task.id, task);
+                state.tasks.value.set(task.id, task);
             }
 
             for (const k in update.taskUpdate.statsUpdate) {
-                const task = tasksData.value.get(ids.map.get(BigInt(k)));
+                const task = state.tasks.value.get(
+                    state.ids.map.get(BigInt(k))!,
+                );
                 if (task) {
                     task.stats = fromProtoTaskStats(
                         update.taskUpdate.statsUpdate[k],
                     );
-                    tasksData.value.set(task.id, task);
+                    state.tasks.value.set(task.id, task);
                 }
             }
         }
@@ -248,10 +272,11 @@ export function useTasks() {
 
     const retainTasks = (retainFor: Duration) => {
         const newTasks = new Map<bigint, TokioTask>();
-        for (const [id, task] of tasksData.value) {
+        for (const [id, task] of state.tasks.value) {
             if (task.stats.droppedAt) {
                 if (
-                    !Timestamp.now()
+                    state.lastUpdatedAt.value !== undefined &&
+                    !state.lastUpdatedAt.value
                         .subtract(task.stats.droppedAt)
                         .greaterThan(retainFor)
                 ) {
@@ -262,15 +287,17 @@ export function useTasks() {
             }
         }
 
-        tasksData.value = newTasks;
+        state.tasks.value = newTasks;
     };
 
     const getUpdateStream = () => {
-        if (!updateStreamInstance) {
+        if (!state.updateStreamInstance) {
             const client = useGrpcClient();
-            updateStreamInstance = client.watchUpdates(new InstrumentRequest());
+            state.updateStreamInstance = client.watchUpdates(
+                new InstrumentRequest(),
+            );
         }
-        return updateStreamInstance;
+        return state.updateStreamInstance;
     };
 
     // Async function to watch for updates.
@@ -283,7 +310,7 @@ export function useTasks() {
                     pending.value = false;
                 }
                 addTasks(value);
-                retainTasks(retainFor);
+                retainTasks(state.retainFor);
             }
         } catch (err) {
             handleConnectError(err);
@@ -303,7 +330,8 @@ export function useTasks() {
 
     return {
         pending,
-        tasksData,
+        tasksData: state.tasks,
+        lastUpdatedAt: state.lastUpdatedAt,
     };
 }
 
@@ -320,19 +348,22 @@ export interface TaskBasicInfo extends TaskTableItem {
     lastWokenDuration?: DurationWithStyle;
 }
 
-export function toTaskBasicInfo(task: TokioTask): TaskBasicInfo {
+export function toTaskBasicInfo(
+    task: TokioTask,
+    lastUpdatedAt: Timestamp,
+): TaskBasicInfo {
     const stats = task.stats;
-    const taskTableItemData = toTaskTableItem(task);
+    const taskTableItemData = toTaskTableItem(task, lastUpdatedAt);
     return {
         ...taskTableItemData,
         busyPercentage: formatPercentage(
-            task.durationPercent(taskTableItemData.busy.value),
+            task.durationPercent(lastUpdatedAt, taskTableItemData.busy.value),
         ),
         scheduledPercentage: formatPercentage(
-            task.durationPercent(taskTableItemData.sched.value),
+            task.durationPercent(lastUpdatedAt, taskTableItemData.sched.value),
         ),
         idlePercentage: formatPercentage(
-            task.durationPercent(taskTableItemData.idle.value),
+            task.durationPercent(lastUpdatedAt, taskTableItemData.idle.value),
         ),
         wakes: stats.wakes,
         wakerClones: stats.wakerClones,
@@ -409,7 +440,7 @@ export function toTaskDetails(details: TokioTaskDetails): TaskDetails {
 
 export function useTaskDetails(id: bigint) {
     const pending = ref<boolean>(true);
-    const task = tasksData.value.get(id);
+    const task = state.tasks.value.get(id);
     const taskDetails = ref<TokioTaskDetails>({
         pollTimes: {
             percentiles: [],
@@ -448,5 +479,5 @@ export function useTaskDetails(id: bigint) {
         watchForDetails();
     }
 
-    return { pending, task, taskDetails };
+    return { pending, task, taskDetails, lastUpdatedAt: state.lastUpdatedAt };
 }

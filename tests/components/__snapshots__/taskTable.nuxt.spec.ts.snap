@@ -34,13 +34,13 @@ exports[`TaskTable View 1`] = `
       
     </td>
     <td
-      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm text-green-500 dark:text-green-300"
+      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm text-gray-500 dark:text-gray-300"
     >
       
       <p
-        class="text-green-500 dark:text-green-300 w-10"
+        class="text-gray-500 dark:text-gray-300 w-10"
       >
-        16m 40s 
+        0ns
       </p>
       
     </td>
@@ -51,7 +51,7 @@ exports[`TaskTable View 1`] = `
       <p
         class="text-green-500 dark:text-green-300 w-10"
       >
-        25m 
+        8m 20s 
       </p>
       
     </td>
