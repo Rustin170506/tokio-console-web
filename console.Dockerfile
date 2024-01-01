@@ -1,5 +1,5 @@
 # renovate: datasource=github-tags depName=rust lookupName=rust-lang/rust
-ARG RUST_VERSION=1.74.1@sha256:fd45a543ed41160eae2ce9e749e5b3c972625b0778104e8962e9bfb113535301
+ARG RUST_VERSION=1.75.0@sha256:e17a45360b8569720da89dd7bf3c8628ba801c0758c8b4f12b1b32a9327a43a7
 
 FROM rust:$RUST_VERSION
 
