@@ -108,4 +108,10 @@ describe("Duration", () => {
         expect(result.seconds).toBe(4n);
         expect(result.nanos).toBe(449);
     });
+
+    test("fromNano", () => {
+        const duration = Duration.fromNano(BigInt(1.5e9));
+        expect(duration.seconds).toBe(1n);
+        expect(duration.nanos).toBe(500000000);
+    });
 });

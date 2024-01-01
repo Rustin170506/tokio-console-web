@@ -128,12 +128,11 @@ export class Duration {
         return new Duration(BigInt(Math.floor(Date.now() / 1000)), 0);
     }
 
-    // TODO: add test for this.
-    static fromNano(nanos: number | bigint): Duration {
-        if (typeof nanos === "bigint") {
-            return new Duration(BigInt(0), Number(nanos));
-        }
-        return new Duration(BigInt(0), nanos);
+    static fromNano(nanos: bigint): Duration {
+        const seconds = nanos / BigInt(1e9);
+        const remainderNanos = nanos % BigInt(1e9);
+        // After normalization, we can safely cast to number.
+        return new Duration(seconds, Number(remainderNanos));
     }
 }
 
