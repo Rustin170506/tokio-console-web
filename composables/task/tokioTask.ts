@@ -159,10 +159,10 @@ export class TokioTask {
         return null;
     }
 
-    durationPercent(amt: Duration): number {
+    durationPercent(now: Timestamp, amt: Duration): number {
         let percent =
             (amt.asSeconds() /
-                this.totalDuration(Timestamp.now()).asSeconds()) *
+                this.totalDuration(now).asSeconds()) *
             100;
         if (percent > 100) {
             percent = 100;
