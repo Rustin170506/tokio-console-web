@@ -244,6 +244,9 @@
     </div>
 </template>
 <script setup lang="ts">
+import { type TimesDetails, toTaskDetails } from "~/types/timesDetails";
+import { toTaskBasicInfo } from "~/types/taskBasicInfo";
+
 const router = useRouter();
 const route = useRoute();
 

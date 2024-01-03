@@ -2,19 +2,14 @@ import { ConnectError } from "@connectrpc/connect";
 import {
     type FormattedField,
     TokioTask,
-    TaskState,
     formatLocation,
-} from "./task/tokioTask";
-import type { DurationWithStyle } from "./durationWithStyle";
-import { Duration, Timestamp } from "./task/duration";
-import { fromProtoTaskStats } from "./task/tokioTaskStats";
+} from "~/types/task/tokioTask";
+import { Duration, Timestamp } from "~/types/task/duration";
+import { fromProtoTaskStats } from "~/types/task/tokioTaskStats";
 import {
     fromProtoTaskDetails,
-    type DurationDetails,
     type TokioTaskDetails,
-    type DurationCount,
-    type Percentile,
-} from "./task/tokioTaskDetails";
+} from "~/types/task/tokioTaskDetails";
 import { Metadata } from "~/gen/common_pb";
 import {
     InstrumentRequest,
@@ -22,61 +17,6 @@ import {
     type Update,
 } from "~/gen/instrument_pb";
 import type { TaskUpdate } from "~/gen/tasks_pb";
-
-export interface TaskTableItem {
-    id: bigint;
-    idString: string;
-    name: string;
-    state: string;
-    total: DurationWithStyle;
-    busy: DurationWithStyle;
-    sched: DurationWithStyle;
-    idle: DurationWithStyle;
-    pools: bigint;
-    kind: string;
-    location: string;
-    fields: Array<FormattedField>;
-    class?: string;
-}
-
-export function toTaskTableItem(
-    task: TokioTask,
-    lastUpdatedAt: Timestamp,
-): TaskTableItem {
-    return {
-        id: task.id,
-        idString: task.taskId?.toString() ?? "",
-        name: task.name ?? "",
-        state: getTaskStateIconName(task.state()),
-        total: getDurationWithClass(task.totalDuration(lastUpdatedAt)),
-        busy: getDurationWithClass(task.busyDuration(lastUpdatedAt)),
-        sched: getDurationWithClass(task.scheduledDuration(lastUpdatedAt)),
-        idle: getDurationWithClass(task.idleDuration(lastUpdatedAt)),
-        pools: task.stats.polls,
-        kind: task.kind,
-        location: task.location,
-        fields: task.formattedFields,
-        class:
-            task.state() === TaskState.Completed
-                ? "bg-slate-50 dark:bg-slate-950 animate-pulse"
-                : undefined,
-    };
-}
-
-function getTaskStateIconName(state: TaskState): string {
-    switch (state) {
-        case TaskState.Running:
-            return "i-heroicons-play";
-        case TaskState.Scheduled:
-            return "i-heroicons-arrow-small-up";
-        case TaskState.Idle:
-            return "i-heroicons-pause";
-        case TaskState.Completed:
-            return "i-heroicons-stop";
-        default:
-            throw new Error("unreachable");
-    }
-}
 
 interface State {
     // Metadata about a task.
@@ -219,10 +159,8 @@ const handleConnectError = (err: any) => {
     }
 };
 
-let isTaskStarted = false;
-
 export function useTasks() {
-    if (isTaskStarted) {
+    if (state.isTaskStarted) {
         return {
             pending: ref<boolean>(false),
             tasksData: state.tasks,
@@ -320,9 +258,9 @@ export function useTasks() {
     };
 
     const startWatchTaskUpdates = () => {
-        if (!isTaskStarted) {
+        if (!state.isTaskStarted) {
             watchForUpdates();
-            isTaskStarted = true;
+            state.isTaskStarted = true;
         }
     };
 
@@ -332,109 +270,6 @@ export function useTasks() {
         pending,
         tasksData: state.tasks,
         lastUpdatedAt: state.lastUpdatedAt,
-    };
-}
-
-export interface TaskBasicInfo extends TaskTableItem {
-    busyPercentage: string;
-    scheduledPercentage: string;
-    idlePercentage: string;
-    wakes: bigint;
-    wakerClones: bigint;
-    wakerDrops: bigint;
-    lastWake?: Timestamp;
-    selfWakes: bigint;
-    wakerCount: bigint;
-    lastWokenDuration?: DurationWithStyle;
-}
-
-export function toTaskBasicInfo(
-    task: TokioTask,
-    lastUpdatedAt: Timestamp,
-): TaskBasicInfo {
-    const stats = task.stats;
-    const taskTableItemData = toTaskTableItem(task, lastUpdatedAt);
-    return {
-        ...taskTableItemData,
-        busyPercentage: formatPercentage(
-            task.durationPercent(lastUpdatedAt, taskTableItemData.busy.value),
-        ),
-        scheduledPercentage: formatPercentage(
-            task.durationPercent(lastUpdatedAt, taskTableItemData.sched.value),
-        ),
-        idlePercentage: formatPercentage(
-            task.durationPercent(lastUpdatedAt, taskTableItemData.idle.value),
-        ),
-        wakes: stats.wakes,
-        wakerClones: stats.wakerClones,
-        wakerDrops: stats.wakerDrops,
-        lastWake: stats.lastWake,
-        selfWakes: stats.selfWakes,
-        wakerCount: task.wakerCount(),
-        lastWokenDuration: task.lastWakeDuration()
-            ? getDurationWithClass(task.lastWakeDuration()!)
-            : undefined,
-    };
-}
-
-function formatPercentage(value: number): string {
-    return value.toFixed(2) + "%";
-}
-
-export interface TimesDetails {
-    percentiles: {
-        percentile: string;
-        duration: DurationWithStyle;
-    }[];
-    histogram: {
-        duration: Duration;
-        count: number;
-    }[];
-    min?: DurationWithStyle;
-    max?: DurationWithStyle;
-}
-
-export interface TaskDetails {
-    pollTimes: TimesDetails;
-    scheduledTimes?: TimesDetails;
-}
-
-function mapPercentiles(percentiles: Percentile[]) {
-    return percentiles.map((p) => {
-        return {
-            percentile: `p${p.percentile}`,
-            duration: getDurationWithClass(p.duration),
-        };
-    });
-}
-
-function mapHistogram(histogram: DurationCount[]) {
-    return histogram.map((h) => {
-        return {
-            duration: h.duration,
-            count: Number(h.count),
-        };
-    });
-}
-
-function mapTimes(times: DurationDetails): TimesDetails {
-    return {
-        percentiles: mapPercentiles(times.percentiles),
-        histogram: mapHistogram(times.histogram),
-        min: getDurationWithClass(times.min),
-        max: getDurationWithClass(times.max),
-    };
-}
-
-export function toTaskDetails(details: TokioTaskDetails): TaskDetails {
-    const pollTimes = mapTimes(details.pollTimes);
-    const scheduledTimes = details.scheduledTimes
-        ? mapTimes(details.scheduledTimes)
-        : undefined;
-
-    return {
-        pollTimes,
-        scheduledTimes,
     };
 }
 

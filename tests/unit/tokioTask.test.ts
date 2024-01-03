@@ -3,9 +3,9 @@ import {
     TokioTask,
     TaskState,
     type FormattedField,
-} from "~/composables/task/tokioTask";
-import { type TokioTaskStats } from "~/composables/task/tokioTaskStats";
-import { Duration, Timestamp } from "~/composables/task/duration";
+} from "~/types/task/tokioTask";
+import { type TokioTaskStats } from "~/types/task/tokioTaskStats";
+import { Duration, Timestamp } from "~/types/task/duration";
 
 describe("TokioTask", () => {
     let task: TokioTask;
