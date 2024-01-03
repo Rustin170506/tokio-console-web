@@ -159,10 +159,8 @@ const handleConnectError = (err: any) => {
     }
 };
 
-let isTaskStarted = false;
-
 export function useTasks() {
-    if (isTaskStarted) {
+    if (state.isTaskStarted) {
         return {
             pending: ref<boolean>(false),
             tasksData: state.tasks,
@@ -260,9 +258,9 @@ export function useTasks() {
     };
 
     const startWatchTaskUpdates = () => {
-        if (!isTaskStarted) {
+        if (!state.isTaskStarted) {
             watchForUpdates();
-            isTaskStarted = true;
+            state.isTaskStarted = true;
         }
     };
 

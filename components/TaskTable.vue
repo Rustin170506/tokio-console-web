@@ -130,4 +130,3 @@ const tasks = computed(() => {
     return taskList.filter((task) => task !== undefined) as TaskTableItem[];
 });
 </script>
-~/types/taskTableItem
