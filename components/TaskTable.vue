@@ -53,6 +53,8 @@
 </template>
 
 <script setup lang="ts">
+import { toTaskTableItem, type TaskTableItem } from "~/types/taskTableItem";
+
 const columns = [
     {
         key: "idString",
@@ -128,3 +130,4 @@ const tasks = computed(() => {
     return taskList.filter((task) => task !== undefined) as TaskTableItem[];
 });
 </script>
+~/types/taskTableItem
