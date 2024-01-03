@@ -1,9 +1,9 @@
 import { expect, it } from "vitest";
 import { mockNuxtImport, mountSuspended } from "nuxt-vitest/utils";
 import TaskDetails from "~/components/TaskDetails.vue";
-import { Duration, Timestamp } from "~/composables/task/duration";
-import { TokioTask } from "~/composables/task/tokioTask";
-import type { TokioTaskDetails } from "~/composables/task/tokioTaskDetails";
+import { Duration, Timestamp } from "~/types/task/duration";
+import { TokioTask } from "~/types/task/tokioTask";
+import type { TokioTaskDetails } from "~/types/task/tokioTaskDetails";
 
 mockNuxtImport("useRoute", () => {
     return () => {

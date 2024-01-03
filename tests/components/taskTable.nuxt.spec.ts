@@ -1,8 +1,8 @@
 import { expect, it } from "vitest";
 import { mountSuspended, mockNuxtImport } from "nuxt-vitest/utils";
 import TaskTable from "~/components/TaskTable.vue";
-import { TokioTask } from "~/composables/task/tokioTask";
-import { Timestamp, Duration } from "~/composables/task/duration";
+import { TokioTask } from "~/types/task/tokioTask";
+import { Timestamp, Duration } from "~/types/task/duration";
 
 mockNuxtImport("useTasks", () => {
     return () => {

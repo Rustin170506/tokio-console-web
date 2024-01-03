@@ -1,6 +1,6 @@
 import { describe, test, expect } from "vitest";
 import { Duration, Timestamp } from "@bufbuild/protobuf";
-import { fromProtoTaskStats } from "~/composables/task/tokioTaskStats";
+import { fromProtoTaskStats } from "~/types/task/tokioTaskStats";
 import { PollStats } from "~/gen/common_pb";
 import { Stats } from "~/gen/tasks_pb";
 

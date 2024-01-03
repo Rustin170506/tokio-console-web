@@ -4,17 +4,17 @@ import {
     TokioTask,
     TaskState,
     formatLocation,
-} from "./task/tokioTask";
-import type { DurationWithStyle } from "./durationWithStyle";
-import { Duration, Timestamp } from "./task/duration";
-import { fromProtoTaskStats } from "./task/tokioTaskStats";
+} from "../types/task/tokioTask";
+import { Duration, Timestamp } from "../types/task/duration";
+import { fromProtoTaskStats } from "../types/task/tokioTaskStats";
 import {
     fromProtoTaskDetails,
     type DurationDetails,
     type TokioTaskDetails,
     type DurationCount,
     type Percentile,
-} from "./task/tokioTaskDetails";
+} from "../types/task/tokioTaskDetails";
+import type { DurationWithStyle } from "./durationWithStyle";
 import { Metadata } from "~/gen/common_pb";
 import {
     InstrumentRequest,

@@ -1,4 +1,4 @@
-import type { Duration } from "./task/duration";
+import type { Duration } from "../types/task/duration";
 
 export class DurationWithStyle {
     value: Duration;
