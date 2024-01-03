@@ -8,6 +8,8 @@
     </div>
 </template>
 <script>
+import { DurationWithStyle } from "~/types/durationWithStyle";
+
 export default {
     props: {
         name: {

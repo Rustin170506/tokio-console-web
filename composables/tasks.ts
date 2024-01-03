@@ -14,7 +14,10 @@ import {
     type DurationCount,
     type Percentile,
 } from "../types/task/tokioTaskDetails";
-import type { DurationWithStyle } from "./durationWithStyle";
+import {
+    getDurationWithClass,
+    type DurationWithStyle,
+} from "../types/durationWithStyle";
 import { Metadata } from "~/gen/common_pb";
 import {
     InstrumentRequest,
