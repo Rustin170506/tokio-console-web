@@ -1,6 +1,10 @@
 <template>
     <CHeader>
-        <template #left> <TokioLogo /> </template>
+        <template #left>
+            <NuxtLink to="/">
+                <TokioLogo />
+            </NuxtLink>
+        </template>
 
         <template #right>
             <UButton
