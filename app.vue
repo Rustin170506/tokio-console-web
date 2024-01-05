@@ -4,6 +4,7 @@
             <ConsoleHeader />
         </template>
         <NuxtPage />
+        <ConsoleAnchor />
         <UNotifications />
     </UCard>
 </template>
