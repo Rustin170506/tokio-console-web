@@ -1,6 +1,49 @@
 import { describe, test, expect } from "vitest";
-import { Location } from "~/gen/common_pb";
-import { formatLocation } from "~/types/common/field";
+import {
+    Field,
+    FieldValue,
+    FieldValueType,
+    formatLocation,
+} from "~/types/common/field";
+import { Field as ProtoField, Location } from "~/gen/common_pb";
+
+describe("Field and FieldValue", () => {
+    test("FieldValue", () => {
+        const fieldValue = new FieldValue(FieldValueType.Str, "test");
+        expect(fieldValue.type).toBe(FieldValueType.Str);
+        expect(fieldValue.value).toBe("test");
+    });
+
+    test("FieldValue.fromProto", () => {
+        const protoField = new ProtoField();
+        protoField.value = { case: "strVal", value: "test" };
+        const fieldValue = FieldValue.fromProto(protoField);
+        expect(fieldValue.type).toBe(FieldValueType.Str);
+        expect(fieldValue.value).toBe("test");
+    });
+
+    test("Field", () => {
+        const fieldValue = new FieldValue(FieldValueType.Str, "test");
+        const field = new Field("name", fieldValue);
+        expect(field.name).toBe("name");
+        expect(field.value).toBe(fieldValue);
+    });
+
+    test("Field.fromProto", () => {
+        const protoField = new ProtoField();
+        protoField.name = { case: "strName", value: "name" };
+        protoField.value = { case: "strVal", value: "test" };
+        const metadata = {
+            id: BigInt(1),
+            target: "target",
+            field_names: ["name"],
+        };
+        const field = Field.fromProto(protoField, metadata);
+        expect(field?.name).toBe("name");
+        expect(field?.value.type).toBe(FieldValueType.Str);
+        expect(field?.value.value).toBe("test");
+    });
+});
 
 describe("formatLocation", () => {
     test('should return "<unknown location>" when location is undefined', () => {
