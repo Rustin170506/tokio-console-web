@@ -1,11 +1,13 @@
 import { ConnectError } from "@connectrpc/connect";
 import { state } from "./state";
 import {
-    type FormattedField,
-    TokioTask,
+    FieldValue,
+    Field,
     formatLocation,
-} from "~/types/task/tokioTask";
-import { Duration, Timestamp } from "~/types/task/duration";
+    FieldValueType,
+} from "~/types/common/field";
+import { TokioTask } from "~/types/task/tokioTask";
+import { Duration, Timestamp } from "~/types/common/duration";
 import { fromProtoTaskStats } from "~/types/task/tokioTaskStats";
 import {
     fromProtoTaskDetails,
@@ -17,6 +19,7 @@ import {
     type Update,
 } from "~/gen/instrument_pb";
 import type { TaskUpdate } from "~/gen/tasks_pb";
+import { fromProtoMetadata } from "~/types/common/metadata";
 
 const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
     const result = new Array<TokioTask>();
@@ -40,36 +43,35 @@ const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
         }
 
         let name;
-        let taskId;
+        let taskId: bigint | undefined;
         let kind = "";
-        const targetField = {
-            name: "target",
-            value: meta.target,
-        };
+        const targetField = new Field(
+            "target",
+            new FieldValue(FieldValueType.Str, meta.target),
+        );
 
-        const fields: FormattedField[] = [];
+        const fields: Field[] = [];
         for (let i = 0; i < task.fields.length; i++) {
-            // TODO: validate fields.
-            const field = task.fields[i];
+            const field = Field.fromProto(task.fields[i], meta);
+            if (!field) {
+                continue;
+            }
             // the `task.name` field gets its own column, if it's present.
-            switch (field.name.value) {
-                case "task.name":
+            switch (field.name) {
+                case Field.NAME:
                     name = field.value.value!.toString();
                     break;
-                case "task.id":
+                case Field.TASK_ID:
                     taskId =
-                        field.value?.case === "u64Val"
-                            ? field.value?.value
+                        field.value?.type === FieldValueType.U64
+                            ? (field.value?.value as bigint)
                             : undefined;
                     break;
-                case "kind":
+                case Field.KIND:
                     kind = field.value.value!.toString();
                     break;
                 default:
-                    fields.push({
-                        name: field.name.value!.toString(),
-                        value: field.value.value!.toString(),
-                    });
+                    fields.push(field);
                     break;
             }
         }
@@ -152,8 +154,8 @@ export function useTasks() {
         if (update.newMetadata) {
             update.newMetadata.metadata.forEach((meta) => {
                 const id = meta.id?.id;
-                const metadata = meta.metadata;
-                if (id && metadata) {
+                if (id && meta.metadata) {
+                    const metadata = fromProtoMetadata(meta.metadata, id);
                     state.metas.set(id, metadata);
                 }
             });

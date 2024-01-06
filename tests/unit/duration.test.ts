@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { Duration } from "~/types/task/duration";
+import { Duration } from "~/types/common/duration";
 
 describe("Duration", () => {
     test("constructor", () => {

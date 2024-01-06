@@ -1,20 +1,22 @@
 import { describe, test, beforeEach, expect } from "vitest";
-import {
-    TokioTask,
-    TaskState,
-    type FormattedField,
-} from "~/types/task/tokioTask";
+import { TokioTask, TaskState } from "~/types/task/tokioTask";
 import { type TokioTaskStats } from "~/types/task/tokioTaskStats";
-import { Duration, Timestamp } from "~/types/task/duration";
+import { Duration, Timestamp } from "~/types/common/duration";
+import { Field, FieldValue, FieldValueType } from "~/types/common/field";
 
 describe("TokioTask", () => {
     let task: TokioTask;
-    let formattedFields: Array<FormattedField>;
+    let formattedFields: Array<Field>;
     let stats: TokioTaskStats;
     let timestamp: Timestamp;
 
     beforeEach(() => {
-        formattedFields = [{ name: "target", value: "tokio:task" }];
+        formattedFields = [
+            new Field(
+                "target",
+                new FieldValue(FieldValueType.Str, "tokio:task"),
+            ),
+        ];
         stats = {
             polls: 100n,
             createdAt: new Timestamp(0n, 0),

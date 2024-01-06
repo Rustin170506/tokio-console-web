@@ -1,8 +1,8 @@
 import {
     getDurationWithClass,
     type DurationWithStyle,
-} from "./durationWithStyle";
-import type { Timestamp } from "./task/duration";
+} from "./common/durationWithStyle";
+import type { Timestamp } from "./common/duration";
 import type { TokioTask } from "./task/tokioTask";
 import { toTaskTableItem, type TaskTableItem } from "./taskTableItem";
 
