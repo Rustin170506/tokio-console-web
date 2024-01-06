@@ -23,7 +23,7 @@ export class TokioTask {
     // A precomputed short description string used in the async ops table
     shortDesc: string;
     // Fields that don't have their own column, pre-formatted
-    formattedFields: Array<Field>;
+    fields: Array<Field>;
     // The task statistics that are updated over the lifetime of the task.
     stats: TokioTaskStats;
     // The target of the span representing the task.
@@ -51,7 +51,7 @@ export class TokioTask {
         this.taskId = taskId;
         this.spanId = spanId;
         this.shortDesc = shortDesc;
-        this.formattedFields = formattedFields;
+        this.fields = formattedFields;
         this.stats = stats;
         this.target = target;
         this.name = name;

@@ -39,7 +39,7 @@ export function toTaskTableItem(
         pools: task.stats.polls,
         kind: task.kind,
         location: task.location,
-        fields: task.formattedFields,
+        fields: task.fields,
         class:
             task.state() === TaskState.Completed
                 ? "bg-slate-50 dark:bg-slate-950 animate-pulse"
