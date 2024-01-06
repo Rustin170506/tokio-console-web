@@ -1,6 +1,6 @@
 import { describe, test, expect } from "vitest";
 import { Location } from "~/gen/common_pb";
-import { formatLocation } from "~/types/task/tokioTask";
+import { formatLocation } from "~/types/common/field";
 
 describe("formatLocation", () => {
     test('should return "<unknown location>" when location is undefined', () => {

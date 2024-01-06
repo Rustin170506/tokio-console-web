@@ -1,6 +1,6 @@
 import { Duration, Timestamp } from "../common/duration";
+import type { Field } from "../common/field";
 import type { TokioTaskStats } from "./tokioTaskStats";
-import { Location } from "~/gen/common_pb";
 
 export enum TaskState {
     Completed,
@@ -8,11 +8,6 @@ export enum TaskState {
     Scheduled,
     Idle,
 }
-export interface FormattedField {
-    name: string;
-    value: string;
-}
-
 export class TokioTask {
     // The task's pretty (console-generated, sequential) task ID.
     //
@@ -28,7 +23,7 @@ export class TokioTask {
     // A precomputed short description string used in the async ops table
     shortDesc: string;
     // Fields that don't have their own column, pre-formatted
-    formattedFields: Array<FormattedField>;
+    formattedFields: Array<Field>;
     // The task statistics that are updated over the lifetime of the task.
     stats: TokioTaskStats;
     // The target of the span representing the task.
@@ -45,7 +40,7 @@ export class TokioTask {
         taskId: bigint | undefined,
         spanId: bigint,
         shortDesc: string,
-        formattedFields: Array<FormattedField>,
+        formattedFields: Array<Field>,
         stats: TokioTaskStats,
         target: string,
         name: string | undefined,
@@ -168,34 +163,4 @@ export class TokioTask {
 
         return percent;
     }
-}
-
-function truncateRegistryPath(s: string): string {
-    const regex = /.*\/cargo(\/registry\/src\/[^/]*\/|\/git\/checkouts\/)/;
-    return s.replace(regex, "<cargo>/");
-}
-
-export function formatLocation(loc?: Location): string {
-    if (loc) {
-        let result = "";
-        if (loc.modulePath) {
-            result = loc.modulePath;
-        } else if (loc.file) {
-            const truncated = truncateRegistryPath(loc.file);
-            result = truncated;
-        } else {
-            return "<unknown location>";
-        }
-
-        if (loc.line !== undefined) {
-            result += `:${loc.line}`;
-
-            if (loc.column !== undefined) {
-                result += `:${loc.column}`;
-            }
-        }
-
-        return result;
-    }
-    return "<unknown location>";
 }

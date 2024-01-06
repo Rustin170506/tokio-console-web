@@ -4,6 +4,7 @@ import TaskDetails from "~/components/TaskDetails.vue";
 import { Duration, Timestamp } from "~/types/common/duration";
 import { TokioTask } from "~/types/task/tokioTask";
 import type { TokioTaskDetails } from "~/types/task/tokioTaskDetails";
+import { Field, FieldValue, FieldValueType } from "~/types/common/field";
 
 mockNuxtImport("useRoute", () => {
     return () => {
@@ -18,7 +19,12 @@ mockNuxtImport("useRoute", () => {
 mockNuxtImport("useTaskDetails", () => {
     return (_id: bigint) => {
         const pending = ref<boolean>(false);
-        const formattedFields = [{ name: "target", value: "tokio:task" }];
+        const formattedFields = [
+            new Field(
+                "target",
+                new FieldValue(FieldValueType.Str, "tokio:task"),
+            ),
+        ];
         const stats = {
             polls: 100n,
             createdAt: new Duration(1000n, 0),

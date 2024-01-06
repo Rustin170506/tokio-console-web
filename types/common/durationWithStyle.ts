@@ -1,4 +1,4 @@
-import type { Duration } from "./common/duration";
+import type { Duration } from "./duration";
 
 export class DurationWithStyle {
     value: Duration;

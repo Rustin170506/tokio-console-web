@@ -21,7 +21,7 @@
                     }}</span>
                     <span class="text-gray-500 dark:text-gray-400">=</span>
                     <span class="text-green-600 dark:text-green-400">{{
-                        item.value
+                        item.value.value
                     }}</span>
                 </p>
             </div>

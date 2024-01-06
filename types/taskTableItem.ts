@@ -1,13 +1,10 @@
 import {
     getDurationWithClass,
     type DurationWithStyle,
-} from "./durationWithStyle";
+} from "./common/durationWithStyle";
 import type { Timestamp } from "./common/duration";
-import {
-    TaskState,
-    type FormattedField,
-    type TokioTask,
-} from "./task/tokioTask";
+import { TaskState, type TokioTask } from "./task/tokioTask";
+import type { Field } from "./common/field";
 
 export interface TaskTableItem {
     id: bigint;
@@ -21,7 +18,8 @@ export interface TaskTableItem {
     pools: bigint;
     kind: string;
     location: string;
-    fields: Array<FormattedField>;
+    // TODO: format fields.
+    fields: Array<Field>;
     class?: string;
 }
 

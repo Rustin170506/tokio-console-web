@@ -141,7 +141,7 @@
                                 >=</span
                             >
                             <span class="text-green-600 dark:text-green-400">{{
-                                item.value
+                                item.value.value
                             }}</span>
                         </p>
                     </div>

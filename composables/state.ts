@@ -1,7 +1,7 @@
 import { TokioTask } from "~/types/task/tokioTask";
 import { Duration, Timestamp } from "~/types/common/duration";
-import { Metadata } from "~/gen/common_pb";
 import { type Update } from "~/gen/instrument_pb";
+import type { Metadata } from "~/types/common/metadata";
 
 export interface State {
     // Metadata about a task.

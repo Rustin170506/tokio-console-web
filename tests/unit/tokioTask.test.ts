@@ -1,15 +1,12 @@
 import { describe, test, beforeEach, expect } from "vitest";
-import {
-    TokioTask,
-    TaskState,
-    type FormattedField,
-} from "~/types/task/tokioTask";
+import { TokioTask, TaskState } from "~/types/task/tokioTask";
 import { type TokioTaskStats } from "~/types/task/tokioTaskStats";
 import { Duration, Timestamp } from "~/types/common/duration";
+import type { Field } from "~/types/common/field";
 
 describe("TokioTask", () => {
     let task: TokioTask;
-    let formattedFields: Array<FormattedField>;
+    let formattedFields: Array<Field>;
     let stats: TokioTaskStats;
     let timestamp: Timestamp;
 

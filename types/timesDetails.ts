@@ -1,7 +1,7 @@
 import {
     getDurationWithClass,
     type DurationWithStyle,
-} from "./durationWithStyle";
+} from "./common/durationWithStyle";
 import type { Duration } from "./common/duration";
 import type {
     DurationCount,

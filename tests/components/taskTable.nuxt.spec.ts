@@ -3,12 +3,18 @@ import { mountSuspended, mockNuxtImport } from "nuxt-vitest/utils";
 import TaskTable from "~/components/TaskTable.vue";
 import { TokioTask } from "~/types/task/tokioTask";
 import { Timestamp, Duration } from "~/types/common/duration";
+import { Field, FieldValue, FieldValueType } from "~/types/common/field";
 
 mockNuxtImport("useTasks", () => {
     return () => {
         const pending = ref<boolean>(false);
         const tasksData = ref<Map<bigint, TokioTask>>(new Map());
-        const formattedFields = [{ name: "target", value: "tokio:task" }];
+        const formattedFields = [
+            new Field(
+                "target",
+                new FieldValue(FieldValueType.Str, "tokio:task"),
+            ),
+        ];
         const stats = {
             polls: 100n,
             createdAt: new Duration(1000n, 0),
