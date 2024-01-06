@@ -121,8 +121,8 @@ export class Field {
                 if (meta.id !== metaId) {
                     return undefined;
                 }
-                if (meta.field_names[Number(index)]) {
-                    name = meta.field_names[Number(index)];
+                if (meta.fieldNames[Number(index)]) {
+                    name = meta.fieldNames[Number(index)];
                 } else {
                     return undefined;
                 }
