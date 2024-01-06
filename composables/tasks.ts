@@ -1,4 +1,5 @@
 import { ConnectError } from "@connectrpc/connect";
+import { state } from "./state";
 import {
     type FormattedField,
     TokioTask,
@@ -10,42 +11,12 @@ import {
     fromProtoTaskDetails,
     type TokioTaskDetails,
 } from "~/types/task/tokioTaskDetails";
-import { Metadata } from "~/gen/common_pb";
 import {
     InstrumentRequest,
     TaskDetailsRequest,
     type Update,
 } from "~/gen/instrument_pb";
 import type { TaskUpdate } from "~/gen/tasks_pb";
-
-interface State {
-    // Metadata about a task.
-    metas: Map<bigint, Metadata>;
-    // IDs for tasks.
-    ids: {
-        nextId: bigint;
-        map: Map<bigint, bigint>;
-    };
-    // How long to retain tasks after they're dropped.
-    retainFor: Duration;
-    tasks: Ref<Map<bigint, TokioTask>>;
-    lastUpdatedAt: Ref<Timestamp | undefined>;
-    isTaskStarted: boolean;
-    updateStreamInstance?: AsyncIterable<Update>;
-}
-
-const state: State = {
-    metas: new Map(),
-    ids: {
-        nextId: 1n,
-        map: new Map(),
-    },
-    // TODO: make this configurable.
-    retainFor: new Duration(6n, 0),
-    tasks: ref<Map<bigint, TokioTask>>(new Map()),
-    lastUpdatedAt: ref<Timestamp | undefined>(undefined),
-    isTaskStarted: false,
-};
 
 const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
     const result = new Array<TokioTask>();
@@ -160,7 +131,7 @@ const handleConnectError = (err: any) => {
 };
 
 export function useTasks() {
-    if (state.isTaskStarted) {
+    if (state.isConnected) {
         return {
             pending: ref<boolean>(false),
             tasksData: state.tasks,
@@ -258,9 +229,9 @@ export function useTasks() {
     };
 
     const startWatchTaskUpdates = () => {
-        if (!state.isTaskStarted) {
+        if (!state.isConnected) {
             watchForUpdates();
-            state.isTaskStarted = true;
+            state.isConnected = true;
         }
     };
 
