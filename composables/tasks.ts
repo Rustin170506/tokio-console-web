@@ -5,7 +5,7 @@ import {
     TokioTask,
     formatLocation,
 } from "~/types/task/tokioTask";
-import { Duration, Timestamp } from "~/types/task/duration";
+import { Duration, Timestamp } from "~/types/common/duration";
 import { fromProtoTaskStats } from "~/types/task/tokioTaskStats";
 import {
     fromProtoTaskDetails,

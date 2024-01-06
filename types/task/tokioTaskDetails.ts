@@ -1,4 +1,4 @@
-import { Duration } from "./duration";
+import { Duration } from "../common/duration";
 import {
     deserializeHistogram,
     Percentile as RawPercentile,

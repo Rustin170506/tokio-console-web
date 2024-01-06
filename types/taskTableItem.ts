@@ -2,7 +2,7 @@ import {
     getDurationWithClass,
     type DurationWithStyle,
 } from "./durationWithStyle";
-import type { Timestamp } from "./task/duration";
+import type { Timestamp } from "./common/duration";
 import {
     TaskState,
     type FormattedField,

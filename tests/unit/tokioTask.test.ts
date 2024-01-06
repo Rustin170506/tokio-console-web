@@ -5,7 +5,7 @@ import {
     type FormattedField,
 } from "~/types/task/tokioTask";
 import { type TokioTaskStats } from "~/types/task/tokioTaskStats";
-import { Duration, Timestamp } from "~/types/task/duration";
+import { Duration, Timestamp } from "~/types/common/duration";
 
 describe("TokioTask", () => {
     let task: TokioTask;

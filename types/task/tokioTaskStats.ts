@@ -1,4 +1,4 @@
-import { Duration, Timestamp } from "./duration";
+import { Duration, Timestamp } from "../common/duration";
 import type { Stats as ProtoTaskStats } from "~/gen/tasks_pb";
 
 export interface TokioTaskStats {

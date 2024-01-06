@@ -1,5 +1,5 @@
+import { Duration, Timestamp } from "../common/duration";
 import type { TokioTaskStats } from "./tokioTaskStats";
-import { Duration, Timestamp } from "./duration";
 import { Location } from "~/gen/common_pb";
 
 export enum TaskState {
@@ -161,9 +161,7 @@ export class TokioTask {
 
     durationPercent(now: Timestamp, amt: Duration): number {
         let percent =
-            (amt.asSeconds() /
-                this.totalDuration(now).asSeconds()) *
-            100;
+            (amt.asSeconds() / this.totalDuration(now).asSeconds()) * 100;
         if (percent > 100) {
             percent = 100;
         }

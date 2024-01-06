@@ -2,7 +2,7 @@ import {
     getDurationWithClass,
     type DurationWithStyle,
 } from "./durationWithStyle";
-import type { Duration } from "./task/duration";
+import type { Duration } from "./common/duration";
 import type {
     DurationCount,
     DurationDetails,
