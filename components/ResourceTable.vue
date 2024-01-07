@@ -89,18 +89,12 @@ const columns = [
 
 const { pending, resourcesData, lastUpdatedAt } = useResources();
 const resources = computed(() => {
-    // Map to array.
-    const resources = Array.from(resourcesData.value.values());
-    const resourceList: Array<ResourceTableItem | undefined> = resources.map(
-        (resource) => {
-            if (lastUpdatedAt.value === undefined) {
-                return undefined;
-            }
-            return toResourceTableItem(resource, lastUpdatedAt.value);
-        },
-    );
-    return resourceList.filter(
-        (resource) => resource !== undefined,
-    ) as ResourceTableItem[];
+    if (lastUpdatedAt.value === undefined) {
+        return [];
+    }
+
+    return Array.from(resourcesData.value.values())
+        .map((resource) => toResourceTableItem(resource, lastUpdatedAt.value!))
+        .filter((resource) => resource !== undefined) as ResourceTableItem[];
 });
 </script>
