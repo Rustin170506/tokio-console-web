@@ -65,6 +65,4 @@ export async function watchForUpdates(pending: Ref<boolean>) {
     } finally {
         pending.value = false;
     }
-
-    return pending;
 }
