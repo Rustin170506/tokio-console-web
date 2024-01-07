@@ -24,7 +24,10 @@
         >
             <NuxtLink to="/">
                 <button
-                    class="console-icon-button text-black dark:text-white"
+                    class="console-icon-button"
+                    :class="{
+                        'text-blue-500 dark:text-blue-500': isTasksRoute,
+                    }"
                     title="Tasks"
                 >
                     Tasks
@@ -35,7 +38,10 @@
             />
             <NuxtLink to="/resources">
                 <button
-                    class="console-icon-button text-black dark:text-white"
+                    class="console-icon-button"
+                    :class="{
+                        'text-blue-500 dark:text-blue-500': isResourcesRoute,
+                    }"
                     title="Resources"
                 >
                     Resources
@@ -47,6 +53,10 @@
 
 <script setup lang="ts">
 import { useEventListener, useObjectStorage, useScreenSafeArea } from "~/utils";
+
+const route = useRoute();
+const isTasksRoute = computed(() => route.path === "/");
+const isResourcesRoute = computed(() => route.path === "/resources");
 
 export interface AnchorState {
     top: number;
