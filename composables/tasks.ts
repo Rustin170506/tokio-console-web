@@ -80,12 +80,7 @@ const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
         delete statsUpdate[spanId.toString()];
         const taskStats = fromProtoTaskStats(stats);
 
-        let id = state.ids.map.get(spanId);
-        if (!id) {
-            const newID = state.ids.nextId++;
-            state.ids.map.set(spanId, newID);
-            id = newID;
-        }
+        const id = state.tasks.idFor(spanId);
         let shortDesc = "";
         if (taskId && name) {
             shortDesc = `${taskId} (${name})`;
@@ -119,16 +114,18 @@ export function addTasks(update: Update) {
         const tasks = taskUpdateToTasks(update.taskUpdate);
 
         for (const task of tasks) {
-            state.tasks.value.set(task.id, task);
+            state.tasks.items.value.set(task.id, task);
         }
 
         for (const k in update.taskUpdate.statsUpdate) {
-            const task = state.tasks.value.get(state.ids.map.get(BigInt(k))!);
+            const task = state.tasks.items.value.get(
+                state.tasks.idFor(BigInt(k))!,
+            );
             if (task) {
                 task.stats = fromProtoTaskStats(
                     update.taskUpdate.statsUpdate[k],
                 );
-                state.tasks.value.set(task.id, task);
+                state.tasks.items.value.set(task.id, task);
             }
         }
     }
@@ -136,7 +133,7 @@ export function addTasks(update: Update) {
 
 export function retainTasks(retainFor: Duration) {
     const newTasks = new Map<bigint, TokioTask>();
-    for (const [id, task] of state.tasks.value) {
+    for (const [id, task] of state.tasks.items.value) {
         if (task.stats.droppedAt) {
             if (
                 state.lastUpdatedAt.value !== undefined &&
@@ -151,14 +148,14 @@ export function retainTasks(retainFor: Duration) {
         }
     }
 
-    state.tasks.value = newTasks;
+    state.tasks.items.value = newTasks;
 }
 
 export function useTasks() {
     if (state.isUpdateWatched) {
         return {
             pending: ref<boolean>(false),
-            tasksData: state.tasks,
+            tasksData: state.tasks.items,
             lastUpdatedAt: state.lastUpdatedAt,
         };
     }
@@ -170,14 +167,14 @@ export function useTasks() {
 
     return {
         pending,
-        tasksData: state.tasks,
+        tasksData: state.tasks.items,
         lastUpdatedAt: state.lastUpdatedAt,
     };
 }
 
 export function useTaskDetails(id: bigint) {
     const pending = ref<boolean>(true);
-    const task = state.tasks.value.get(id);
+    const task = state.tasks.items.value.get(id);
     const taskDetails = ref<TokioTaskDetails>({
         pollTimes: {
             percentiles: [],

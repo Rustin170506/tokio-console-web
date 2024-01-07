@@ -22,7 +22,7 @@
                             class="flex items-center text-black dark:text-white font-bold text-md"
                         >
                             <span>Task</span>
-                            <UIcon :name="taskBasicInfo.state" />
+                            <UIcon :name="taskBasicInfo.state" dynamic />
                         </div>
                     </UDivider>
                     <TaskInfoField name="ID" :value="taskBasicInfo.idString" />

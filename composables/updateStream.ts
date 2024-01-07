@@ -55,6 +55,8 @@ export async function watchForUpdates(pending: Ref<boolean>) {
             addMetadata(value);
             addTasks(value);
             retainTasks(state.retainFor);
+            addResources(value);
+            retainResources(state.retainFor);
         }
 
         state.isUpdateWatched = true;
@@ -63,6 +65,4 @@ export async function watchForUpdates(pending: Ref<boolean>) {
     } finally {
         pending.value = false;
     }
-
-    return pending;
 }

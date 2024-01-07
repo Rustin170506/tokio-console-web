@@ -1,0 +1,129 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ResourceTable View 1`] = `
+<tbody
+  class="divide-y divide-gray-200 dark:divide-gray-800"
+>
+  
+  <tr
+    class="bg-slate-50 dark:bg-slate-950 animate-pulse"
+  >
+    <!--v-if-->
+    
+    <td
+      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+    >
+      
+      1
+      
+    </td>
+    <td
+      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+    >
+      
+      parent
+      
+    </td>
+    <td
+      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+    >
+      
+      Timer
+      
+    </td>
+    <td
+      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm text-green-500 dark:text-green-300"
+    >
+      
+      <p
+        class="text-green-500 dark:text-green-300 w-10"
+      >
+        16m 40s 
+      </p>
+      
+    </td>
+    <td
+      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+    >
+      
+      sleep
+      
+    </td>
+    <td
+      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+    >
+      
+      <svg
+        aria-hidden="true"
+        class="icon"
+        data-v-afdf4c63=""
+        height="1em"
+        role="img"
+        viewBox="0 0 24 24"
+        width="1em"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+      >
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.5"
+        >
+          <path
+            d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178c.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178"
+          />
+          <path
+            d="M15 12a3 3 0 1 1-6 0a3 3 0 0 1 6 0"
+          />
+        </g>
+      </svg>
+      
+    </td>
+    <td
+      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+    >
+      
+      app.rs/68:10
+      
+    </td>
+    <td
+      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+    >
+      
+      
+      <div
+        class="mb-1 w-10"
+      >
+        <p>
+          <span
+            class="text-blue-500 font-bold dark:text-blue-300"
+          >
+            target
+          </span>
+          <span
+            class="text-gray-500 dark:text-gray-400"
+          >
+            =
+          </span>
+          <span
+            class="text-yellow-500 dark:text-yellow-300"
+          >
+            tokio:task
+          </span>
+          <span
+            class="text-blue-500 dark:text-blue-300"
+          >
+            ms
+          </span>
+        </p>
+      </div>
+      
+      
+    </td>
+    
+  </tr>
+  
+</tbody>
+`;

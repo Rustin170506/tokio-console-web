@@ -27,7 +27,7 @@
             </div>
         </template>
         <template #state-data="{ row }">
-            <UIcon :name="row.state" />
+            <UIcon :name="row.state" dynamic />
         </template>
         <template #total-data="{ row }">
             <p :class="`${row.total.class} w-10`">
@@ -119,14 +119,12 @@ const select = (row: TaskTableItem) => {
 
 const { pending, tasksData, lastUpdatedAt } = useTasks();
 const tasks = computed(() => {
-    // Map to array.
-    const tasks = Array.from(tasksData.value.values());
-    const taskList: Array<TaskTableItem | undefined> = tasks.map((task) => {
-        if (lastUpdatedAt.value === undefined) {
-            return undefined;
-        }
-        return toTaskTableItem(task, lastUpdatedAt.value);
-    });
-    return taskList.filter((task) => task !== undefined) as TaskTableItem[];
+    if (lastUpdatedAt.value === undefined) {
+        return [];
+    }
+
+    return Array.from(tasksData.value.values())
+        .map((task) => toTaskTableItem(task, lastUpdatedAt.value!))
+        .filter((task) => task !== undefined) as TaskTableItem[];
 });
 </script>
