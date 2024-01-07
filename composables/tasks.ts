@@ -6,7 +6,7 @@ import {
     FieldValueType,
 } from "~/types/common/field";
 import { TokioTask } from "~/types/task/tokioTask";
-import { Duration, Timestamp } from "~/types/common/duration";
+import { Duration } from "~/types/common/duration";
 import { fromProtoTaskStats } from "~/types/task/tokioTaskStats";
 import {
     fromProtoTaskDetails,
@@ -14,7 +14,6 @@ import {
 } from "~/types/task/tokioTaskDetails";
 import { TaskDetailsRequest, type Update } from "~/gen/instrument_pb";
 import type { TaskUpdate } from "~/gen/tasks_pb";
-import { fromProtoMetadata } from "~/types/common/metadata";
 
 const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
     const result = new Array<TokioTask>();
@@ -116,22 +115,6 @@ const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
 };
 
 export function addTasks(update: Update) {
-    if (update.now !== undefined) {
-        state.lastUpdatedAt.value = new Timestamp(
-            update.now.seconds,
-            update.now.nanos,
-        );
-    }
-
-    if (update.newMetadata) {
-        update.newMetadata.metadata.forEach((meta) => {
-            const id = meta.id?.id;
-            if (id && meta.metadata) {
-                const metadata = fromProtoMetadata(meta.metadata, id);
-                state.metas.set(id, metadata);
-            }
-        });
-    }
     if (update.taskUpdate) {
         const tasks = taskUpdateToTasks(update.taskUpdate);
 
