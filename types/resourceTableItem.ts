@@ -70,8 +70,8 @@ export function toResourceTableItem(
         type: resource.concreteType,
         visibilityIcon:
             resource.visibility === Visibility.Internal
-                ? "i-heroicon-lock-closed"
-                : "i-heroicon-eye",
+                ? "i-heroicons-lock-closed"
+                : "i-heroicons-eye",
         location: resource.location,
         attributes: resource.stats.attributes.map(makeFormattedAttribute),
         class: resource.isDropped()

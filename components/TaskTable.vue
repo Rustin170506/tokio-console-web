@@ -27,7 +27,7 @@
             </div>
         </template>
         <template #state-data="{ row }">
-            <UIcon :name="row.state" />
+            <UIcon :name="row.state" dynamic />
         </template>
         <template #total-data="{ row }">
             <p :class="`${row.total.class} w-10`">

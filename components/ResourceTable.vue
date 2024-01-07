@@ -18,7 +18,7 @@
             </p>
         </template>
         <template #visibilityIcon-data="{ row }">
-            <UIcon :name="row.visibilityIcon" />
+            <UIcon :name="row.visibilityIcon" dynamic />
         </template>
         <template #attributes-data="{ row }">
             <div
