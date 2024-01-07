@@ -1,6 +1,5 @@
 import { TokioTask } from "~/types/task/tokioTask";
 import { Duration, Timestamp } from "~/types/common/duration";
-import { type Update } from "~/gen/instrument_pb";
 import type { Metadata } from "~/types/common/metadata";
 
 export interface State {
@@ -16,9 +15,7 @@ export interface State {
     tasks: Ref<Map<bigint, TokioTask>>;
     lastUpdatedAt: Ref<Timestamp | undefined>;
 
-    // Whether the task update stream has been started.
-    isConnected: boolean;
-    updateStreamInstance?: AsyncIterable<Update>;
+    isUpdateWatched: boolean;
 }
 
 export const state: State = {
@@ -31,5 +28,5 @@ export const state: State = {
     retainFor: new Duration(6n, 0),
     tasks: ref<Map<bigint, TokioTask>>(new Map()),
     lastUpdatedAt: ref<Timestamp | undefined>(undefined),
-    isConnected: false,
+    isUpdateWatched: false,
 };

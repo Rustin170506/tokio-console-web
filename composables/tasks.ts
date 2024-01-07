@@ -1,4 +1,3 @@
-import { ConnectError } from "@connectrpc/connect";
 import { state } from "./state";
 import {
     FieldValue,
@@ -13,11 +12,7 @@ import {
     fromProtoTaskDetails,
     type TokioTaskDetails,
 } from "~/types/task/tokioTaskDetails";
-import {
-    InstrumentRequest,
-    TaskDetailsRequest,
-    type Update,
-} from "~/gen/instrument_pb";
+import { TaskDetailsRequest, type Update } from "~/gen/instrument_pb";
 import type { TaskUpdate } from "~/gen/tasks_pb";
 import { fromProtoMetadata } from "~/types/common/metadata";
 
@@ -120,20 +115,64 @@ const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
     return result;
 };
 
-const handleConnectError = (err: any) => {
-    const toast = useToast();
+export function addTasks(update: Update) {
+    if (update.now !== undefined) {
+        state.lastUpdatedAt.value = new Timestamp(
+            update.now.seconds,
+            update.now.nanos,
+        );
+    }
 
-    if (err instanceof ConnectError) {
-        toast.add({
-            title: err.name,
-            description: err.rawMessage,
-            color: "red",
+    if (update.newMetadata) {
+        update.newMetadata.metadata.forEach((meta) => {
+            const id = meta.id?.id;
+            if (id && meta.metadata) {
+                const metadata = fromProtoMetadata(meta.metadata, id);
+                state.metas.set(id, metadata);
+            }
         });
     }
-};
+    if (update.taskUpdate) {
+        const tasks = taskUpdateToTasks(update.taskUpdate);
+
+        for (const task of tasks) {
+            state.tasks.value.set(task.id, task);
+        }
+
+        for (const k in update.taskUpdate.statsUpdate) {
+            const task = state.tasks.value.get(state.ids.map.get(BigInt(k))!);
+            if (task) {
+                task.stats = fromProtoTaskStats(
+                    update.taskUpdate.statsUpdate[k],
+                );
+                state.tasks.value.set(task.id, task);
+            }
+        }
+    }
+}
+
+export function retainTasks(retainFor: Duration) {
+    const newTasks = new Map<bigint, TokioTask>();
+    for (const [id, task] of state.tasks.value) {
+        if (task.stats.droppedAt) {
+            if (
+                state.lastUpdatedAt.value !== undefined &&
+                !state.lastUpdatedAt.value
+                    .subtract(task.stats.droppedAt)
+                    .greaterThan(retainFor)
+            ) {
+                newTasks.set(id, task);
+            }
+        } else {
+            newTasks.set(id, task);
+        }
+    }
+
+    state.tasks.value = newTasks;
+}
 
 export function useTasks() {
-    if (state.isConnected) {
+    if (state.isUpdateWatched) {
         return {
             pending: ref<boolean>(false),
             tasksData: state.tasks,
@@ -143,101 +182,8 @@ export function useTasks() {
 
     const pending = ref<boolean>(true);
 
-    const addTasks = (update: Update) => {
-        if (update.now !== undefined) {
-            state.lastUpdatedAt.value = new Timestamp(
-                update.now.seconds,
-                update.now.nanos,
-            );
-        }
-
-        if (update.newMetadata) {
-            update.newMetadata.metadata.forEach((meta) => {
-                const id = meta.id?.id;
-                if (id && meta.metadata) {
-                    const metadata = fromProtoMetadata(meta.metadata, id);
-                    state.metas.set(id, metadata);
-                }
-            });
-        }
-        if (update.taskUpdate) {
-            const tasks = taskUpdateToTasks(update.taskUpdate);
-
-            for (const task of tasks) {
-                state.tasks.value.set(task.id, task);
-            }
-
-            for (const k in update.taskUpdate.statsUpdate) {
-                const task = state.tasks.value.get(
-                    state.ids.map.get(BigInt(k))!,
-                );
-                if (task) {
-                    task.stats = fromProtoTaskStats(
-                        update.taskUpdate.statsUpdate[k],
-                    );
-                    state.tasks.value.set(task.id, task);
-                }
-            }
-        }
-    };
-
-    const retainTasks = (retainFor: Duration) => {
-        const newTasks = new Map<bigint, TokioTask>();
-        for (const [id, task] of state.tasks.value) {
-            if (task.stats.droppedAt) {
-                if (
-                    state.lastUpdatedAt.value !== undefined &&
-                    !state.lastUpdatedAt.value
-                        .subtract(task.stats.droppedAt)
-                        .greaterThan(retainFor)
-                ) {
-                    newTasks.set(id, task);
-                }
-            } else {
-                newTasks.set(id, task);
-            }
-        }
-
-        state.tasks.value = newTasks;
-    };
-
-    const getUpdateStream = () => {
-        if (!state.updateStreamInstance) {
-            const client = useGrpcClient();
-            state.updateStreamInstance = client.watchUpdates(
-                new InstrumentRequest(),
-            );
-        }
-        return state.updateStreamInstance;
-    };
-
     // Async function to watch for updates.
-    const watchForUpdates = async () => {
-        try {
-            const updateStream = getUpdateStream();
-
-            for await (const value of updateStream) {
-                if (pending.value) {
-                    pending.value = false;
-                }
-                addTasks(value);
-                retainTasks(state.retainFor);
-            }
-        } catch (err) {
-            handleConnectError(err);
-        } finally {
-            pending.value = false;
-        }
-    };
-
-    const startWatchTaskUpdates = () => {
-        if (!state.isConnected) {
-            watchForUpdates();
-            state.isConnected = true;
-        }
-    };
-
-    startWatchTaskUpdates();
+    watchForUpdates(pending);
 
     return {
         pending,
