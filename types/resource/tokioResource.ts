@@ -1,8 +1,11 @@
+/* eslint-disable camelcase */
+import type { Duration, Timestamp } from "../common/duration";
 import type { TokioResourceStats } from "./tokioResourceStats";
+import { Resource_Kind, Resource_Kind_Known } from "~/gen/resources_pb";
 
-enum Visibility {
+export enum Visibility {
     Public,
-    Private,
+    Internal,
 }
 
 export class TokioResource {
@@ -49,5 +52,33 @@ export class TokioResource {
         this.concreteType = concreteType;
         this.location = location;
         this.visibility = visibility;
+    }
+
+    totalDuration(since: Timestamp): Duration {
+        const duration = since.subtract(this.stats.createdAt);
+        return this.stats.total ?? duration;
+    }
+
+    isDropped(): boolean {
+        return this.stats.total !== undefined;
+    }
+}
+
+export function kindFromProto(pb: Resource_Kind): string {
+    if (!pb.kind) {
+        throw new Error("a resource should have a kind field");
+    }
+
+    switch (pb.kind.case) {
+        case "known":
+            if (pb.kind.value === Resource_Kind_Known.TIMER) {
+                return "Timer";
+            } else {
+                throw new Error(`failed to parse known kind from ${pb.kind}`);
+            }
+        case "other":
+            return pb.kind.value;
+        default:
+            throw new Error(`Unknown kind: ${pb.kind}`);
     }
 }
