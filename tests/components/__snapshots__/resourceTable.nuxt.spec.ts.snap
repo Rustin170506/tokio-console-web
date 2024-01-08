@@ -6,7 +6,7 @@ exports[`ResourceTable View 1`] = `
 >
   
   <tr
-    class="bg-slate-50 dark:bg-slate-950 animate-pulse"
+    class="hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer bg-slate-50 dark:bg-slate-950 animate-pulse"
   >
     <!--v-if-->
     

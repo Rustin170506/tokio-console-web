@@ -4,6 +4,7 @@
         :rows="resources"
         :sort="{ column: 'total', direction: 'desc' }"
         :loading="pending"
+        @select="select"
     >
         <template #loading-state>
             <div class="flex justify-center items-center h-full">
@@ -86,6 +87,11 @@ const columns = [
         label: "Attributes",
     },
 ];
+const router = useRouter();
+
+const select = (row: ResourceTableItem) => {
+    router.push(`/resources/${row.id}`);
+};
 
 const { pending, resourcesData, lastUpdatedAt } = useResources();
 const resources = computed(() => {
