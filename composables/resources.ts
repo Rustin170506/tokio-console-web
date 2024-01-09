@@ -166,3 +166,15 @@ export function useResources() {
         lastUpdatedAt: state.lastUpdatedAt,
     };
 }
+
+export function useResourceDetails(id: bigint) {
+    const pending = ref<boolean>(true);
+    const resource = state.resources.items.value.get(id);
+
+    pending.value = false;
+    return {
+        pending,
+        resource,
+        lastUpdatedAt: state.lastUpdatedAt,
+    };
+}

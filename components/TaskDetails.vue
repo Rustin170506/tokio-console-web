@@ -25,14 +25,14 @@
                             <UIcon :name="taskBasicInfo.state" dynamic />
                         </div>
                     </UDivider>
-                    <TaskInfoField name="ID" :value="taskBasicInfo.idString" />
-                    <TaskInfoField name="Name" :value="taskBasicInfo.name" />
-                    <TaskInfoField
+                    <InfoField name="ID" :value="taskBasicInfo.idString" />
+                    <InfoField name="Name" :value="taskBasicInfo.name" />
+                    <InfoField
                         name="Location"
                         :value="taskBasicInfo.location"
                     />
-                    <TaskInfoField name="Total" :value="taskBasicInfo.total" />
-                    <TaskInfoField name="Busy">
+                    <InfoField name="Total" :value="taskBasicInfo.total" />
+                    <InfoField name="Busy">
                         <div class="flex">
                             <span :class="taskBasicInfo.busy.class">{{
                                 taskBasicInfo.busy.value
@@ -41,8 +41,8 @@
                                 ({{ taskBasicInfo.busyPercentage }})
                             </span>
                         </div>
-                    </TaskInfoField>
-                    <TaskInfoField name="Scheduled">
+                    </InfoField>
+                    <InfoField name="Scheduled">
                         <div class="flex">
                             <span :class="taskBasicInfo.sched.class">{{
                                 taskBasicInfo.sched.value
@@ -51,8 +51,8 @@
                                 ({{ taskBasicInfo.scheduledPercentage }})
                             </span>
                         </div>
-                    </TaskInfoField>
-                    <TaskInfoField name="Idle">
+                    </InfoField>
+                    <InfoField name="Idle">
                         <div class="flex">
                             <span :class="taskBasicInfo.idle.class">{{
                                 taskBasicInfo.idle.value
@@ -61,7 +61,7 @@
                                 ({{ taskBasicInfo.idlePercentage }})
                             </span>
                         </div>
-                    </TaskInfoField>
+                    </InfoField>
                 </div>
 
                 <UDivider
@@ -78,30 +78,30 @@
                             label: 'text-black dark:text-white font-bold text-md',
                         }"
                     />
-                    <TaskInfoField name="Current wakers">
+                    <InfoField name="Current wakers">
                         <div class="flex">
                             <span class="mr-1">{{
                                 taskBasicInfo.wakerCount
                             }}</span>
                             (
-                            <TaskInfoField
+                            <InfoField
                                 name="Clones"
                                 :value="taskBasicInfo.wakerClones"
                             />
                             <span class="mr-2">, </span>
-                            <TaskInfoField
+                            <InfoField
                                 name="Drops"
                                 :value="taskBasicInfo.wakerDrops"
                             />
                             )
                         </div>
-                    </TaskInfoField>
-                    <TaskInfoField name="Woken">
+                    </InfoField>
+                    <InfoField name="Woken">
                         <div class="flex">
                             <span class="mr-2">{{
                                 `${taskBasicInfo.wakes} times,`
                             }}</span>
-                            <TaskInfoField
+                            <InfoField
                                 v-if="
                                     taskBasicInfo.lastWokenDuration !==
                                     undefined
@@ -118,9 +118,9 @@
                                     }}
                                 </span>
                                 <span class="mx-1">ago</span>
-                            </TaskInfoField>
+                            </InfoField>
                         </div>
-                    </TaskInfoField>
+                    </InfoField>
                     <UDivider
                         label="Fields"
                         type="dotted"
@@ -151,12 +151,12 @@
                 <div class="space-y-2 flex-1">
                     <div class="mt-2">
                         <div class="flex justify-center">
-                            <TaskInfoField
+                            <InfoField
                                 name="Min"
                                 :value="taskDetailsInfo.pollTimes.min"
                                 class="mr-4"
                             />
-                            <TaskInfoField
+                            <InfoField
                                 v-for="percentile in taskDetailsInfo.pollTimes.percentiles.slice(
                                     0,
                                     3,
@@ -168,7 +168,7 @@
                             />
                         </div>
                         <div class="flex justify-center">
-                            <TaskInfoField
+                            <InfoField
                                 v-for="percentile in taskDetailsInfo.pollTimes.percentiles.slice(
                                     -4,
                                 )"
@@ -177,7 +177,7 @@
                                 :value="percentile.duration"
                                 class="mr-4"
                             />
-                            <TaskInfoField
+                            <InfoField
                                 name="Max"
                                 :value="taskDetailsInfo.pollTimes.max"
                                 class="mr-4"
@@ -202,12 +202,12 @@
                 >
                     <div class="mt-2">
                         <div class="flex justify-center">
-                            <TaskInfoField
+                            <InfoField
                                 name="Min"
                                 :value="taskDetailsInfo.scheduledTimes.min"
                                 class="mr-4"
                             />
-                            <TaskInfoField
+                            <InfoField
                                 v-for="percentile in taskDetailsInfo.scheduledTimes.percentiles.slice(
                                     0,
                                     3,
@@ -219,7 +219,7 @@
                             />
                         </div>
                         <div class="flex justify-center">
-                            <TaskInfoField
+                            <InfoField
                                 v-for="percentile in taskDetailsInfo.scheduledTimes.percentiles.slice(
                                     -4,
                                 )"
@@ -228,7 +228,7 @@
                                 :value="percentile.duration"
                                 class="mr-4"
                             />
-                            <TaskInfoField
+                            <InfoField
                                 name="Max"
                                 :value="taskDetailsInfo.scheduledTimes.max"
                                 class="mr-4"
