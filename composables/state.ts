@@ -2,6 +2,7 @@ import { TokioTask } from "~/types/task/tokioTask";
 import { Duration, Timestamp } from "~/types/common/duration";
 import type { Metadata } from "~/types/common/metadata";
 import type { TokioResource } from "~/types/resource/tokioResource";
+import type { AsyncOp } from "~/types/asyncOp/asyncOp";
 
 export class Store<T> {
     items: Ref<Map<bigint, T>>;
@@ -40,6 +41,7 @@ export interface State {
     retainFor: Duration;
     tasks: Store<TokioTask>;
     resources: Store<TokioResource>;
+    asyncOps: Store<AsyncOp>;
     lastUpdatedAt: Ref<Timestamp | undefined>;
 
     isUpdateWatched: boolean;
@@ -51,6 +53,7 @@ export const state: State = {
     retainFor: new Duration(6n, 0),
     tasks: new Store(),
     resources: new Store(),
+    asyncOps: new Store(),
     lastUpdatedAt: ref<Timestamp | undefined>(undefined),
     isUpdateWatched: false,
 };
