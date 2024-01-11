@@ -57,6 +57,8 @@ export async function watchForUpdates(pending: Ref<boolean>) {
             retainTasks(state.retainFor);
             addResources(value);
             retainResources(state.retainFor);
+            addAsyncOps(value);
+            retainAsyncOps(state.retainFor);
         }
 
         state.isUpdateWatched = true;

@@ -4,28 +4,36 @@ import type { Metadata } from "~/types/common/metadata";
 import type { TokioResource } from "~/types/resource/tokioResource";
 import type { AsyncOp } from "~/types/asyncOp/asyncOp";
 
-export class Store<T> {
-    items: Ref<Map<bigint, T>>;
-    ids: {
-        nextId: bigint;
-        map: Map<bigint, bigint>;
-    };
+export class Ids {
+    nextId: bigint;
+    map: Map<bigint, bigint>;
 
     constructor() {
-        this.items = ref<Map<bigint, T>>(new Map());
-        this.ids = {
-            nextId: 1n,
-            map: new Map(),
-        };
+        this.nextId = 1n;
+        this.map = new Map();
     }
 
     idFor(spanId: bigint): bigint {
-        let id = this.ids.map.get(spanId);
+        let id = this.map.get(spanId);
         if (!id) {
-            id = this.ids.nextId++;
-            this.ids.map.set(spanId, id);
+            id = this.nextId++;
+            this.map.set(spanId, id);
         }
         return id;
+    }
+}
+
+export class Store<T> {
+    items: Ref<Map<bigint, T>>;
+    ids: Ids;
+
+    constructor() {
+        this.items = ref<Map<bigint, T>>(new Map());
+        this.ids = new Ids();
+    }
+
+    idFor(spanId: bigint): bigint {
+        return this.ids.idFor(spanId);
     }
 
     getBySpanId(spanId: bigint): T | undefined {

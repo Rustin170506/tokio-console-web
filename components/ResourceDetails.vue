@@ -82,6 +82,7 @@
                     </div>
                 </div>
             </UCard>
+            <AsyncOpsTable :resource-id="resourceId" />
         </div>
     </div>
 </template>
@@ -90,9 +91,8 @@ import { toResourceBasicInfo } from "~/types/resourceBasicInfo";
 
 const router = useRouter();
 const route = useRoute();
-const { pending, resource, lastUpdatedAt } = useResourceDetails(
-    BigInt(route.params.id as string),
-);
+const resourceId = BigInt(route.params.id as string);
+const { pending, resource, lastUpdatedAt } = useResourceDetails(resourceId);
 
 if (resource === undefined || lastUpdatedAt.value === undefined) {
     router.push("/resources");
