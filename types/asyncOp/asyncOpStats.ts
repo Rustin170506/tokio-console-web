@@ -3,6 +3,7 @@ import { Field } from "../common/field";
 import type { Metadata } from "../common/metadata";
 import type { Attribute } from "../resource/tokioResourceStats";
 import type { Stats as ProtoAsyncOpStats } from "~/gen/async_ops_pb";
+import { Ids } from "~/composables/state";
 
 export interface AsyncOpStats {
     createdAt: Timestamp;

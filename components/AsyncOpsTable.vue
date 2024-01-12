@@ -12,6 +12,7 @@
             :rows="ops"
             :sort="{ column: 'total', direction: 'desc' }"
             :loading="pending"
+            @select="select"
         >
             <template #loading-state>
                 <div class="flex justify-center items-center h-full">
@@ -104,6 +105,14 @@ const columns = [
         label: "Attributes",
     },
 ];
+
+const router = useRouter();
+
+const select = (row: AsyncOpTableItem) => {
+    if (row.taskId) {
+        router.push(`/tasks/${row.taskId}`);
+    }
+};
 
 const { pending, asyncOpsData, lastUpdatedAt } = useAsyncOps();
 const ops = computed(() => {

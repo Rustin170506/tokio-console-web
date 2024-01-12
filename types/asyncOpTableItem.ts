@@ -12,6 +12,7 @@ import {
 export interface AsyncOpTableItem {
     id: bigint;
     parent: string;
+    taskId?: bigint;
     task: string;
     source: string;
     total: DurationWithStyle;
@@ -29,6 +30,7 @@ export function toAsyncOpTableItem(
     return {
         id: asyncOp.id,
         parent: asyncOp.parentIdStr,
+        taskId: asyncOp.stats.taskId,
         task: asyncOp.stats.taskIdStr,
         source: asyncOp.source,
         total: getDurationWithClass(asyncOp.totalDuration(lastUpdatedAt)),
