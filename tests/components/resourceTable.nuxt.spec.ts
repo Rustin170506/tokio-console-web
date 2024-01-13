@@ -29,7 +29,8 @@ mockNuxtImport("useResources", () => {
             new TokioResource(
                 1n,
                 1n,
-                "parent",
+                "N/A",
+                "N/A",
                 1n,
                 "Timer",
                 stats,
