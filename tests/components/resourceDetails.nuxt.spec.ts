@@ -45,6 +45,7 @@ mockNuxtImport("useResourceDetails", () => {
             1n,
             1n,
             "N/A",
+            "N/A",
             1n,
             "Timer",
             stats,
