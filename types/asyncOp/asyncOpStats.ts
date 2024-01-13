@@ -42,10 +42,12 @@ export function fromProtoAsyncOpStats(
         stats.createdAt!.seconds,
         stats.createdAt!.nanos,
     );
+
     const droppedAt = stats.droppedAt
         ? new Timestamp(stats.droppedAt.seconds, stats.droppedAt.nanos)
         : undefined;
     const total = droppedAt ? droppedAt.subtract(createdAt) : undefined;
+
     const pollStats = stats.pollStats!;
     const busy = pollStats.busyTime
         ? new Duration(pollStats.busyTime.seconds, pollStats.busyTime.nanos)

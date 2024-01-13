@@ -47,6 +47,6 @@ export class AsyncOp {
     }
 
     isDropped(): boolean {
-        return this.stats.total !== undefined;
+        return !this.stats.total;
     }
 }

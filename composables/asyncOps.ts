@@ -67,7 +67,6 @@ function asyncOpUpdateToOps(asyncOpUpdate: AsyncOpUpdate) {
 export function addAsyncOps(update: Update) {
     if (update.asyncOpUpdate) {
         const ops = asyncOpUpdateToOps(update.asyncOpUpdate);
-
         for (const op of ops) {
             state.asyncOps.items.value.set(op.id, op);
         }
