@@ -19,7 +19,6 @@ export class TokioResource {
     // This is used when requesting a task details stream
     spanId: bigint;
     parent: string;
-    parentId: string;
     metaId: bigint;
     kind: string;
     stats: TokioResourceStats;
@@ -32,7 +31,6 @@ export class TokioResource {
         id: bigint,
         spanId: bigint,
         parent: string,
-        parentId: string,
         metaId: bigint,
         kind: string,
         stats: TokioResourceStats,
@@ -44,7 +42,6 @@ export class TokioResource {
         this.id = id;
         this.spanId = spanId;
         this.parent = parent;
-        this.parentId = parentId;
         this.metaId = metaId;
         this.kind = kind;
         this.stats = stats;
