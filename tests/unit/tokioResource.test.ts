@@ -29,7 +29,6 @@ describe("TokioResource", () => {
             1n,
             1n,
             "parent",
-            "parentId",
             1n,
             "kind",
             stats,

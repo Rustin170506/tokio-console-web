@@ -30,7 +30,6 @@ mockNuxtImport("useResources", () => {
                 1n,
                 1n,
                 "parent",
-                "parentId",
                 1n,
                 "Timer",
                 stats,
