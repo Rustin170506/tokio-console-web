@@ -50,6 +50,7 @@ export async function watchForUpdates(pending: Ref<boolean>) {
         for await (const value of updateStream) {
             if (pending.value) {
                 pending.value = false;
+                state.isUpdateWatched = true;
             }
             updateLastUpdatedAt(value);
             addMetadata(value);
@@ -60,11 +61,10 @@ export async function watchForUpdates(pending: Ref<boolean>) {
             addAsyncOps(value);
             retainAsyncOps(state.retainFor);
         }
-
-        state.isUpdateWatched = true;
     } catch (err) {
         handleConnectError(err);
     } finally {
         pending.value = false;
     }
 }
+
