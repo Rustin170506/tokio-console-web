@@ -18,13 +18,12 @@
             :style="{
                 ...panelStyle,
                 display: 'flex',
-                justifyContent: 'space-around',
             }"
             @pointerdown="onPointerDown"
         >
             <NuxtLink to="/">
                 <button
-                    class="console-icon-button"
+                    class="console-icon-button m-4"
                     :class="{
                         'text-blue-500 dark:text-blue-500': isTasksRoute,
                     }"
@@ -33,12 +32,12 @@
                     Tasks
                 </button>
             </NuxtLink>
-            <div
-                class="border-l border-gray-300 dark:border-gray-700 w-px h-4 console-panel-content"
-            />
+            <div class="flex">
+            <UIcon name="i-heroicons-link" />
+            </div>
             <NuxtLink to="/resources">
                 <button
-                    class="console-icon-button"
+                    class="console-icon-button m-2"
                     :class="{
                         'text-blue-500 dark:text-blue-500': isResourcesRoute,
                     }"
@@ -322,7 +321,6 @@ const panelStyle = computed(() => {
     border-radius: 100%;
     border-width: 0;
     height: 30px;
-    width: 120px;
 }
 
 #console-anchor .console-icon-button:hover {
