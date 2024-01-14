@@ -16,7 +16,7 @@
                     },
                 }"
             >
-                <div class="space-y-2 flex-1">
+                <div class="space-y-2 flex-1 mr-4">
                     <UDivider type="dotted">
                         <div
                             class="flex items-center text-black dark:text-white font-bold text-md"
@@ -148,7 +148,7 @@
                 </div>
             </UCard>
             <UCard class="mt-4" :ui="{ body: { base: 'xl:flex' } }">
-                <div class="space-y-2 flex-1">
+                <div class="space-y-2 flex-1 mr-4">
                     <div class="mt-2">
                         <div class="flex justify-center">
                             <InfoField
