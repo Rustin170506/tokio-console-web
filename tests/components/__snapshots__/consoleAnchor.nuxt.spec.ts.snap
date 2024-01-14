@@ -4,8 +4,8 @@ exports[`Console Anchor 1`] = `
 "<div id=\\"test-wrapper\\">
   <div data-v-bc42691e=\\"\\" id=\\"console-anchor\\" style=\\"left: 512px; top: 758px; pointer-events: auto; --console-widget-bg: #ffffff; --console-widget-fg: #111; --console-widget-border: #efefef; --console-widget-shadow: rgba(128,128,128,0.1);\\" class=\\"\\">
     <div data-v-bc42691e=\\"\\" class=\\"console-glowing\\" style=\\"\\"></div>
-    <div data-v-bc42691e=\\"\\" class=\\"console-panel\\" style=\\"transform: translate(-50%, -50%); display: flex; justify-content: space-around;\\"><a data-v-bc42691e=\\"\\" href=\\"/\\"><button data-v-bc42691e=\\"\\" class=\\"console-icon-button text-blue-500 dark:text-blue-500\\" title=\\"Tasks\\"> Tasks </button></a>
-      <div data-v-bc42691e=\\"\\" class=\\"border-l border-gray-300 dark:border-gray-700 w-px h-4 console-panel-content\\"></div><a data-v-bc42691e=\\"\\" href=\\"/resources\\"><button data-v-bc42691e=\\"\\" class=\\"console-icon-button\\" title=\\"Resources\\"> Resources </button></a>
+    <div data-v-bc42691e=\\"\\" class=\\"console-panel\\" style=\\"transform: translate(-50%, -50%); display: flex;\\"><a data-v-bc42691e=\\"\\" href=\\"/\\"><button data-v-bc42691e=\\"\\" class=\\"console-icon-button m-4 text-blue-500 dark:text-blue-500\\" title=\\"Tasks\\"> Tasks </button></a>
+      <div data-v-bc42691e=\\"\\" class=\\"flex\\"><span data-v-bc42691e=\\"\\" class=\\"i-heroicons-link\\"></span></div><a data-v-bc42691e=\\"\\" href=\\"/resources\\"><button data-v-bc42691e=\\"\\" class=\\"console-icon-button m-2\\" title=\\"Resources\\"> Resources </button></a>
     </div>
   </div>
 </div>"

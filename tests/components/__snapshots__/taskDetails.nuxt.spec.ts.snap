@@ -6,7 +6,7 @@ exports[`TaskDetails 1`] = `
     <div class=\\"overflow-hidden rounded-lg divide-y divide-gray-200 dark:divide-gray-800 ring-1 ring-gray-200 dark:ring-gray-800 shadow bg-white dark:bg-gray-900\\">
       <!--v-if-->
       <div class=\\"xl:flex px-4 py-5 sm:p-6\\">
-        <div class=\\"space-y-2 flex-1\\">
+        <div class=\\"space-y-2 flex-1 mr-4\\">
           <div class=\\"flex items-center align-center text-center w-full flex-row\\">
             <div class=\\"flex border-gray-200 dark:border-gray-800 w-full border-t border-dotted\\"></div>
             <div class=\\"font-medium text-gray-700 dark:text-gray-200 flex mx-3 whitespace-nowrap\\">
@@ -65,7 +65,7 @@ exports[`TaskDetails 1`] = `
     <div class=\\"overflow-hidden rounded-lg divide-y divide-gray-200 dark:divide-gray-800 ring-1 ring-gray-200 dark:ring-gray-800 shadow bg-white dark:bg-gray-900 mt-4\\">
       <!--v-if-->
       <div class=\\"xl:flex px-4 py-5 sm:p-6\\">
-        <div class=\\"space-y-2 flex-1\\">
+        <div class=\\"space-y-2 flex-1 mr-4\\">
           <div class=\\"mt-2\\">
             <div class=\\"flex justify-center\\">
               <div class=\\"flex mr-4\\"><span class=\\"font-bold text-black dark:text-white\\">Min</span><span class=\\"mr-1\\">: </span><span class=\\"text-green-500 dark:text-green-300\\">1m 40s </span></div>
