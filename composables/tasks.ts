@@ -183,6 +183,7 @@ export function useTaskDetails(id: bigint) {
             min: new Duration(0n, 0),
         },
     });
+    const closed = ref<boolean>(false);
 
     // Async function to watch for details.
     const watchForDetails = async () => {
@@ -200,6 +201,9 @@ export function useTaskDetails(id: bigint) {
                 if (pending.value) {
                     pending.value = false;
                 }
+                if (closed.value) {
+                    break;
+                }
                 taskDetails.value = fromProtoTaskDetails(value);
             }
         } catch (err) {
@@ -213,5 +217,11 @@ export function useTaskDetails(id: bigint) {
         watchForDetails();
     }
 
-    return { pending, task, taskDetails, lastUpdatedAt: state.lastUpdatedAt };
+    return {
+        pending,
+        task,
+        taskDetails,
+        lastUpdatedAt: state.lastUpdatedAt,
+        closed,
+    };
 }
