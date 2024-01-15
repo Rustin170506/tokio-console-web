@@ -5,6 +5,9 @@
             <div class="space-y-2">
                 <USkeleton class="h-4 w-[250px]" />
                 <USkeleton class="h-4 w-[200px]" />
+                <USkeleton class="h-4 w-[150px]" />
+                <USkeleton class="h-4 w-[100px]" />
+                <USkeleton class="h-4 w-[50px]" />
             </div>
         </div>
 
@@ -250,12 +253,12 @@ import { toTaskBasicInfo } from "~/types/taskBasicInfo";
 const router = useRouter();
 const route = useRoute();
 
-const { pending, task, taskDetails, lastUpdatedAt } = useTaskDetails(
+const { pending, task, taskDetails, lastUpdatedAt, closed } = useTaskDetails(
     BigInt(route.params.id as string),
 );
 
 // If the task is undefined, redirect to the home page.
-if (task === undefined || lastUpdatedAt.value === undefined) {
+if (!task || !lastUpdatedAt.value) {
     router.push("/");
 }
 
@@ -267,7 +270,7 @@ const taskDetailsInfo = computed(() => {
     return toTaskDetails(taskDetails.value);
 });
 
-function createHistogramData(times: TimesDetails | undefined, label: string) {
+function buildHistogramData(times: TimesDetails | undefined, label: string) {
     if (times === undefined) {
         return undefined;
     }
@@ -284,13 +287,17 @@ function createHistogramData(times: TimesDetails | undefined, label: string) {
 }
 
 const pollTimesHistogramData = computed(() => {
-    return createHistogramData(taskDetailsInfo.value.pollTimes, "Poll Times");
+    return buildHistogramData(taskDetailsInfo.value.pollTimes, "Poll Times");
 });
 
 const scheduledTimesHistogramData = computed(() => {
-    return createHistogramData(
+    return buildHistogramData(
         taskDetailsInfo.value.scheduledTimes,
         "Scheduled Times",
     );
+});
+
+onBeforeUnmount(() => {
+    closed.value = true;
 });
 </script>
