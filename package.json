@@ -33,7 +33,7 @@
         "eslint-plugin-prettier": "^5.0.1",
         "eslint-plugin-vue": "9.20.1",
         "happy-dom": "^13.0.0",
-        "husky": "^8.0.3",
+        "husky": "^9.0.0",
         "nuxt": "^3.8.2",
         "nuxt-vitest": "^0.11.5",
         "prettier": "3.2.2",
