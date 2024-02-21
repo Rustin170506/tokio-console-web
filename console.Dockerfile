@@ -7,8 +7,7 @@ RUN apt-get update \
     && apt-get install -y git
 
 # Clone specific branch of tokio-console repo into /opt/console
-# TODO: Change to official repo once PR is merged.
-RUN git clone -b rustin-patch-grpc-web https://github.com/hi-rustin/console.git /opt/console
+RUN git clone https://github.com/tokio-rs/console.git /opt/console
 
 WORKDIR /opt/console
 
