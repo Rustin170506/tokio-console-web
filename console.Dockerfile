@@ -6,7 +6,6 @@ FROM rust:$RUST_VERSION
 RUN apt-get update \
     && apt-get install -y git
 
-# Clone specific branch of tokio-console repo into /opt/console
 RUN git clone https://github.com/tokio-rs/console.git /opt/console
 
 WORKDIR /opt/console
