@@ -70,8 +70,10 @@ const resourceUpdateToResources = (update: ResourceUpdate): TokioResource[] => {
         if (parentId) {
             parentId = state.resources.idFor(parentId);
             parentIdStr = parentId.toString();
-            const parent = parents.get(parentId)!;
-            parentStr = `${parent.id} (${parent.target}::${parent.concreteType})`;
+            const parent = parents.get(parentId);
+            if (parent) {
+                parentStr = `${parent.id} (${parent.target}::${parent.concreteType})`;
+            }
         }
 
         const location = formatLocation(resource.location);
@@ -104,7 +106,6 @@ const resourceUpdateToResources = (update: ResourceUpdate): TokioResource[] => {
 export function addResources(update: Update) {
     if (update.resourceUpdate) {
         const resources = resourceUpdateToResources(update.resourceUpdate);
-
         for (const resource of resources) {
             state.resources.items.value.set(resource.id, resource);
         }
