@@ -78,7 +78,7 @@ devDependencies:
     version: 3.8.2(eslint@8.57.0)(typescript@5.3.3)(vite@4.5.2)
   nuxt-vitest:
     specifier: ^0.11.5
-    version: 0.11.5(@testing-library/vue@8.0.1)(@vitejs/plugin-vue-jsx@3.1.0)(@vitejs/plugin-vue@5.0.4)(happy-dom@13.6.2)(vite@4.5.2)(vitest@0.33.0)(vue-router@4.2.5)(vue@3.3.9)
+    version: 0.11.5(@testing-library/vue@8.0.1)(@vitejs/plugin-vue-jsx@3.1.0)(@vitejs/plugin-vue@5.0.4)(happy-dom@13.6.2)(vite@4.5.2)(vitest@0.33.0)(vue-router@4.3.0)(vue@3.3.9)
   prettier:
     specifier: 3.2.4
     version: 3.2.4
@@ -96,7 +96,7 @@ devDependencies:
     version: 3.3.9(typescript@5.3.3)
   vue-router:
     specifier: ^4.2.5
-    version: 4.2.5(vue@3.3.9)
+    version: 4.3.0(vue@3.3.9)
 
 packages:
 
@@ -2815,8 +2815,8 @@ packages:
       '@vue/shared': 3.4.20
     dev: true
 
-  /@vue/devtools-api@6.5.1:
-    resolution: {integrity: sha512-+KpckaAQyfbvshdDW5xQylLni1asvNSGme1JFs8I1+/H5pHEhqUKMEQD/qn3Nx5+/nycBq11qAEi8lk+LXI2dA==}
+  /@vue/devtools-api@6.6.1:
+    resolution: {integrity: sha512-LgPscpE3Vs0x96PzSSB4IGVSZXZBZHpfxs+ZA1d+VEPwHdOXowy/Y2CsvCAIFrf+ssVU1pD1jidj505EpUnfbA==}
 
   /@vue/reactivity-transform@3.3.9:
     resolution: {integrity: sha512-HnUFm7Ry6dFa4Lp63DAxTixUp8opMtQr6RxQCpDI1vlh12rkGIeYqMvJtK+IKyEfEOa2I9oCkD1mmsPdaGpdVg==}
@@ -6427,7 +6427,7 @@ packages:
       - vue
     dev: false
 
-  /nuxt-vitest@0.11.5(@testing-library/vue@8.0.1)(@vitejs/plugin-vue-jsx@3.1.0)(@vitejs/plugin-vue@5.0.4)(happy-dom@13.6.2)(vite@4.5.2)(vitest@0.33.0)(vue-router@4.2.5)(vue@3.3.9):
+  /nuxt-vitest@0.11.5(@testing-library/vue@8.0.1)(@vitejs/plugin-vue-jsx@3.1.0)(@vitejs/plugin-vue@5.0.4)(happy-dom@13.6.2)(vite@4.5.2)(vitest@0.33.0)(vue-router@4.3.0)(vue@3.3.9):
     resolution: {integrity: sha512-uBdojodtD0/oq8mryU6KdFK7G9bppXFK+CgxMdRbPyTnAvKW31dJs5OFg4yE8EIa4whsezi16Ny+yvzaFtT/1Q==}
     peerDependencies:
       '@vitejs/plugin-vue': '*'
@@ -6445,7 +6445,7 @@ packages:
       std-env: 3.5.0
       vite: 4.5.2
       vitest: 0.33.0(happy-dom@13.6.2)
-      vitest-environment-nuxt: 0.11.5(@testing-library/vue@8.0.1)(happy-dom@13.6.2)(vitest@0.33.0)(vue-router@4.2.5)(vue@3.3.9)
+      vitest-environment-nuxt: 0.11.5(@testing-library/vue@8.0.1)(happy-dom@13.6.2)(vitest@0.33.0)(vue-router@4.3.0)(vue@3.3.9)
     transitivePeerDependencies:
       - '@testing-library/vue'
       - '@vue/server-renderer'
@@ -6519,12 +6519,12 @@ packages:
       unenv: 1.8.0
       unimport: 3.6.0(rollup@4.6.0)
       unplugin: 1.5.1
-      unplugin-vue-router: 0.7.0(vue-router@4.2.5)(vue@3.3.9)
+      unplugin-vue-router: 0.7.0(vue-router@4.3.0)(vue@3.3.9)
       untyped: 1.4.0
       vue: 3.3.9(typescript@5.3.3)
       vue-bundle-renderer: 2.0.0
       vue-devtools-stub: 0.1.0
-      vue-router: 4.2.5(vue@3.3.9)
+      vue-router: 4.3.0(vue@3.3.9)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -8448,7 +8448,7 @@ packages:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
 
-  /unplugin-vue-router@0.7.0(vue-router@4.2.5)(vue@3.3.9):
+  /unplugin-vue-router@0.7.0(vue-router@4.3.0)(vue@3.3.9):
     resolution: {integrity: sha512-ddRreGq0t5vlSB7OMy4e4cfU1w2AwBQCwmvW3oP/0IHQiokzbx4hd3TpwBu3eIAFVuhX2cwNQwp1U32UybTVCw==}
     peerDependencies:
       vue-router: ^4.1.0
@@ -8468,7 +8468,7 @@ packages:
       pathe: 1.1.1
       scule: 1.1.0
       unplugin: 1.5.1
-      vue-router: 4.2.5(vue@3.3.9)
+      vue-router: 4.3.0(vue@3.3.9)
       yaml: 2.3.4
     transitivePeerDependencies:
       - rollup
@@ -8815,7 +8815,7 @@ packages:
     optionalDependencies:
       fsevents: 2.3.3
 
-  /vitest-environment-nuxt@0.11.5(@testing-library/vue@8.0.1)(happy-dom@13.6.2)(vitest@0.33.0)(vue-router@4.2.5)(vue@3.3.9):
+  /vitest-environment-nuxt@0.11.5(@testing-library/vue@8.0.1)(happy-dom@13.6.2)(vitest@0.33.0)(vue-router@4.3.0)(vue@3.3.9):
     resolution: {integrity: sha512-PV21wpOen6gIjuPHQpOoMtdwXC79EphRQL+NUI4LoVjSb5mHtWYYr9R0PUrrGckdu8v+NzaXE4WFiumK07TA4w==}
     peerDependencies:
       '@testing-library/vue': 8.0.1
@@ -8848,7 +8848,7 @@ packages:
       unenv: 1.8.0
       vitest: 0.33.0(happy-dom@13.6.2)
       vue: 3.3.9(typescript@5.3.3)
-      vue-router: 4.2.5(vue@3.3.9)
+      vue-router: 4.3.0(vue@3.3.9)
     transitivePeerDependencies:
       - '@vue/server-renderer'
       - rollup
@@ -9027,12 +9027,12 @@ packages:
       - supports-color
     dev: true
 
-  /vue-router@4.2.5(vue@3.3.9):
-    resolution: {integrity: sha512-DIUpKcyg4+PTQKfFPX88UWhlagBEBEfJ5A8XDXRJLUnZOvcpMF8o/dnL90vpVkGaPbjvXazV/rC1qBKrZlFugw==}
+  /vue-router@4.3.0(vue@3.3.9):
+    resolution: {integrity: sha512-dqUcs8tUeG+ssgWhcPbjHvazML16Oga5w34uCUmsk7i0BcnskoLGwjpa15fqMr2Fa5JgVBrdL2MEgqz6XZ/6IQ==}
     peerDependencies:
       vue: ^3.2.0
     dependencies:
-      '@vue/devtools-api': 6.5.1
+      '@vue/devtools-api': 6.6.1
       vue: 3.3.9(typescript@5.3.3)
 
   /vue@3.3.9(typescript@5.3.3):
