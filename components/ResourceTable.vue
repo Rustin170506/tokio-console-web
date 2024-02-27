@@ -54,7 +54,7 @@ const columns = [
         sortable: true,
     },
     {
-        key: "parent",
+        key: "parentId",
         label: "Parent",
         sortable: true,
     },

@@ -47,6 +47,7 @@ export function makeFormattedAttribute(
 export interface ResourceTableItem {
     id: bigint;
     idString: string;
+    parentId: string;
     parent: string;
     kind: string;
     total: DurationWithStyle;
@@ -64,6 +65,7 @@ export function toResourceTableItem(
     return {
         id: resource.id,
         idString: resource.spanId?.toString() ?? "",
+        parentId: resource.parentIdStr,
         parent: resource.parent,
         kind: resource.kind,
         total: getDurationWithClass(resource.totalDuration(lastUpdatedAt)),
