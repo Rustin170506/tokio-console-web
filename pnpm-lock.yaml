@@ -10,7 +10,7 @@ dependencies:
     version: 1.1.3(@bufbuild/protobuf@1.7.2)
   '@connectrpc/connect-web':
     specifier: ^1.1.3
-    version: 1.1.3(@bufbuild/protobuf@1.7.2)(@connectrpc/connect@1.1.3)
+    version: 1.3.0(@bufbuild/protobuf@1.7.2)(@connectrpc/connect@1.1.3)
   '@iconify-json/simple-icons':
     specifier: ^1.1.82
     version: 1.1.93
@@ -551,11 +551,11 @@ packages:
     dependencies:
       mime: 3.0.0
 
-  /@connectrpc/connect-web@1.1.3(@bufbuild/protobuf@1.7.2)(@connectrpc/connect@1.1.3):
-    resolution: {integrity: sha512-WfShOZt91duJngqivYF4wJFRbeRa4bF/fPMfDVN0MAYSX3VuaTMn8o9qgKN7tsg2H2ZClyOVQwMkZx6IdcP7Zw==}
+  /@connectrpc/connect-web@1.3.0(@bufbuild/protobuf@1.7.2)(@connectrpc/connect@1.1.3):
+    resolution: {integrity: sha512-8HSY8x6douX1LcSFsGEUdjs9jwBe9X+LxkCI8hCtH7vKUCZieQqkRWstoApeIJchHYTaQYqwy2ImKnvwyWwruA==}
     peerDependencies:
-      '@bufbuild/protobuf': ^1.3.3
-      '@connectrpc/connect': 1.1.3
+      '@bufbuild/protobuf': ^1.4.2
+      '@connectrpc/connect': 1.3.0
     dependencies:
       '@bufbuild/protobuf': 1.7.2
       '@connectrpc/connect': 1.1.3(@bufbuild/protobuf@1.7.2)
