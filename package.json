@@ -33,7 +33,7 @@
         "eslint-plugin-prettier": "^5.0.1",
         "eslint-plugin-vue": "9.22.0",
         "happy-dom": "^13.0.0",
-        "husky": "^9.0.0",
+        "husky": "^9.0.11",
         "nuxt": "^3.8.2",
         "nuxt-vitest": "^0.11.5",
         "prettier": "3.2.4",
@@ -50,5 +50,9 @@
         "@nuxt/ui": "^2.11.0",
         "chart.js": "^4.4.1",
         "vue-chartjs": "^5.3.0"
+    },
+    "engines": {
+        "node": ">=21.6.2",
+        "pnpm": ">=8.15.4"
     }
 }
