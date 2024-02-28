@@ -11,28 +11,28 @@ exports[`ResourceTable View 1`] = `
     <!--v-if-->
     
     <td
-      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+      class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm"
     >
       
       1
       
     </td>
     <td
-      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+      class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm"
     >
       
       N/A
       
     </td>
     <td
-      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+      class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm"
     >
       
       Timer
       
     </td>
     <td
-      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm text-green-500 dark:text-green-300"
+      class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm text-green-500 dark:text-green-300"
     >
       
       <p
@@ -43,20 +43,20 @@ exports[`ResourceTable View 1`] = `
       
     </td>
     <td
-      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+      class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm"
     >
       
       sleep
       
     </td>
     <td
-      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+      class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm"
     >
       
       <svg
         aria-hidden="true"
         class="icon"
-        data-v-000b1742=""
+        data-v-cd7d43ce=""
         height="1em"
         role="img"
         viewBox="0 0 24 24"
@@ -82,14 +82,14 @@ exports[`ResourceTable View 1`] = `
       
     </td>
     <td
-      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+      class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm"
     >
       
       app.rs/68:10
       
     </td>
     <td
-      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+      class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm"
     >
       
       
