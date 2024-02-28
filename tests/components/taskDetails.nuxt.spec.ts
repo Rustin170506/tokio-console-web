@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { mockNuxtImport, mountSuspended } from "nuxt-vitest/utils";
+import { mockNuxtImport, mountSuspended } from "@nuxt/test-utils/runtime";
 import TaskDetails from "~/components/TaskDetails.vue";
 import { Duration, Timestamp } from "~/types/common/duration";
 import { TokioTask } from "~/types/task/tokioTask";
