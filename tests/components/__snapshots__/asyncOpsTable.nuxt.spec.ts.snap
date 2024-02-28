@@ -11,63 +11,63 @@ exports[`AsyncOpsTable View 1`] = `
     <!--v-if-->
     
     <td
-      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+      class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm"
     >
       
       1
       
     </td>
     <td
-      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+      class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm"
     >
       
       parent
       
     </td>
     <td
-      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+      class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm"
     >
       
       1
       
     </td>
     <td
-      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+      class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm"
     >
       
       source
       
     </td>
     <td
-      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm text-green-500 dark:text-green-300"
+      class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm text-green-500 dark:text-green-300"
     >
       
       16m 40s 
       
     </td>
     <td
-      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm text-gray-500 dark:text-gray-300"
+      class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm text-gray-500 dark:text-gray-300"
     >
       
       0ns
       
     </td>
     <td
-      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm text-green-500 dark:text-green-300"
+      class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm text-green-500 dark:text-green-300"
     >
       
       8m 20s 
       
     </td>
     <td
-      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+      class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm"
     >
       
       10
       
     </td>
     <td
-      class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm"
+      class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm"
     >
       
       <div>
