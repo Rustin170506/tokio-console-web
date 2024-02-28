@@ -9,7 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
       - name: Set up Docker Buildx
@@ -18,5 +17,5 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./console.Dockerfile
+          file: ./app/console.Dockerfile
           load: false
