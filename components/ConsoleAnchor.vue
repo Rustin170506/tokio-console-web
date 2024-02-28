@@ -1,25 +1,12 @@
 <template>
-    <div
-        id="console-anchor"
-        ref="anchorEl"
-        :style="[anchorStyle, vars]"
-        :class="{
-            'console-vertical': isVertical,
-        }"
-    >
-        <div
-            v-if="!isSafari"
-            class="console-glowing"
-            :style="isDragging ? 'opacity: 0.6 !important' : ''"
-        />
+    <div id="console-anchor" ref="anchorEl" :style="[anchorStyle, vars]">
+        <div v-if="!isSafari" class="console-glowing" />
         <div
             ref="panelEl"
             class="console-panel"
             :style="{
-                ...panelStyle,
                 display: 'flex',
             }"
-            @pointerdown="onPointerDown"
         >
             <NuxtLink to="/">
                 <button
@@ -33,7 +20,7 @@
                 </button>
             </NuxtLink>
             <div class="flex">
-            <UIcon name="i-heroicons-link" />
+                <UIcon name="i-heroicons-link" />
             </div>
             <NuxtLink to="/resources">
                 <button
@@ -51,27 +38,19 @@
 </template>
 
 <script setup lang="ts">
-import { useEventListener, useObjectStorage, useScreenSafeArea } from "~/utils";
+import { useEventListener, useScreenSafeArea } from "~/utils";
 
 const route = useRoute();
 const isTasksRoute = computed(() => route.path === "/");
 const isResourcesRoute = computed(() => route.path === "/resources");
 
 export interface AnchorState {
-    top: number;
     left: number;
-    position: "left" | "right" | "bottom" | "top";
 }
 
-const state = useObjectStorage<AnchorState>(
-    "console-state",
-    {
-        top: 0,
-        left: 50,
-        position: "bottom",
-    },
-    false,
-);
+const state: AnchorState = {
+    left: 50,
+};
 
 const panelMargins = reactive({
     left: 10,
@@ -93,8 +72,6 @@ watchEffect(() => {
     panelMargins.bottom = safeArea.bottom.value + 10;
 });
 
-const SNAP_THRESHOLD = 2;
-
 const vars = computed(() => {
     const colorMode = useColorMode();
     const dark = colorMode.value === "dark";
@@ -112,17 +89,6 @@ const panelEl = ref<HTMLDivElement>();
 const anchorEl = ref<HTMLDivElement>();
 
 const windowSize = reactive({ width: 0, height: 0 });
-const isDragging = ref(false);
-const draggingOffset = reactive({ x: 0, y: 0 });
-const mousePosition = reactive({ x: 0, y: 0 });
-
-function onPointerDown(e: PointerEvent) {
-    if (!panelEl.value) return;
-    isDragging.value = true;
-    const { left, top, width, height } = panelEl.value!.getBoundingClientRect();
-    draggingOffset.x = e.clientX - left - width / 2;
-    draggingOffset.y = e.clientY - top - height / 2;
-}
 
 onMounted(() => {
     windowSize.width = window.innerWidth;
@@ -132,117 +98,25 @@ onMounted(() => {
         windowSize.width = window.innerWidth;
         windowSize.height = window.innerHeight;
     });
-
-    useEventListener(window, "pointermove", (e: PointerEvent) => {
-        if (!isDragging.value) return;
-
-        const centerX = windowSize.width / 2;
-        const centerY = windowSize.height / 2;
-
-        const x = e.clientX - draggingOffset.x;
-        const y = e.clientY - draggingOffset.y;
-
-        mousePosition.x = x;
-        mousePosition.y = y;
-
-        // Get position
-        const deg = Math.atan2(y - centerY, x - centerX);
-        const HORIZONTAL_MARGIN = 70;
-        const TL = Math.atan2(0 - centerY + HORIZONTAL_MARGIN, 0 - centerX);
-        const TR = Math.atan2(
-            0 - centerY + HORIZONTAL_MARGIN,
-            windowSize.width - centerX,
-        );
-        const BL = Math.atan2(
-            windowSize.height - HORIZONTAL_MARGIN - centerY,
-            0 - centerX,
-        );
-        const BR = Math.atan2(
-            windowSize.height - HORIZONTAL_MARGIN - centerY,
-            windowSize.width - centerX,
-        );
-
-        state.value.position =
-            deg >= TL && deg <= TR
-                ? "top"
-                : deg >= TR && deg <= BR
-                  ? "right"
-                  : deg >= BR && deg <= BL
-                    ? "bottom"
-                    : "left";
-
-        state.value.left = snapToPoints((x / windowSize.width) * 100);
-        state.value.top = snapToPoints((y / windowSize.height) * 100);
-    });
-    useEventListener(window, "pointerup", () => {
-        isDragging.value = false;
-    });
-    useEventListener(window, "pointerleave", () => {
-        isDragging.value = false;
-    });
 });
-
-function snapToPoints(value: number) {
-    if (value < 5) return 0;
-    if (value > 95) return 100;
-    if (Math.abs(value - 50) < SNAP_THRESHOLD) return 50;
-    return value;
-}
 
 function clamp(value: number, min: number, max: number) {
     return Math.min(Math.max(value, min), max);
 }
 
-const isVertical = computed(
-    () => state.value.position === "left" || state.value.position === "right",
-);
-
 const anchorPos = computed(() => {
     const halfWidth = (panelEl.value?.clientWidth || 0) / 2;
     const halfHeight = (panelEl.value?.clientHeight || 0) / 2;
+    const left = (state.left * windowSize.width) / 100;
 
-    const left = (state.value.left * windowSize.width) / 100;
-    const top = (state.value.top * windowSize.height) / 100;
-
-    switch (state.value.position) {
-        case "top":
-            return {
-                left: clamp(
-                    left,
-                    halfWidth + panelMargins.left,
-                    windowSize.width - halfWidth - panelMargins.right,
-                ),
-                top: panelMargins.top + halfHeight,
-            };
-        case "right":
-            return {
-                left: windowSize.width - panelMargins.right - halfHeight,
-                top: clamp(
-                    top,
-                    halfWidth + panelMargins.top,
-                    windowSize.height - halfWidth - panelMargins.bottom,
-                ),
-            };
-        case "left":
-            return {
-                left: panelMargins.left + halfHeight,
-                top: clamp(
-                    top,
-                    halfWidth + panelMargins.top,
-                    windowSize.height - halfWidth - panelMargins.bottom,
-                ),
-            };
-        case "bottom":
-        default:
-            return {
-                left: clamp(
-                    left,
-                    halfWidth + panelMargins.left,
-                    windowSize.width - halfWidth - panelMargins.right,
-                ),
-                top: windowSize.height - panelMargins.bottom - halfHeight,
-            };
-    }
+    return {
+        left: clamp(
+            left,
+            halfWidth + panelMargins.left,
+            windowSize.width - halfWidth - panelMargins.right,
+        ),
+        top: panelMargins.top + halfHeight,
+    };
 });
 
 const anchorStyle = computed(() => {
@@ -251,16 +125,6 @@ const anchorStyle = computed(() => {
         top: `${anchorPos.value.top}px`,
         pointerEvents: "auto",
     } as const;
-});
-
-const panelStyle = computed(() => {
-    const style: any = {
-        transform: isVertical.value
-            ? `translate(-50%, -50%) rotate(90deg)`
-            : `translate(-50%, -50%)`,
-    };
-    if (isDragging.value) style.transition = "none !important";
-    return style;
 });
 </script>
 
@@ -306,15 +170,6 @@ const panelStyle = computed(() => {
         padding 0.5s ease,
         transform 0.4s ease,
         opacity 0.2s ease;
-}
-
-#console-anchor.console-vertical .console-panel {
-    transform: translate(-50%, -50%) rotate(90deg);
-    box-shadow: 2px -2px 8px var(--console-widget-shadow);
-}
-
-#console-anchor .console-panel-content {
-    transition: opacity 0.4s ease;
 }
 
 #console-anchor .console-icon-button {
