@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { mountSuspended, mockNuxtImport } from "nuxt-vitest/utils";
+import { mountSuspended, mockNuxtImport } from "@nuxt/test-utils/runtime";
 import ResourceTable from "~/components/ResourceTable.vue";
 import { Visibility, TokioResource } from "~/types/resource/tokioResource";
 import { Timestamp } from "~/types/common/duration";

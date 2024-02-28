@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { mountSuspended, mockNuxtImport } from "nuxt-vitest/utils";
+import { mountSuspended, mockNuxtImport } from "@nuxt/test-utils/runtime";
 import AsyncOpsTable from "~/components/AsyncOpsTable.vue";
 import { Timestamp, Duration } from "~/types/common/duration";
 import { Field, FieldValue, FieldValueType } from "~/types/common/field";

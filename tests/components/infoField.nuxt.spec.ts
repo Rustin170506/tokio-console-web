@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { renderSuspended } from "nuxt-vitest/utils";
+import { renderSuspended } from "@nuxt/test-utils/runtime";
 import InfoField from "~/components/InfoField.vue";
 
 it("InfoField without slot", async () => {
