@@ -20,7 +20,7 @@ axum = "0.7.4"
 clap = { version = "4.5.1", features = ["derive"] }
 mime_guess = "2.0.4"
 rust-embed = { version = "8.3.0", features = ["mime_guess"] }
-tokio = { version = "1.0", features = ["full"] }
+tokio = { version = "1.36", features = ["full"] }
 tower = { version = "0.4", features = ["util"] }
 tower-http = { version = "0.5.0", features = ["fs", "trace"] }
 tracing = "0.1"
