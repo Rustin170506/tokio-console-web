@@ -1,3 +1,4 @@
+import path from "path";
 import wasm from "vite-plugin-wasm";
 import topLevelAwait from "vite-plugin-top-level-await";
 
@@ -16,5 +17,10 @@ export default defineNuxtConfig({
     },
     vite: {
         plugins: [wasm(), topLevelAwait()],
+    },
+    nitro: {
+        output: {
+            publicDir: path.resolve(__dirname, "public"),
+        },
     },
 });

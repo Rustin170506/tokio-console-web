@@ -1,0 +1,53 @@
+[package]
+name = "tokio-console-web"
+version = "0.1.0"
+edition = "2021"
+include = ["src/*", "app/public"]
+repository = "https://github.com/hi-rustin/tokio-console-web"
+authors = ["hi-rustin"]
+description = "A web console for tokio"
+
+[package.metadata.wix]
+upgrade-guid = "EF6E06AE-4AB9-4FAD-85F5-9DA51A50BBC5"
+path-guid = "CF8775B9-F794-41B7-ACD7-CAFD7D0550AB"
+license = false
+eula = false
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+axum = "0.7.4"
+clap = { version = "4.5.1", features = ["derive"] }
+mime_guess = "2.0.4"
+rust-embed = { version = "8.3.0", features = ["mime_guess"] }
+tokio = { version = "1.0", features = ["full"] }
+tower = { version = "0.4", features = ["util"] }
+tower-http = { version = "0.5.0", features = ["fs", "trace"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# The profile that 'cargo dist' will build with
+[profile.dist]
+inherits = "release"
+lto = "thin"
+
+# Config for 'cargo dist'
+[workspace.metadata.dist]
+# The preferred cargo-dist version to use in CI (Cargo.toml SemVer syntax)
+cargo-dist-version = "0.11.1"
+# CI backends to support
+ci = ["github"]
+# The installers to generate for each app
+installers = ["shell", "powershell", "npm", "homebrew", "msi"]
+# A GitHub repo to push Homebrew formulas to
+tap = "hi-rustin/tokio-console-web"
+# Target platforms to build apps for (Rust target-triple syntax)
+targets = ["aarch64-apple-darwin", "x86_64-apple-darwin", "x86_64-unknown-linux-gnu", "x86_64-pc-windows-msvc"]
+# The archive format to use for windows builds (defaults .zip)
+windows-archive = ".tar.gz"
+# The archive format to use for non-windows builds (defaults .tar.xz)
+unix-archive = ".tar.gz"
+# Publish jobs to run in CI
+publish-jobs = ["homebrew", "./app"]
+# Publish jobs to run in CI
+pr-run-mode = "plan"
