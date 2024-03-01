@@ -272,7 +272,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: "hi-rustin/tokio-console-web"
+          repository: "hi-rustin/homebrew-tokio-console-web"
           token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
       # So we have access to the formula
       - name: Fetch local artifacts
