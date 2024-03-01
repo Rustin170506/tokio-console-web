@@ -6,6 +6,7 @@ include = ["src/*", "app/public"]
 repository = "https://github.com/hi-rustin/tokio-console-web"
 authors = ["hi-rustin"]
 description = "A web console for tokio"
+license = "MIT"
 
 [package.metadata.wix]
 upgrade-guid = "EF6E06AE-4AB9-4FAD-85F5-9DA51A50BBC5"
