@@ -1,6 +1,6 @@
 <div align="center">
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./docs/logo-dark.png">
+  <source media="(prefers-color-scheme: dark)" srcset="./docs/logo-dark.svg">
   <img alt="crates.io logo" src="./docs/logo.svg" width="200">
 </picture>
 </div>
