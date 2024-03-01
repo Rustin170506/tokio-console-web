@@ -23,7 +23,7 @@ mime_guess = "2.0.4"
 rust-embed = { version = "8.3.0", features = ["mime_guess"] }
 tokio = { version = "1.36", features = ["full"] }
 tower = { version = "0.4", features = ["util"] }
-tower-http = { version = "0.5.0", features = ["fs", "trace"] }
+tower-http = { version = "0.5.2", features = ["fs", "trace"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
