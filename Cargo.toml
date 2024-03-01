@@ -40,7 +40,7 @@ ci = ["github"]
 # The installers to generate for each app
 installers = ["shell", "powershell", "npm", "homebrew", "msi"]
 # A GitHub repo to push Homebrew formulas to
-tap = "hi-rustin/tokio-console-web"
+tap = "hi-rustin/homebrew-tokio-console-web"
 # Target platforms to build apps for (Rust target-triple syntax)
 targets = ["aarch64-apple-darwin", "x86_64-apple-darwin", "x86_64-unknown-linux-gnu", "x86_64-pc-windows-msvc"]
 # The archive format to use for windows builds (defaults .zip)
