@@ -56,3 +56,6 @@ publish-jobs = ["homebrew"]
 pr-run-mode = "upload"
 # Skip checking whether the specified configuration files are up to date
 allow-dirty = ["ci"]
+
+[dev-dependencies]
+trycmd = "0.15.0"
