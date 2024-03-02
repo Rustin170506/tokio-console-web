@@ -4,11 +4,14 @@ on:
       - main
   pull_request:
 
-name: Continuous integration
+name: Unit Tests
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
     defaults:
       run:
         working-directory: app
@@ -26,6 +29,17 @@ jobs:
         with:
           version: 8
           run_install: false
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
       - name: Install dependencies
         run: pnpm install
       - name: Lint
@@ -39,6 +53,7 @@ jobs:
         with:
           toolchain: stable
           override: true
+      - uses: swatinem/rust-cache@v2
       - name: Install wasm-pack
         run: cargo install wasm-pack
       - name: Run wasm-pack build
@@ -49,6 +64,8 @@ jobs:
         run: pnpm run test
       - name: Move to parent directory
         run: mv dist ..
+      - name: Test CLI
+        run: cargo test
       - name: Try Cargo Package
         # We need `--allow-dirty` because we don't want to commit the `public` directory
         run: cargo package --allow-dirty

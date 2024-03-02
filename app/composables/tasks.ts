@@ -188,7 +188,7 @@ export function useTaskDetails(id: bigint) {
     // Async function to watch for details.
     const watchForDetails = async () => {
         try {
-            const client = useGrpcClient();
+            const client = await useGrpcClient();
             const detailsStream = client.watchTaskDetails(
                 new TaskDetailsRequest({
                     id: {

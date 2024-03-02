@@ -1,5 +1,5 @@
 {
-    "name": "nuxt-app",
+    "name": "tokio-console-web",
     "private": true,
     "type": "module",
     "scripts": {
@@ -9,8 +9,8 @@
         "gen": "buf generate proto",
         "lint": "eslint --ext .js,.vue,.ts --ignore-path .gitignore .",
         "lint:fix": "eslint --fix --ext .js,.vue,.ts --ignore-path .gitignore .",
-        "fmt": "prettier --check **.*",
-        "fmt:fix": "prettier --write **.*",
+        "fmt": "prettier --check .",
+        "fmt:fix": "prettier --write .",
         "prepare": "husky install",
         "test": "vitest"
     },

@@ -2,7 +2,7 @@
 name = "tokio-console-web"
 version = "0.1.0"
 edition = "2021"
-include = ["src/*", "app/public"]
+include = ["src/*", "app/.output/public"]
 repository = "https://github.com/hi-rustin/tokio-console-web"
 authors = ["hi-rustin"]
 description = "A web console for tokio"
@@ -21,6 +21,8 @@ axum = "0.7.4"
 clap = { version = "4.5.1", features = ["derive"] }
 mime_guess = "2.0.4"
 rust-embed = { version = "8.3.0", features = ["mime_guess"] }
+serde = { version = "1.0.197", features = ["derive"] }
+serde_json = "1.0.114"
 tokio = { version = "1.36", features = ["full"] }
 tower = { version = "0.4", features = ["util"] }
 tower-http = { version = "0.5.2", features = ["fs", "trace"] }
@@ -54,3 +56,6 @@ publish-jobs = ["homebrew"]
 pr-run-mode = "upload"
 # Skip checking whether the specified configuration files are up to date
 allow-dirty = ["ci"]
+
+[dev-dependencies]
+trycmd = "0.15.0"
