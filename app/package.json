@@ -1,5 +1,5 @@
 {
-    "name": "nuxt-app",
+    "name": "tokio-console-web",
     "private": true,
     "type": "module",
     "scripts": {

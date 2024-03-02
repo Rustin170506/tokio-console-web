@@ -44,7 +44,7 @@ export async function watchForUpdates(pending: Ref<boolean>) {
     }
 
     try {
-        const client = useGrpcClient();
+        const client = await useGrpcClient();
         const updateStream = client.watchUpdates(new InstrumentRequest());
 
         for await (const value of updateStream) {

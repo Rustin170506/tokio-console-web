@@ -2,7 +2,7 @@
 name = "tokio-console-web"
 version = "0.1.0"
 edition = "2021"
-include = ["src/*", "app/public"]
+include = ["src/*", "app/.output/public"]
 repository = "https://github.com/hi-rustin/tokio-console-web"
 authors = ["hi-rustin"]
 description = "A web console for tokio"

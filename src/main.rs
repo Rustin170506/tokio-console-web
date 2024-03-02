@@ -27,7 +27,7 @@ struct Args {
 }
 
 #[derive(RustEmbed)]
-#[folder = "app/public"]
+#[folder = "app/.output/public"]
 struct Assets;
 
 #[tokio::main]
