@@ -17,7 +17,7 @@
 
 ## 🦀 Overview
 
-Welcome to the `tokio-console-web` project! This project is a web-based console for the `tokio-console` crate. It is designed to be a simple, easy-to-use, and powerful tool for managing and monitoring your `tokio` applications.
+Welcome to the `tokio-console-web` project! This project is a web-based console for the [console-subscriber] crate. It is designed to be a simple, easy-to-use, and powerful tool for monitoring and debugging your `tokio` applications.
 
 ## 🚀 Getting Started
 
@@ -51,8 +51,6 @@ tokio-console-web
 
 The `tokio-console-web` can be accessed by navigating to `http://127.0.01:3333` in your web browser.
 
-The console command-line tool supports a number of additional flags to configure its behavior. The help command will print a list of supported command-line flags and arguments:
-
 ```console
 $ tokio-console-web --help
 A web console for tokio
@@ -80,3 +78,5 @@ Licensed under either of these:
 
 - Apache License, Version 2.0, ([LICENSE-APACHE](./LICENSE-APACHE) or https://www.apache.org/licenses/LICENSE-2.0)
 - MIT license ([LICENSE-MIT](./LICENSE-MIT) or https://opensource.org/licenses/MIT)
+
+[console-subscriber]: https://crates.io/crates/console-subscriber
