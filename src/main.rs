@@ -114,3 +114,9 @@ async fn index_html() -> Response {
 async fn not_found() -> Response {
     (StatusCode::NOT_FOUND, "404").into_response()
 }
+
+#[test]
+fn verify_cli() {
+    use clap::CommandFactory;
+    Args::command().debug_assert()
+}

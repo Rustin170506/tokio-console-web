@@ -49,6 +49,8 @@ jobs:
         run: pnpm run test
       - name: Move to parent directory
         run: mv dist ..
+      - name: Test CLI
+        run: cargo test
       - name: Try Cargo Package
         # We need `--allow-dirty` because we don't want to commit the `public` directory
         run: cargo package --allow-dirty
