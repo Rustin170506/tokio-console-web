@@ -57,7 +57,7 @@ The console command-line tool supports a number of additional flags to configure
 $ tokio-console-web --help
 A web console for tokio
 
-Usage: tokio-console-web [OPTIONS] [TARGET_ADDR]
+Usage: tokio-console-web[EXE] [OPTIONS] [TARGET_ADDR]
 
 Arguments:
   [TARGET_ADDR]  The address of a console-enabled process to connect to. [default: http://127.0.0.1:9999]
