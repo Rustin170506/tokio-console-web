@@ -43,6 +43,33 @@ brew install hi-rustin/homebrew-tokio-console-web/tokio-console-web
 
 Additional installation methods for `tokio-console-web` can be found on the release page.
 
+After installation, the `tokio-console-web` can be started using the following command:
+
+```sh
+tokio-console-web
+```
+
+The `tokio-console-web` can be accessed by navigating to `http://127.0.01:3333` in your web browser.
+
+The console command-line tool supports a number of additional flags to configure its behavior. The help command will print a list of supported command-line flags and arguments:
+
+```console
+$ tokio-console-web --help
+A web console for tokio
+
+Usage: tokio-console-web [OPTIONS] [TARGET_ADDR]
+
+Arguments:
+  [TARGET_ADDR]  The address of a console-enabled process to connect to. [default: http://127.0.0.1:9999]
+
+Options:
+      --host <HOST>  The address to listen on [default: 127.0.0.1]
+      --port <PORT>  The port to listen on [default: 3333]
+  -h, --help         Print help
+  -V, --version      Print version
+
+```
+
 ## 🛠️ Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request. If you have any questions, please feel free to ask in the [Discord](https://discord.com/channels/500028886025895936/838895414455435335) server.
