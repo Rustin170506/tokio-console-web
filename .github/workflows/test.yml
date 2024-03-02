@@ -55,7 +55,7 @@ jobs:
           override: true
       - uses: swatinem/rust-cache@v2
       - name: Install wasm-pack
-        run: cargo install wasm-pack
+        run: pnpm install -g wasm-pack
       - name: Run wasm-pack build
         run: wasm-pack build histogram
       - name: Build
