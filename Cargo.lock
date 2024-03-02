@@ -985,6 +985,8 @@ dependencies = [
  "clap",
  "mime_guess",
  "rust-embed",
+ "serde",
+ "serde_json",
  "tokio",
  "tower",
  "tower-http",
