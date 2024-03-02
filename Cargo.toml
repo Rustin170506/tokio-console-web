@@ -1,6 +1,6 @@
 [package]
 name = "tokio-console-web"
-version = "0.1.0"
+version = "0.1.1-alpha"
 edition = "2021"
 include = ["src/*", "app/.output/public"]
 repository = "https://github.com/hi-rustin/tokio-console-web"
