@@ -10,7 +10,7 @@
 <div align="center">
 
 [Homepage](https://github.com/hi-rustin/tokio-console-web)
-| [Discord](https://discord.com/channels/500028886025895936/838895414455435335)
+| [Discord](https://discord.gg/EeF3cQw)
 | [Contributing](#️-contributing)
 
 </div>
@@ -70,7 +70,7 @@ Options:
 
 ## 🛠️ Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request. If you have any questions, please feel free to ask in the [Discord](https://discord.com/channels/500028886025895936/838895414455435335) server.
+Contributions are welcome! Please feel free to submit a Pull Request. If you have any questions, please feel free to ask in the [Discord](https://discord.gg/EeF3cQw) server.
 
 ## ⚖️ License
 
