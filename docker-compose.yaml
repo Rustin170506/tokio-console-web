@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  console:
+    build:
+      context: .
+      dockerfile: example.Dockerfile
+    ports:
+      - "127.0.0.1:9999:9999"
