@@ -19,7 +19,7 @@
             <UButton
                 color="gray"
                 variant="ghost"
-                to="https://discord.com/channels/500028886025895936/838895414455435335"
+                to="https://discord.gg/EeF3cQw"
                 target="_blank"
                 size="lg"
                 icon="i-simple-icons-discord"
