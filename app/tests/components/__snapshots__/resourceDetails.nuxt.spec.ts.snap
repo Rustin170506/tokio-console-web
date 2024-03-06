@@ -86,10 +86,21 @@ exports[`ResourceDetails 1`] = `
               <!--v-if-->
             </thead>
             <tbody class="divide-y divide-gray-200 dark:divide-gray-800">
-              <tr>
-                <td colspan="9">
-                  <div class="flex flex-col items-center justify-center flex-1 px-6 py-14 sm:px-14"><span class="i-heroicons-circle-stack-20-solid w-6 h-6 mx-auto text-gray-400 dark:text-gray-500 mb-4" aria-hidden="true"></span>
-                    <p class="text-sm text-center text-gray-900 dark:text-white">No items.</p>
+              <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer">
+                <!--v-if-->
+                <td class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm">1</td>
+                <td class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm">parent</td>
+                <td class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm">1</td>
+                <td class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm">source</td>
+                <td class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm text-green-500 dark:text-green-300">16m 40s </td>
+                <td class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm text-gray-500 dark:text-gray-300">0ns</td>
+                <td class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm text-green-500 dark:text-green-300">8m 20s </td>
+                <td class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm">10</td>
+                <td class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm">
+                  <div>
+                    <div class="mb-1 w-10">
+                      <p><span class="text-blue-500 font-bold dark:text-blue-300">name</span><span class="text-gray-500 dark:text-gray-400">=</span><span class="text-yellow-500 dark:text-yellow-300">test</span><span class="text-blue-500 dark:text-blue-300">10ms</span></p>
+                    </div>
                   </div>
                 </td>
               </tr>

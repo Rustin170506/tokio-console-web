@@ -20,6 +20,9 @@ dependencies:
   chart.js:
     specifier: ^4.4.1
     version: 4.4.2
+  exponential-backoff:
+    specifier: ^3.1.1
+    version: 3.1.1
   vue-chartjs:
     specifier: ^5.3.0
     version: 5.3.0(chart.js@4.4.2)(vue@3.4.21)
