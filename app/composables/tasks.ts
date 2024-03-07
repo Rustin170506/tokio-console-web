@@ -1,3 +1,4 @@
+import { consola } from "consola";
 import { state } from "./state";
 import {
     FieldValue,
@@ -15,24 +16,31 @@ import {
 import { TaskDetailsRequest, type Update } from "~/gen/instrument_pb";
 import type { TaskUpdate } from "~/gen/tasks_pb";
 
+/**
+ * Convert a TaskUpdate to an array of TokioTask.
+ * @param update - The update from the server.
+ * @returns An array of TokioTask.
+ */
 const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
     const result = new Array<TokioTask>();
-    const tasks = update.newTasks;
-    const statsUpdate = update.statsUpdate;
+    const { newTasks: tasks, statsUpdate } = update;
 
     for (const task of tasks) {
         if (!task.id) {
+            consola.warn("skipping task with no id", task);
             continue;
         }
         let metaId;
         if (task.metadata) {
             metaId = task.metadata.id;
         } else {
+            consola.warn("task has no metadata id, skipping", task);
             continue;
         }
 
         const meta = state.metas.get(metaId);
         if (!meta) {
+            consola.warn("no metadata for task, skipping", task);
             continue;
         }
 
@@ -44,7 +52,7 @@ const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
             new FieldValue(FieldValueType.Str, meta.target),
         );
 
-        const fields: Field[] = [];
+        const fields = [];
         for (let i = 0; i < task.fields.length; i++) {
             const field = Field.fromProto(task.fields[i], meta);
             if (!field) {
@@ -53,16 +61,16 @@ const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
             // the `task.name` field gets its own column, if it's present.
             switch (field.name) {
                 case Field.NAME:
-                    name = field.value.value!.toString();
+                    name = field.value.value.toString();
                     break;
                 case Field.TASK_ID:
                     taskId =
-                        field.value?.type === FieldValueType.U64
-                            ? (field.value?.value as bigint)
+                        field.value.type === FieldValueType.U64
+                            ? (field.value.value as bigint)
                             : undefined;
                     break;
                 case Field.KIND:
-                    kind = field.value.value!.toString();
+                    kind = field.value.value.toString();
                     break;
                 default:
                     fields.push(field);
@@ -79,6 +87,7 @@ const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
         // Delete
         delete statsUpdate[spanId.toString()];
         const taskStats = fromProtoTaskStats(stats);
+        const location = formatLocation(task.location);
 
         const id = state.tasks.idFor(spanId);
         let shortDesc = "";
@@ -89,7 +98,6 @@ const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
         } else if (name) {
             shortDesc = name;
         }
-        const location = formatLocation(task.location);
 
         const t: TokioTask = new TokioTask(
             id,
@@ -109,34 +117,40 @@ const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
     return result;
 };
 
+/**
+ * Add tasks to the state.
+ * @param update - The update from the server.
+ */
 export function addTasks(update: Update) {
-    if (update.taskUpdate) {
-        const tasks = taskUpdateToTasks(update.taskUpdate);
+    if (!update.taskUpdate) {
+        return;
+    }
 
-        for (const task of tasks) {
+    const tasks = taskUpdateToTasks(update.taskUpdate);
+    for (const task of tasks) {
+        state.tasks.items.value.set(task.id, task);
+    }
+
+    for (const k in update.taskUpdate.statsUpdate) {
+        const id = state.tasks.idFor(BigInt(k));
+        const task = state.tasks.items.value.get(id);
+        if (task) {
+            task.stats = fromProtoTaskStats(update.taskUpdate.statsUpdate[k]);
             state.tasks.items.value.set(task.id, task);
-        }
-
-        for (const k in update.taskUpdate.statsUpdate) {
-            const task = state.tasks.items.value.get(
-                state.tasks.idFor(BigInt(k))!,
-            );
-            if (task) {
-                task.stats = fromProtoTaskStats(
-                    update.taskUpdate.statsUpdate[k],
-                );
-                state.tasks.items.value.set(task.id, task);
-            }
         }
     }
 }
 
+/**
+ * Retain tasks for a given duration.
+ * @param retainFor - The duration to retain the tasks for.
+ */
 export function retainTasks(retainFor: Duration) {
     const newTasks = new Map<bigint, TokioTask>();
     for (const [id, task] of state.tasks.items.value) {
         if (task.stats.droppedAt) {
             if (
-                state.lastUpdatedAt.value !== undefined &&
+                state.lastUpdatedAt.value &&
                 !state.lastUpdatedAt.value
                     .subtract(task.stats.droppedAt)
                     .greaterThan(retainFor)
@@ -151,24 +165,28 @@ export function retainTasks(retainFor: Duration) {
     state.tasks.items.value = newTasks;
 }
 
+/**
+ * useTasks is a composable function that returns the tasks data and a pending
+ * state. It also starts a watch for updates if it hasn't already been started.
+ */
 export function useTasks() {
-    if (state.isUpdateWatched) {
+    const { isUpdateWatched, lastUpdatedAt, tasks } = state;
+
+    if (isUpdateWatched) {
         return {
             pending: ref<boolean>(false),
-            tasksData: state.tasks.items,
-            lastUpdatedAt: state.lastUpdatedAt,
+            tasksData: tasks.items,
+            lastUpdatedAt,
         };
     }
 
     const pending = ref<boolean>(true);
-
     // Async function to watch for updates.
     watchForUpdates(pending);
-
     return {
         pending,
-        tasksData: state.tasks.items,
-        lastUpdatedAt: state.lastUpdatedAt,
+        tasksData: tasks.items,
+        lastUpdatedAt,
     };
 }
 
