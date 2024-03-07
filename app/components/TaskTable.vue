@@ -113,18 +113,24 @@ const columns = [
 
 const router = useRouter();
 
+// Select a task and navigate to its details page.
 const select = (row: TaskTableItem) => {
     router.push(`/tasks/${row.id}`);
 };
 
+// Fetch tasks and convert them to a table item.
 const { pending, tasksData, lastUpdatedAt } = useTasks();
 const tasks = computed(() => {
-    if (lastUpdatedAt.value === undefined) {
+    const lastUpdated = lastUpdatedAt.value;
+    if (!lastUpdated) {
         return [];
     }
-
-    return Array.from(tasksData.value.values())
-        .map((task) => toTaskTableItem(task, lastUpdatedAt.value!))
-        .filter((task) => task !== undefined) as TaskTableItem[];
+    return Array.from(tasksData.value.values()).reduce((acc, task) => {
+        const taskTableItem = toTaskTableItem(task, lastUpdated);
+        if (taskTableItem) {
+            acc.push(taskTableItem);
+        }
+        return acc;
+    }, [] as TaskTableItem[]);
 });
 </script>

@@ -41,6 +41,10 @@ const addMetadata = (update: Update) => {
     }
 };
 
+/**
+ *  Watch for updates from the server and update the state.
+ * @param pending - A ref to indicate if the request is pending.
+ */
 export async function watchForUpdates(pending: Ref<boolean>) {
     if (state.isUpdateWatched) {
         pending.value = false;
