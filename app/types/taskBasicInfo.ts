@@ -25,6 +25,7 @@ export function toTaskBasicInfo(
 ): TaskBasicInfo {
     const stats = task.stats;
     const taskTableItemData = toTaskTableItem(task, lastUpdatedAt);
+    const sinceWakeDuration = task.sinceWakeDuration(lastUpdatedAt);
     return {
         ...taskTableItemData,
         busyPercentage: formatPercentage(
@@ -42,8 +43,8 @@ export function toTaskBasicInfo(
         lastWake: stats.lastWake,
         selfWakes: stats.selfWakes,
         wakerCount: task.wakerCount(),
-        lastWokenDuration: task.lastWakeDuration()
-            ? getDurationWithClass(task.lastWakeDuration()!)
+        lastWokenDuration: sinceWakeDuration
+            ? getDurationWithClass(sinceWakeDuration)
             : undefined,
     };
 }
