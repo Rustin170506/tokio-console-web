@@ -105,19 +105,16 @@
                                 `${taskBasicInfo.wakes} times,`
                             }}</span>
                             <InfoField
-                                v-if="
-                                    taskBasicInfo.lastWokenDuration !==
-                                    undefined
-                                "
+                                v-if="taskBasicInfo.lastWokenDuration"
                                 name="Last woken"
                             >
                                 <span
                                     :class="
-                                        taskBasicInfo.lastWokenDuration!.class
+                                        taskBasicInfo.lastWokenDuration.class
                                     "
                                 >
                                     {{
-                                        taskBasicInfo.lastWokenDuration!.toString()
+                                        taskBasicInfo.lastWokenDuration.toString()
                                     }}
                                 </span>
                                 <span class="mx-1">ago</span>
