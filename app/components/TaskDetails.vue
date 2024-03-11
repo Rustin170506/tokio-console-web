@@ -190,14 +190,14 @@
                 </div>
 
                 <UDivider
-                    v-if="taskDetailsInfo.scheduledTimes !== undefined"
+                    v-if="taskDetailsInfo.scheduledTimes"
                     class="w-px mx-2"
                     color="gray"
                     orientation="vertical"
                 />
 
                 <div
-                    v-if="taskDetailsInfo.scheduledTimes !== undefined"
+                    v-if="taskDetailsInfo.scheduledTimes"
                     class="space-y-2 xl:ml-4 flex-1"
                 >
                     <div class="mt-2">
@@ -254,45 +254,37 @@ const { pending, task, taskDetails, lastUpdatedAt, closed } = useTaskDetails(
     BigInt(route.params.id as string),
 );
 
-// If the task is undefined, redirect to the home page.
+// If the task is not available, redirect to the home page.
 if (!task || !lastUpdatedAt.value) {
     router.push("/");
 }
 
-const taskBasicInfo = computed(() => {
-    return toTaskBasicInfo(task!, lastUpdatedAt.value!);
-});
+const taskBasicInfo = computed(() =>
+    toTaskBasicInfo(task!, lastUpdatedAt.value!),
+);
 
-const taskDetailsInfo = computed(() => {
-    return toTaskDetails(taskDetails.value);
-});
+const taskDetailsInfo = computed(() => toTaskDetails(taskDetails.value));
 
-function buildHistogramData(times: TimesDetails | undefined, label: string) {
-    if (times === undefined) {
-        return undefined;
-    }
+const buildHistogramData = (times: TimesDetails | null, label: string) =>
+    times
+        ? {
+              labels: times.histogram.map((h) => h.duration.toString()),
+              datasets: [
+                  {
+                      label,
+                      data: times.histogram.map((h) => h.count),
+                  },
+              ],
+          }
+        : null;
 
-    return {
-        labels: times.histogram.map((h) => h.duration.toString()),
-        datasets: [
-            {
-                label,
-                data: times.histogram.map((h) => h.count),
-            },
-        ],
-    };
-}
+const pollTimesHistogramData = computed(() =>
+    buildHistogramData(taskDetailsInfo.value.pollTimes, "Poll Times"),
+);
 
-const pollTimesHistogramData = computed(() => {
-    return buildHistogramData(taskDetailsInfo.value.pollTimes, "Poll Times");
-});
-
-const scheduledTimesHistogramData = computed(() => {
-    return buildHistogramData(
-        taskDetailsInfo.value.scheduledTimes,
-        "Scheduled Times",
-    );
-});
+const scheduledTimesHistogramData = computed(() =>
+    buildHistogramData(taskDetailsInfo.value.scheduledTimes, "Scheduled Times"),
+);
 
 onBeforeUnmount(() => {
     closed.value = true;
