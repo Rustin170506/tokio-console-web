@@ -13,10 +13,10 @@ export interface TaskBasicInfo extends TaskTableItem {
     wakes: bigint;
     wakerClones: bigint;
     wakerDrops: bigint;
-    lastWake?: Timestamp;
+    lastWake: Timestamp | null;
     selfWakes: bigint;
     wakerCount: bigint;
-    lastWokenDuration?: DurationWithStyle;
+    lastWokenDuration: DurationWithStyle | null;
 }
 
 export function toTaskBasicInfo(
@@ -45,7 +45,7 @@ export function toTaskBasicInfo(
         wakerCount: task.wakerCount(),
         lastWokenDuration: sinceWakeDuration
             ? getDurationWithClass(sinceWakeDuration)
-            : undefined,
+            : null,
     };
 }
 
