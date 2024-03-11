@@ -190,10 +190,15 @@ export function useTasks() {
     };
 }
 
+/**
+ * Get the task details for a given task id.
+ * @param id - The id of the task to get details for.
+ * @returns An object with the pending state, the task, the task details, the last updated at time, and a closed state.
+ */
 export function useTaskDetails(id: bigint) {
-    const pending = ref<boolean>(true);
+    const pending = ref(true);
     const task = state.tasks.items.value.get(id);
-    const taskDetails = ref<TokioTaskDetails>({
+    const taskDetails: Ref<TokioTaskDetails> = ref({
         pollTimes: {
             percentiles: [],
             histogram: [],
@@ -201,16 +206,17 @@ export function useTaskDetails(id: bigint) {
             min: new Duration(0n, 0),
         },
     });
-    const closed = ref<boolean>(false);
+    const closed = ref(false);
+    const { lastUpdatedAt } = state;
 
     // Async function to watch for details.
-    const watchForDetails = async () => {
+    const watchForDetails = async ({ spanId }: TokioTask) => {
         try {
             const client = await useGrpcClient();
             const detailsStream = client.watchTaskDetails(
                 new TaskDetailsRequest({
                     id: {
-                        id: task!.spanId,
+                        id: spanId,
                     },
                 }),
             );
@@ -219,6 +225,7 @@ export function useTaskDetails(id: bigint) {
                 if (pending.value) {
                     pending.value = false;
                 }
+                // This means the task details page has been closed.
                 if (closed.value) {
                     break;
                 }
@@ -232,14 +239,16 @@ export function useTaskDetails(id: bigint) {
     };
 
     if (task) {
-        watchForDetails();
+        watchForDetails(task);
+    } else {
+        consola.warn("task not found", id);
     }
 
     return {
         pending,
         task,
         taskDetails,
-        lastUpdatedAt: state.lastUpdatedAt,
+        lastUpdatedAt,
         closed,
     };
 }

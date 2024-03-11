@@ -19,13 +19,13 @@ export interface TimesDetails {
         duration: Duration;
         count: number;
     }[];
-    min?: DurationWithStyle;
-    max?: DurationWithStyle;
+    min: DurationWithStyle | null;
+    max: DurationWithStyle | null;
 }
 
 export interface TaskDetails {
     pollTimes: TimesDetails;
-    scheduledTimes?: TimesDetails;
+    scheduledTimes: TimesDetails | null;
 }
 
 function mapPercentiles(percentiles: Percentile[]) {
@@ -59,7 +59,7 @@ export function toTaskDetails(details: TokioTaskDetails): TaskDetails {
     const pollTimes = mapTimes(details.pollTimes);
     const scheduledTimes = details.scheduledTimes
         ? mapTimes(details.scheduledTimes)
-        : undefined;
+        : null;
 
     return {
         pollTimes,
