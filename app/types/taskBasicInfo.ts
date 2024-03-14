@@ -45,7 +45,7 @@ export function toTaskBasicInfo(
         wakerCount: task.wakerCount(),
         lastWokenDuration: sinceWakeDuration
             ? getDurationWithClass(sinceWakeDuration)
-            : null,
+            : undefined,
     };
 }
 

@@ -59,7 +59,7 @@ export function toTaskDetails(details: TokioTaskDetails): TaskDetails {
     const pollTimes = mapTimes(details.pollTimes);
     const scheduledTimes = details.scheduledTimes
         ? mapTimes(details.scheduledTimes)
-        : null;
+        : undefined;
 
     return {
         pollTimes,

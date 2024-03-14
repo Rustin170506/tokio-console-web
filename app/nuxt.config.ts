@@ -12,4 +12,7 @@ export default defineNuxtConfig({
     vite: {
         plugins: [wasm(), topLevelAwait()],
     },
+    typescript: {
+        typeCheck: true,
+    },
 });
