@@ -2,7 +2,7 @@ import { createPromiseClient, type PromiseClient } from "@connectrpc/connect";
 import { createGrpcWebTransport } from "@connectrpc/connect-web";
 import { Instrument } from "~/gen/instrument_connect";
 
-let client: PromiseClient<typeof Instrument> | null = null;
+let client: PromiseClient<typeof Instrument>;
 
 export async function useGrpcClient() {
     // Retrieve the subscriber.json file to obtain the subscriberBaseUrl.

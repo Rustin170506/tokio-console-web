@@ -4,13 +4,13 @@ import type { Stats as ProtoTaskStats } from "~/gen/tasks_pb";
 export interface TokioTaskStats {
     polls: bigint;
     createdAt: Timestamp;
-    droppedAt: Timestamp | null;
+    droppedAt?: Timestamp;
     busy: Duration;
     scheduled: Duration;
-    lastPollStarted: Timestamp | null;
-    lastPollEnded: Timestamp | null;
-    idle: Duration | null;
-    total: Duration | null;
+    lastPollStarted?: Timestamp;
+    lastPollEnded?: Timestamp;
+    idle?: Duration;
+    total?: Duration;
 
     // === waker stats ===
     // Total number of times the task has been woken over its lifetime.
@@ -20,7 +20,7 @@ export interface TokioTaskStats {
     // Total number of times the task's waker has been dropped.
     wakerDrops: bigint;
     // The timestamp of when the task was last woken.
-    lastWake: Timestamp | null;
+    lastWake?: Timestamp;
     // Total number of times the task has woken itself.
     selfWakes: bigint;
 }
@@ -32,8 +32,8 @@ export function fromProtoTaskStats(stats: ProtoTaskStats): TokioTaskStats {
     );
     const droppedAt = stats.droppedAt
         ? new Timestamp(stats.droppedAt.seconds, stats.droppedAt.nanos)
-        : null;
-    const total = droppedAt?.subtract(createdAt) || null;
+        : undefined;
+    const total = droppedAt?.subtract(createdAt) || undefined;
 
     const pollStats = stats.pollStats!;
     const busy = new Duration(
@@ -44,7 +44,7 @@ export function fromProtoTaskStats(stats: ProtoTaskStats): TokioTaskStats {
         stats.scheduledTime?.seconds || BigInt(0),
         stats.scheduledTime?.nanos || 0,
     );
-    const idle = total?.subtract(busy).subtract(scheduled) || null;
+    const idle = total?.subtract(busy).subtract(scheduled) || undefined;
 
     return {
         polls: pollStats.polls,
@@ -57,13 +57,13 @@ export function fromProtoTaskStats(stats: ProtoTaskStats): TokioTaskStats {
                   pollStats.lastPollStarted.seconds,
                   pollStats.lastPollStarted.nanos,
               )
-            : null,
+            : undefined,
         lastPollEnded: pollStats.lastPollEnded
             ? new Timestamp(
                   pollStats.lastPollEnded.seconds,
                   pollStats.lastPollEnded.nanos,
               )
-            : null,
+            : undefined,
         idle,
         total,
         wakes: stats.wakes,
@@ -71,7 +71,7 @@ export function fromProtoTaskStats(stats: ProtoTaskStats): TokioTaskStats {
         wakerDrops: stats.wakerDrops,
         lastWake: stats.lastWake
             ? new Timestamp(stats.lastWake.seconds, stats.lastWake.nanos)
-            : null,
+            : undefined,
         selfWakes: stats.selfWakes,
     };
 }

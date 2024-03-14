@@ -60,13 +60,13 @@ export class FieldValue {
         return this;
     }
 
-    ensureNonempty(): FieldValue | null {
+    ensureNonempty(): FieldValue | undefined {
         if (
             (this.type === FieldValueType.Str ||
                 this.type === FieldValueType.Debug) &&
             this.value === ""
         ) {
-            return null;
+            return undefined;
         }
         return this;
     }

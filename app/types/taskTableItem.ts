@@ -19,7 +19,7 @@ export interface TaskTableItem {
     kind: string;
     location: string;
     fields: Array<Field>;
-    class: string | null;
+    class?: string;
 }
 
 export function toTaskTableItem(
@@ -42,7 +42,7 @@ export function toTaskTableItem(
         class:
             task.state() === TaskState.Completed
                 ? "bg-slate-50 dark:bg-slate-950 animate-pulse"
-                : null,
+                : undefined,
     };
 }
 
