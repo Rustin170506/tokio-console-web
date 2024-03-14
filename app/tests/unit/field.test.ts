@@ -6,6 +6,7 @@ import {
     formatLocation,
 } from "~/types/common/field";
 import { Field as ProtoField, Location } from "~/gen/common_pb";
+import type { Metadata } from "~/types/common/metadata";
 
 describe("Field and FieldValue", () => {
     test("FieldValue", () => {
@@ -33,10 +34,10 @@ describe("Field and FieldValue", () => {
         const protoField = new ProtoField();
         protoField.name = { case: "strName", value: "name" };
         protoField.value = { case: "strVal", value: "test" };
-        const metadata = {
+        const metadata: Metadata = {
             id: BigInt(1),
             target: "target",
-            field_names: ["name"],
+            fieldNames: ["name"],
         };
         const field = Field.fromProto(protoField, metadata);
         expect(field?.name).toBe("name");

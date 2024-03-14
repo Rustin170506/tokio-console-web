@@ -5,4 +5,6 @@ export default defineAppConfig({
             position: "top-0 bottom-auto",
         },
     },
+    // https://github.com/nuxt-modules/icon/issues/117#issuecomment-1797833117
+    nuxtIcon: {},
 });

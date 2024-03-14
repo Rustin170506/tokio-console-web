@@ -28,7 +28,7 @@ export class Store<T> {
     ids: Ids;
 
     constructor() {
-        this.items = ref<Map<bigint, T>>(new Map());
+        this.items = ref(new Map());
         this.ids = new Ids();
     }
 
