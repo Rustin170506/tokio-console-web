@@ -150,16 +150,14 @@ export class TokioTask {
      * Returns the elapsed time since the task was last woken, relative to
      * given `now` timestamp.
      *
-     * Returns `null` if the task has never been woken, or if it was last woken
+     * Returns `undefined` if the task has never been woken, or if it was last woken
      * more recently than `now` (which *shouldn't* happen as long as `now` is the
      * timestamp of the last stats update...)
      */
-    sinceWakeDuration(now: Timestamp): Duration | null {
+    sinceWakeDuration(now: Timestamp): Duration | undefined {
         if (this.stats.lastWake) {
             return now.subtract(this.stats.lastWake);
         }
-
-        return null;
     }
 
     durationPercent(now: Timestamp, amt: Duration): number {

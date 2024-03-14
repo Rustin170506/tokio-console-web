@@ -19,13 +19,13 @@ export interface TimesDetails {
         duration: Duration;
         count: number;
     }[];
-    min: DurationWithStyle | null;
-    max: DurationWithStyle | null;
+    min?: DurationWithStyle;
+    max?: DurationWithStyle;
 }
 
 export interface TaskDetails {
     pollTimes: TimesDetails;
-    scheduledTimes: TimesDetails | null;
+    scheduledTimes?: TimesDetails;
 }
 
 function mapPercentiles(percentiles: Percentile[]) {

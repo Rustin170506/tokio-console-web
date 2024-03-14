@@ -265,7 +265,7 @@ const taskBasicInfo = computed(() =>
 
 const taskDetailsInfo = computed(() => toTaskDetails(taskDetails.value));
 
-const buildHistogramData = (times: TimesDetails | null, label: string) =>
+const buildHistogramData = (times: TimesDetails | undefined, label: string) =>
     times
         ? {
               labels: times.histogram.map((h) => h.duration.toString()),
@@ -276,7 +276,7 @@ const buildHistogramData = (times: TimesDetails | null, label: string) =>
                   },
               ],
           }
-        : null;
+        : undefined;
 
 const pollTimesHistogramData = computed(() =>
     buildHistogramData(taskDetailsInfo.value.pollTimes, "Poll Times"),
