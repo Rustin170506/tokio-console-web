@@ -65,8 +65,11 @@ export class TokioTask {
     }
 
     busyDuration(since: Timestamp): Duration {
-        if (this.stats.lastPollStarted && this.stats.lastPollEnded) {
-            if (this.stats.lastPollStarted > this.stats.lastPollEnded) {
+        if (this.stats.lastPollStarted) {
+            if (
+                !this.stats.lastPollEnded ||
+                this.stats.lastPollStarted > this.stats.lastPollEnded
+            ) {
                 // In this case the task is being polled at the moment.
                 const currentTimeInPollDuration = since.subtract(
                     this.stats.lastPollStarted,
@@ -78,8 +81,11 @@ export class TokioTask {
     }
 
     scheduledDuration(since: Timestamp): Duration {
-        if (this.stats.lastWake && this.stats.lastPollStarted) {
-            if (this.stats.lastWake > this.stats.lastPollStarted) {
+        if (this.stats.lastWake) {
+            if (
+                !this.stats.lastPollStarted ||
+                this.stats.lastWake > this.stats.lastPollStarted
+            ) {
                 // In this case the task is scheduled, but has not yet been polled.
                 const currentTimeSinceWakeDuration = since.subtract(
                     this.stats.lastWake,
@@ -161,8 +167,8 @@ export class TokioTask {
     }
 
     durationPercent(now: Timestamp, amt: Duration): number {
-        let percent =
-            (amt.asSeconds() / this.totalDuration(now).asSeconds()) * 100;
+        const total = this.totalDuration(now);
+        let percent = (amt.asSeconds() / total.asSeconds()) * 100;
         if (percent > 100) {
             percent = 100;
         }
