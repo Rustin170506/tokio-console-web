@@ -24,8 +24,8 @@ describe("Duration", () => {
     });
 
     test("asSeconds", () => {
-        const duration = new Duration(1n, 0);
-        expect(duration.asSeconds()).toEqual(1);
+        const duration = new Duration(1n, 1e9);
+        expect(duration.asSeconds()).toEqual(2);
     });
 
     test("asMilliseconds", () => {

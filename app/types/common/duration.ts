@@ -43,7 +43,7 @@ export class Duration {
     }
 
     asSeconds(): number {
-        return Number(this.seconds);
+        return Number(this.seconds) + this.nanos / 1e9;
     }
 
     asMilliseconds(): number {
