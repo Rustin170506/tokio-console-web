@@ -1,5 +1,9 @@
 import type { Duration } from "./duration";
 
+/**
+ * DurationWithStyle is a wrapper around the Duration type that includes a tailwind class to use for this duration.
+ * It is used to display the duration in a color that represents the magnitude of the duration.
+ */
 export class DurationWithStyle {
     value: Duration;
     // The tailwind class to use for this duration.
@@ -10,10 +14,19 @@ export class DurationWithStyle {
         this.class = className;
     }
 
+    /**
+     * Provides a human-readable string representation of the duration.
+     * @returns a string representation of the duration.
+     */
     toString(): string {
         return this.value.toString();
     }
 
+    /**
+     * Returns the duration as a number of microseconds.
+     * Used for sorting.
+     * @returns the duration as a number of microseconds.
+     */
     valueOf(): number {
         return this.value.valueOf();
     }

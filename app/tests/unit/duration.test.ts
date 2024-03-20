@@ -77,13 +77,13 @@ describe("Duration", () => {
     });
 
     test("toString for milliseconds", () => {
-        const duration = new Duration(0n, 500000000); // 500 milliseconds
-        expect(duration.toString()).toBe("500ms");
+        const duration = new Duration(0n, 500010000); // 500 milliseconds and 10 microseconds
+        expect(duration.toString()).toBe("500.01ms");
     });
 
     test("toString for only nanoseconds", () => {
         const duration = new Duration(0n, 500); // 500 nanoseconds
-        expect(duration.toString()).toBe("500ns");
+        expect(duration.toString()).toBe("500.00ns");
     });
 
     test("normalize for nanoseconds greater than 1e9", () => {

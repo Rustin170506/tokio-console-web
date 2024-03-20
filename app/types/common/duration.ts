@@ -79,15 +79,15 @@ export class Duration {
         );
     }
 
-    toString(): string {
+    toString(precision: number = 2): string {
         const totalSeconds = this.asSeconds();
         const units = [
-            { value: Math.floor(this.asDays()), unit: "d" },
-            { value: Math.floor(this.asHours()) % 24, unit: "h" },
-            { value: Math.floor(this.asMinutes()) % 60, unit: "m" },
-            { value: Math.floor(totalSeconds) % 60, unit: "s" },
-            { value: Math.floor(this.asMilliseconds()) % 1000, unit: "ms" },
-            { value: Math.floor(this.asMicroseconds()) % 1000, unit: "µs" },
+            { value: this.asDays(), unit: "d" },
+            { value: this.asHours() % 24, unit: "h" },
+            { value: this.asMinutes() % 60, unit: "m" },
+            { value: totalSeconds % 60, unit: "s" },
+            { value: this.asMilliseconds() % 1000, unit: "ms" },
+            { value: this.asMicroseconds() % 1000, unit: "µs" },
             { value: this.nanos, unit: "ns" },
         ];
 
@@ -97,8 +97,9 @@ export class Duration {
         if (totalSeconds >= 60) {
             // For durations longer than 60 seconds, include up to two non-zero units
             for (const { value, unit } of units) {
-                if (value > 0) {
-                    str += `${value}${unit} `;
+                const flooredValue = Math.floor(value);
+                if (flooredValue > 0) {
+                    str += `${flooredValue}${unit} `;
                     partsIncluded++;
                     if (partsIncluded === 2) break;
                 }
@@ -106,8 +107,8 @@ export class Duration {
         } else {
             // For durations shorter than 60 seconds, display the most significant non-zero unit
             for (const { value, unit } of units) {
-                if (value > 0) {
-                    str = `${value}${unit}`;
+                if (Math.floor(value) > 0) {
+                    str = `${value.toFixed(precision)}${unit}`;
                     break;
                 }
             }
