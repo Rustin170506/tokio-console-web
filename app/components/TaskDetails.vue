@@ -252,7 +252,7 @@ import { toTaskBasicInfo } from "~/types/taskBasicInfo";
 
 const router = useRouter();
 const route = useRoute();
-// Note: we use same size for both histograms, so we only need to ref one of them.
+// Note: we use the same size for both histograms, so we only need to ref one of them.
 const histogramContainerRef = ref(null);
 const { width } = useElementSize(histogramContainerRef);
 
