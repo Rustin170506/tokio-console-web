@@ -193,9 +193,10 @@ export function useTasks() {
 /**
  * Get the task details for a given task id.
  * @param id - The id of the task to get details for.
+ * @param width - The width of the details chart. This is used to deserialize the histogram.
  * @returns An object with the pending state, the task, the task details, the last updated at time, and a closed state.
  */
-export function useTaskDetails(id: bigint) {
+export function useTaskDetails(id: bigint, width: Ref<number>) {
     const pending = ref(true);
     const task = state.tasks.items.value.get(id);
     const taskDetails: Ref<TokioTaskDetails> = ref({
@@ -229,7 +230,7 @@ export function useTaskDetails(id: bigint) {
                 if (closed.value) {
                     break;
                 }
-                taskDetails.value = fromProtoTaskDetails(value);
+                taskDetails.value = fromProtoTaskDetails(value, width.value);
             }
         } catch (err) {
             handleConnectError(err);

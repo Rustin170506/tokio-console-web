@@ -5,7 +5,7 @@ import topLevelAwait from "vite-plugin-top-level-await";
 export default defineNuxtConfig({
     devtools: { enabled: true },
     ssr: false,
-    modules: ["@nuxt/ui"],
+    modules: ["@nuxt/ui", "@vueuse/nuxt"],
     ui: {
         icons: ["simple-icons"],
     },

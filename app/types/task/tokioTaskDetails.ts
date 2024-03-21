@@ -47,9 +47,13 @@ export interface TokioTaskDetails {
  * fromProtoTaskDetails converts a protobuf TaskDetails to a TokioTaskDetails.
  * It includes the poll times and scheduled times histograms.
  * @param details - the protobuf TaskDetails
+ * @param width - the width of the details chart
  * @returns the TokioTaskDetails
  */
-export function fromProtoTaskDetails(details: TaskDetails): TokioTaskDetails {
+export function fromProtoTaskDetails(
+    details: TaskDetails,
+    width: number,
+): TokioTaskDetails {
     const toDurationPercentile = (p: RawPercentile) => ({
         percentile: p.percentile,
         duration: Duration.fromNano(p.value),
@@ -61,7 +65,7 @@ export function fromProtoTaskDetails(details: TaskDetails): TokioTaskDetails {
 
     const createHistogram = (rawHistogram: Uint8Array) => {
         // wasm function.
-        const miniHistogram = deserializeHistogram(rawHistogram);
+        const miniHistogram = deserializeHistogram(rawHistogram, width);
         const percentiles = miniHistogram.percentiles.map(toDurationPercentile);
         const histogram = miniHistogram.data.map(toDurationCount);
 

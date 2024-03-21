@@ -184,7 +184,10 @@
                             />
                         </div>
                     </div>
-                    <div class="space-y-2 h-80 w-11/12">
+                    <div
+                        ref="histogramContainerRef"
+                        class="space-y-2 h-80 w-11/12"
+                    >
                         <HistogramChart :data="pollTimesHistogramData" />
                     </div>
                 </div>
@@ -249,9 +252,13 @@ import { toTaskBasicInfo } from "~/types/taskBasicInfo";
 
 const router = useRouter();
 const route = useRoute();
+// Note: we use same size for both histograms, so we only need to ref one of them.
+const histogramContainerRef = ref(null);
+const { width } = useElementSize(histogramContainerRef);
 
 const { pending, task, taskDetails, lastUpdatedAt, closed } = useTaskDetails(
     BigInt(route.params.id as string),
+    width,
 );
 
 // If the task is not available, redirect to the home page.
