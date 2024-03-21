@@ -17,7 +17,7 @@ mockNuxtImport("useRoute", () => {
 });
 
 mockNuxtImport("useTaskDetails", () => {
-    return (_id: bigint) => {
+    return (_id: bigint, _width: Ref<number>) => {
         const pending = ref<boolean>(false);
         const formattedFields = [
             new Field(

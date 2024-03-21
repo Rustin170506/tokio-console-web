@@ -78,15 +78,15 @@ impl Percentile {
 
 /// Deserializes the histogram from the given bytes.
 #[wasm_bindgen(js_name = deserializeHistogram)]
-pub fn deserialize_histogram(bytes: &[u8]) -> MiniHistogram {
+pub fn deserialize_histogram(bytes: &[u8], width: isize) -> MiniHistogram {
     let histogram: Histogram<u64> = hdrhistogram::serialization::Deserializer::new()
         .deserialize(&mut Cursor::new(&bytes))
         .expect("Failed to deserialize histogram");
 
     let min = histogram.min();
     let max = histogram.max();
-    // TODO: make the step size configurable.
-    let step_size = ((max - min) as f64 / 40 as f64).ceil() as u64 + 1;
+    let width = if width > 0 { width / 10 } else { 100 };
+    let step_size = ((max - min) as f64 / width as f64).ceil() as u64 + 1;
 
     let mut found_first_nonzero = false;
     let data: Vec<DurationCount> = histogram
