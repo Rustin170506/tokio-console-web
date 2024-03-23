@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Console Anchor 1`] = `
+exports[`Console Menu 1`] = `
 "<div id="test-wrapper">
   <div data-v-d9380ae4="" id="console-menu" style="left: 512px; top: 10px; pointer-events: auto; --console-widget-bg: #ffffff; --console-widget-fg: #111; --console-widget-border: #efefef; --console-widget-shadow: rgba(128,128,128,0.1);">
     <div data-v-d9380ae4="" class="console-glowing"></div>
