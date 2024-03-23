@@ -148,20 +148,15 @@ export function addTasks(update: Update) {
 export function retainTasks(retainFor: Duration) {
     const newTasks = new Map<bigint, TokioTask>();
     for (const [id, task] of state.tasks.items.value) {
-        if (task.stats.droppedAt) {
-            if (
-                state.lastUpdatedAt.value &&
-                !state.lastUpdatedAt.value
-                    .subtract(task.stats.droppedAt)
-                    .greaterThan(retainFor)
-            ) {
-                newTasks.set(id, task);
-            }
-        } else {
+        const shouldRetain =
+            !task.stats.droppedAt ||
+            state.lastUpdatedAt.value
+                ?.subtract(task.stats.droppedAt)
+                .greaterThan(retainFor) === false;
+        if (shouldRetain) {
             newTasks.set(id, task);
         }
     }
-
     state.tasks.items.value = newTasks;
 }
 
