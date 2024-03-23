@@ -1,5 +1,5 @@
 <template>
-    <div id="console-anchor" ref="anchorEl" :style="[anchorStyle, vars]">
+    <div id="console-menu" ref="menuEl" :style="[menuStyle, vars]">
         <div v-if="!isSafari" class="console-glowing" />
         <div
             ref="panelEl"
@@ -44,11 +44,11 @@ const route = useRoute();
 const isTasksRoute = computed(() => route.path === "/");
 const isResourcesRoute = computed(() => route.path === "/resources");
 
-export interface AnchorState {
+export interface MenuState {
     left: number;
 }
 
-const state: AnchorState = {
+const state: MenuState = {
     left: 50,
 };
 
@@ -86,7 +86,7 @@ const vars = computed(() => {
 });
 
 const panelEl = ref<HTMLDivElement>();
-const anchorEl = ref<HTMLDivElement>();
+const menuEl = ref<HTMLDivElement>();
 
 const windowSize = reactive({ width: 0, height: 0 });
 
@@ -104,7 +104,7 @@ function clamp(value: number, min: number, max: number) {
     return Math.min(Math.max(value, min), max);
 }
 
-const anchorPos = computed(() => {
+const menuPos = computed(() => {
     const halfWidth = (panelEl.value?.clientWidth || 0) / 2;
     const halfHeight = (panelEl.value?.clientHeight || 0) / 2;
     const left = (state.left * windowSize.width) / 100;
@@ -119,17 +119,17 @@ const anchorPos = computed(() => {
     };
 });
 
-const anchorStyle = computed(() => {
+const menuStyle = computed(() => {
     return {
-        left: `${anchorPos.value.left}px`,
-        top: `${anchorPos.value.top}px`,
+        left: `${menuPos.value.left}px`,
+        top: `${menuPos.value.top}px`,
         pointerEvents: "auto",
     } as const;
 });
 </script>
 
 <style scoped>
-#console-anchor {
+#console-menu {
     width: 0;
     z-index: 2147483645;
     position: fixed;
@@ -140,11 +140,11 @@ const anchorStyle = computed(() => {
     box-sizing: border-box;
 }
 
-#console-anchor * {
+#console-menu * {
     box-sizing: border-box;
 }
 
-#console-anchor .console-panel {
+#console-menu .console-panel {
     position: absolute;
     left: 0;
     top: 0;
@@ -172,22 +172,22 @@ const anchorStyle = computed(() => {
         opacity 0.2s ease;
 }
 
-#console-anchor .console-icon-button {
+#console-menu .console-icon-button {
     border-radius: 100%;
     border-width: 0;
     height: 30px;
 }
 
-#console-anchor .console-icon-button:hover {
+#console-menu .console-icon-button:hover {
     opacity: 1;
     color: #007bff;
 }
 
-#console-anchor:hover .console-glowing {
+#console-menu:hover .console-glowing {
     opacity: 0.6;
 }
 
-#console-anchor .console-glowing {
+#console-menu .console-glowing {
     position: absolute;
     left: 0;
     top: 0;
