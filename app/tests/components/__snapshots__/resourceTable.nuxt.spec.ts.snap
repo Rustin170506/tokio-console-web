@@ -32,13 +32,6 @@ exports[`ResourceTable View 1`] = `
       
     </td>
     <td
-      class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm"
-    >
-      
-      target
-      
-    </td>
-    <td
       class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm text-green-500 dark:text-green-300"
     >
       
@@ -47,6 +40,13 @@ exports[`ResourceTable View 1`] = `
       >
         16m 40s 
       </p>
+      
+    </td>
+    <td
+      class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm"
+    >
+      
+      target
       
     </td>
     <td
