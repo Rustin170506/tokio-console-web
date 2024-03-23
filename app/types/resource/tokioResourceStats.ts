@@ -18,19 +18,16 @@ export function fromProtoResourceStats(
     stats: ProtoResourceStats,
     meta: Metadata,
 ): TokioResourceStats {
-    const attributes: Array<Attribute> = stats.attributes
-        .flatMap((a) => {
-            if (a.field === undefined) {
-                return undefined;
-            }
+    const attributes: Array<Attribute> = stats.attributes.reduce((acc, a) => {
+        if (a.field !== undefined) {
             const field = Field.fromProto(a.field, meta);
-            if (field === undefined) {
-                return undefined;
+            if (field !== undefined) {
+                acc.push({ field, unit: a.unit });
             }
-            const unit = a.unit;
-            return { field, unit };
-        })
-        .filter((a) => a !== undefined) as Array<Attribute>;
+        }
+        return acc;
+    }, [] as Array<Attribute>);
+
     const createdAt = new Timestamp(
         stats.createdAt!.seconds,
         stats.createdAt!.nanos,
@@ -38,7 +35,7 @@ export function fromProtoResourceStats(
     const droppedAt = stats.droppedAt
         ? new Timestamp(stats.droppedAt.seconds, stats.droppedAt.nanos)
         : undefined;
-    const total = droppedAt ? droppedAt.subtract(createdAt) : undefined;
+    const total = droppedAt?.subtract(createdAt);
 
     return {
         createdAt,

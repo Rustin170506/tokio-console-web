@@ -7,9 +7,11 @@ export interface Metadata {
 }
 
 export function fromProtoMetadata(meta: ProtoMetadata, id: bigint): Metadata {
+    const { fieldNames, target } = meta;
+
     return {
         id,
-        fieldNames: meta.fieldNames,
-        target: meta.target,
+        fieldNames,
+        target,
     };
 }

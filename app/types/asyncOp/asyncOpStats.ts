@@ -26,15 +26,13 @@ export function fromProtoAsyncOpStats(
     taskIds: Ids,
 ): AsyncOpStats {
     const attributes: Array<Attribute> = stats.attributes.reduce((acc, a) => {
-        if (a.field === undefined) {
-            return acc;
+        if (a.field !== undefined) {
+            const field = Field.fromProto(a.field, meta);
+            if (field !== undefined) {
+                const unit = a.unit;
+                acc.push({ field, unit });
+            }
         }
-        const field = Field.fromProto(a.field, meta);
-        if (field === undefined) {
-            return acc;
-        }
-        const unit = a.unit;
-        acc.push({ field, unit });
         return acc;
     }, [] as Array<Attribute>);
 
