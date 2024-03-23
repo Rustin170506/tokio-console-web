@@ -33,18 +33,18 @@ export function fromProtoTaskStats(stats: ProtoTaskStats): TokioTaskStats {
     const droppedAt = stats.droppedAt
         ? new Timestamp(stats.droppedAt.seconds, stats.droppedAt.nanos)
         : undefined;
-    const total = droppedAt?.subtract(createdAt) || undefined;
+    const total = droppedAt?.subtract(createdAt);
 
     const pollStats = stats.pollStats!;
     const busy = new Duration(
-        pollStats.busyTime?.seconds || BigInt(0),
+        pollStats.busyTime?.seconds || 0n,
         pollStats.busyTime?.nanos || 0,
     );
     const scheduled = new Duration(
-        stats.scheduledTime?.seconds || BigInt(0),
+        stats.scheduledTime?.seconds || 0n,
         stats.scheduledTime?.nanos || 0,
     );
-    const idle = total?.subtract(busy).subtract(scheduled) || undefined;
+    const idle = total?.subtract(busy).subtract(scheduled);
 
     return {
         polls: pollStats.polls,
