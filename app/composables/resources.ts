@@ -147,19 +147,17 @@ export function retainResources(retainFor: Duration) {
     state.resources.items.value = newResources;
 }
 
+/**
+ * Get the resources from the state or if the state is not updated, watch for updates.
+ * @returns The resources data and the last updated time.
+ */
 export function useResources() {
-    if (state.isUpdateWatched) {
-        return {
-            pending: ref<boolean>(false),
-            resourcesData: state.resources.items,
-            lastUpdatedAt: state.lastUpdatedAt,
-        };
+    const pending = ref<boolean>(!state.isUpdateWatched);
+
+    if (!state.isUpdateWatched) {
+        // Async function to watch for updates.
+        watchForUpdates(pending);
     }
-
-    const pending = ref<boolean>(true);
-
-    // Async function to watch for updates.
-    watchForUpdates(pending);
 
     return {
         pending,
