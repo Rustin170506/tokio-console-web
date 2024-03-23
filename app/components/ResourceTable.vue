@@ -2,7 +2,7 @@
     <UTable
         :columns="columns"
         :rows="resources"
-        :sort="{ column: 'total', direction: 'desc' }"
+        :sort="{ column: 'id', direction: 'desc' }"
         :loading="pending"
         @select="select"
     >
@@ -64,13 +64,13 @@ const columns = [
         sortable: true,
     },
     {
-        key: "target",
-        label: "Target",
+        key: "total",
+        label: "Total",
         sortable: true,
     },
     {
-        key: "total",
-        label: "Total",
+        key: "target",
+        label: "Target",
         sortable: true,
     },
     {
