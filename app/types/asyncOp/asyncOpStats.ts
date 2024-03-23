@@ -25,19 +25,19 @@ export function fromProtoAsyncOpStats(
     meta: Metadata,
     taskIds: Ids,
 ): AsyncOpStats {
-    const attributes: Array<Attribute> = stats.attributes
-        .flatMap((a) => {
-            if (a.field === undefined) {
-                return undefined;
-            }
-            const field = Field.fromProto(a.field, meta);
-            if (field === undefined) {
-                return undefined;
-            }
-            const unit = a.unit;
-            return { field, unit };
-        })
-        .filter((a) => a !== undefined) as Array<Attribute>;
+    const attributes: Array<Attribute> = stats.attributes.reduce((acc, a) => {
+        if (a.field === undefined) {
+            return acc;
+        }
+        const field = Field.fromProto(a.field, meta);
+        if (field === undefined) {
+            return acc;
+        }
+        const unit = a.unit;
+        acc.push({ field, unit });
+        return acc;
+    }, [] as Array<Attribute>);
+
     const createdAt = new Timestamp(
         stats.createdAt!.seconds,
         stats.createdAt!.nanos,
@@ -46,15 +46,16 @@ export function fromProtoAsyncOpStats(
     const droppedAt = stats.droppedAt
         ? new Timestamp(stats.droppedAt.seconds, stats.droppedAt.nanos)
         : undefined;
-    const total = droppedAt ? droppedAt.subtract(createdAt) : undefined;
+    const total = droppedAt?.subtract(createdAt);
 
     const pollStats = stats.pollStats!;
-    const busy = pollStats.busyTime
-        ? new Duration(pollStats.busyTime.seconds, pollStats.busyTime.nanos)
-        : new Duration(0n, 0);
-    const idle = total ? total.subtract(busy) : undefined;
+    const busy = new Duration(
+        pollStats.busyTime?.seconds ?? 0n,
+        pollStats.busyTime?.nanos ?? 0,
+    );
+    const idle = total?.subtract(busy);
     const taskId = stats.taskId ? taskIds.idFor(stats.taskId.id) : undefined;
-    const taskIdStr = taskId ? taskId.toString() : "N/A";
+    const taskIdStr = taskId?.toString() ?? "N/A";
 
     return {
         createdAt,

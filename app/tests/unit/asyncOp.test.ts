@@ -44,6 +44,6 @@ describe("AsyncOp", () => {
 
     test("isDropped", () => {
         const isDropped = asyncOp.isDropped();
-        expect(isDropped).toBe(false);
+        expect(isDropped).toBe(true);
     });
 });
