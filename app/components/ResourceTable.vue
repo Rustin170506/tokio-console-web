@@ -64,6 +64,11 @@ const columns = [
         sortable: true,
     },
     {
+        key: "target",
+        label: "Target",
+        sortable: true,
+    },
+    {
         key: "total",
         label: "Total",
         sortable: true,
@@ -77,6 +82,7 @@ const columns = [
         key: "visibilityIcon",
         label: "Visibility",
         sortable: true,
+        class: "w-1",
     },
     {
         key: "location",
@@ -95,12 +101,8 @@ const select = (row: ResourceTableItem) => {
 
 const { pending, resourcesData, lastUpdatedAt } = useResources();
 const resources = computed(() => {
-    if (lastUpdatedAt.value === undefined) {
-        return [];
-    }
-
-    return Array.from(resourcesData.value.values())
+    return Array.from(resourcesData.value?.values() ?? [])
         .map((resource) => toResourceTableItem(resource, lastUpdatedAt.value!))
-        .filter((resource) => resource !== undefined) as ResourceTableItem[];
+        .filter(Boolean) as ResourceTableItem[];
 });
 </script>

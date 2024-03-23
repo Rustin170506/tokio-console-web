@@ -50,6 +50,7 @@ export interface ResourceTableItem {
     parentId: string;
     parent: string;
     kind: string;
+    target: string;
     total: DurationWithStyle;
     type: string;
     visibilityIcon: string;
@@ -68,6 +69,7 @@ export function toResourceTableItem(
         parentId: resource.parentIdStr,
         parent: resource.parent,
         kind: resource.kind,
+        target: resource.target,
         total: getDurationWithClass(resource.totalDuration(lastUpdatedAt)),
         type: resource.concreteType,
         visibilityIcon:
