@@ -2,34 +2,44 @@ import type { Metadata } from "./metadata";
 import { Field as ProtoField } from "~/gen/common_pb";
 import type { Location } from "~/gen/common_pb";
 
+/**
+ * Truncate the registry path.
+ * If the path contains "/.cargo/registry/src/" or "/git/checkouts/", replace it with "<cargo>/".
+ * @param s - The path to truncate.
+ * @returns The truncated string.
+ */
 export function truncateRegistryPath(s: string): string {
     const regex = /.*\/cargo(\/registry\/src\/[^/]*\/|\/git\/checkouts\/)/;
     return s.replace(regex, "<cargo>/");
 }
 
+/**
+ * Format a location.
+ * If the location is not provided, return "<unknown location>".
+ * @param loc - The location to format.
+ * @returns The formatted location.
+ */
 export function formatLocation(loc?: Location): string {
-    if (loc) {
-        let result = "";
-        if (loc.modulePath) {
-            result = loc.modulePath;
-        } else if (loc.file) {
-            const truncated = truncateRegistryPath(loc.file);
-            result = truncated;
-        } else {
-            return "<unknown location>";
-        }
-
-        if (loc.line !== undefined) {
-            result += `:${loc.line}`;
-
-            if (loc.column !== undefined) {
-                result += `:${loc.column}`;
-            }
-        }
-
-        return result;
+    const unknownLocation = "<unknown location>";
+    if (!loc) {
+        return unknownLocation;
     }
-    return "<unknown location>";
+
+    // https://github.com/tokio-rs/console/blob/b158b05df583348c19029c17924b9c898a9e74ef/console-api/src/common.rs#L112
+    let result =
+        loc.modulePath ||
+        (loc.file ? truncateRegistryPath(loc.file) : "") ||
+        unknownLocation;
+
+    // Do not forget 0:0 is a valid location.
+    if (loc.line !== undefined) {
+        result += `:${loc.line}`;
+        if (loc.column !== undefined) {
+            result += `:${loc.column}`;
+        }
+    }
+
+    return result;
 }
 
 export enum FieldValueType {
