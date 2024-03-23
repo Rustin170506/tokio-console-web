@@ -178,13 +178,16 @@ export function useResources() {
     };
 }
 
+/**
+ * Get the resource details from the state.
+ * If the resource is not found, it will return undefined.
+ * @param id - The id of the resource.
+ * @returns The resource details and the last updated time.
+ */
 export function useResourceDetails(id: bigint) {
-    const pending = ref<boolean>(true);
     const resource = state.resources.items.value.get(id);
 
-    pending.value = false;
     return {
-        pending,
         resource,
         lastUpdatedAt: state.lastUpdatedAt,
     };
