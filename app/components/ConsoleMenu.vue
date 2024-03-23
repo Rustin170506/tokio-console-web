@@ -1,5 +1,5 @@
 <template>
-    <div id="console-anchor" ref="anchorEl" :style="[anchorStyle, vars]">
+    <div id="console-menu" ref="anchorEl" :style="[anchorStyle, vars]">
         <div v-if="!isSafari" class="console-glowing" />
         <div
             ref="panelEl"
@@ -129,7 +129,7 @@ const anchorStyle = computed(() => {
 </script>
 
 <style scoped>
-#console-anchor {
+#console-menu {
     width: 0;
     z-index: 2147483645;
     position: fixed;
@@ -140,11 +140,11 @@ const anchorStyle = computed(() => {
     box-sizing: border-box;
 }
 
-#console-anchor * {
+#console-menu * {
     box-sizing: border-box;
 }
 
-#console-anchor .console-panel {
+#console-menu .console-panel {
     position: absolute;
     left: 0;
     top: 0;
@@ -172,22 +172,22 @@ const anchorStyle = computed(() => {
         opacity 0.2s ease;
 }
 
-#console-anchor .console-icon-button {
+#console-menu .console-icon-button {
     border-radius: 100%;
     border-width: 0;
     height: 30px;
 }
 
-#console-anchor .console-icon-button:hover {
+#console-menu .console-icon-button:hover {
     opacity: 1;
     color: #007bff;
 }
 
-#console-anchor:hover .console-glowing {
+#console-menu:hover .console-glowing {
     opacity: 0.6;
 }
 
-#console-anchor .console-glowing {
+#console-menu .console-glowing {
     position: absolute;
     left: 0;
     top: 0;
