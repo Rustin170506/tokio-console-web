@@ -209,12 +209,16 @@ export function useTaskDetails(id: bigint, width: Ref<number>) {
     const watchForDetails = async ({ spanId }: TokioTask) => {
         try {
             const client = await useGrpcClient();
+            const abort = new AbortController();
             const detailsStream = client.watchTaskDetails(
                 new TaskDetailsRequest({
                     id: {
                         id: spanId,
                     },
                 }),
+                {
+                    signal: abort.signal,
+                },
             );
 
             for await (const value of detailsStream) {
@@ -223,6 +227,7 @@ export function useTaskDetails(id: bigint, width: Ref<number>) {
                 }
                 // This means the task details page has been closed.
                 if (closed.value) {
+                    abort.abort();
                     break;
                 }
                 taskDetails.value = fromProtoTaskDetails(value, width.value);
