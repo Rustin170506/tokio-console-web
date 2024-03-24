@@ -94,15 +94,19 @@ describe("formatLocation", () => {
         });
     });
 
-    test("should truncate the registry path when file contains a registry path", () => {
-        const loc = { file: "some/path/cargo/registry/src/some-registry/" };
-        expect(formatLocation(new Location(loc))).toBe("<cargo>/");
-    });
-
     test("should truncate the git checkout path when file contains a git checkout path", () => {
-        const loc = { file: "some/path/cargo/git/checkouts/some-checkout/" };
+        const loc = { file: "some/path/.cargo/git/checkouts/some-checkout/" };
         expect(formatLocation(new Location(loc))).toBe(
             "<cargo>/some-checkout/",
+        );
+    });
+
+    test("should truncate the registry path when file contains a specific registry path", () => {
+        const loc = {
+            file: "/Users/hi-rustin/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tokio-1.25.3/src/runtime/blocking/shutdown.rs:22:20",
+        };
+        expect(formatLocation(new Location(loc))).toBe(
+            "<cargo>/tokio-1.25.3/src/runtime/blocking/shutdown.rs:22:20",
         );
     });
 });
