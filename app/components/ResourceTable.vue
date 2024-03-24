@@ -22,23 +22,7 @@
             <UIcon :name="row.visibilityIcon" dynamic />
         </template>
         <template #location-data="{ row }">
-            <UPopover
-                v-if="row.location && row.location.length > 50"
-                mode="hover"
-                :content="row.location"
-            >
-                <p>
-                    {{ row.location.substring(0, 50) + "..." }}
-                </p>
-                <template #panel>
-                    <div class="m-2">
-                        {{ row.location }}
-                    </div>
-                </template>
-            </UPopover>
-            <div v-else-if="row.location" class="mb-1">
-                {{ row.location }}
-            </div>
+            <LocationPopover :location="row.location" />
         </template>
         <template #attributes-data="{ row }">
             <UPopover
