@@ -17,48 +17,7 @@
             <LocationPopover :location="row.location" />
         </template>
         <template #fields-data="{ row }">
-            <UPopover
-                v-if="
-                    row.fields &&
-                    row.fields.length > 0 &&
-                    (row.fields[0].value.value.length > 12 ||
-                        row.fields.length > 1)
-                "
-                mode="hover"
-                :content="row.fields[0].value.value"
-            >
-                ...
-                <template #panel>
-                    <div
-                        v-for="(field, index) in row.fields"
-                        :key="index"
-                        class="m-2"
-                    >
-                        <p>
-                            <span class="text-blue-600 dark:text-blue-400">{{
-                                field.name
-                            }}</span>
-                            <span class="text-gray-500 dark:text-gray-400"
-                                >=</span
-                            >
-                            <span class="text-green-600 dark:text-green-400">{{
-                                field.value.value
-                            }}</span>
-                        </p>
-                    </div>
-                </template>
-            </UPopover>
-            <div v-else-if="row.fields && row.fields.length > 0" class="mb-1">
-                <p>
-                    <span class="text-blue-600 dark:text-blue-400">{{
-                        row.fields[0].name
-                    }}</span>
-                    <span class="text-gray-500 dark:text-gray-400">=</span>
-                    <span class="text-green-600 dark:text-green-400">{{
-                        row.fields[0].value.value
-                    }}</span>
-                </p>
-            </div>
+            <FieldsPopover :fields="row.fields" />
         </template>
         <template #state-data="{ row }">
             <UIcon :name="row.state" dynamic />

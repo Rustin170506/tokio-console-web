@@ -15,8 +15,6 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
-
 const props = defineProps({
     location: {
         type: String,
