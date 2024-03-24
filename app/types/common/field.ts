@@ -4,12 +4,12 @@ import type { Location } from "~/gen/common_pb";
 
 /**
  * Truncate the registry path.
- * If the path contains "/.cargo/registry/src/" or "/git/checkouts/", replace it with "<cargo>/".
+ * If the path contains ".cargo/registry/src/" or ".cargo/git/checkouts/", replace it with "<cargo>/".
  * @param s - The path to truncate.
  * @returns The truncated string.
  */
 export function truncateRegistryPath(s: string): string {
-    const regex = /.*\/cargo(\/registry\/src\/[^/]*\/|\/git\/checkouts\/)/;
+    const regex = /.*\/\.cargo(\/registry\/src\/[^/]*\/|\/git\/checkouts\/)/;
     return s.replace(regex, "<cargo>/");
 }
 
