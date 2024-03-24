@@ -1,10 +1,12 @@
-import { createPromiseClient, type PromiseClient } from "@connectrpc/connect";
+import { createPromiseClient } from "@connectrpc/connect";
 import { createGrpcWebTransport } from "@connectrpc/connect-web";
 import { Instrument } from "~/gen/instrument_connect";
 
-let client: PromiseClient<typeof Instrument>;
-
-export async function useGrpcClient() {
+/**
+ * Create a gRPC client for the Instrument service.
+ * Cache the client to avoid creating multiple clients.
+ */
+export const grpcClient = useMemoize(async () => {
     // Retrieve the subscriber.json file to obtain the subscriberBaseUrl.
     // This is a temporary solution for setting the base URL in the command line interface.
     // The nuxt build process will place `subscriber.json` in the root directory of the output.
@@ -14,9 +16,5 @@ export async function useGrpcClient() {
         baseUrl: config.targetAddr,
     });
 
-    if (!client) {
-        client = createPromiseClient(Instrument, transport);
-    }
-
-    return client;
-}
+    return createPromiseClient(Instrument, transport);
+});

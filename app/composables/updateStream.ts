@@ -54,7 +54,7 @@ export async function watchForUpdates(pending: Ref<boolean>) {
     try {
         await backOff(
             async () => {
-                const client = await useGrpcClient();
+                const client = await grpcClient();
                 const updateStream = client.watchUpdates(
                     new InstrumentRequest(),
                 );
