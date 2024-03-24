@@ -112,7 +112,11 @@ exports[`TaskTable View 1`] = `
       class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm"
     >
       
-      app.rs/68:10
+      <div
+        class="mb-1"
+      >
+        app.rs/68:10
+      </div>
       
     </td>
     <td

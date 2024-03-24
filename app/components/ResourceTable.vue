@@ -21,24 +21,11 @@
         <template #visibilityIcon-data="{ row }">
             <UIcon :name="row.visibilityIcon" dynamic />
         </template>
+        <template #location-data="{ row }">
+            <LocationPopover :location="row.location" />
+        </template>
         <template #attributes-data="{ row }">
-            <div
-                v-if="row.attributes && row.attributes.length > 0"
-                class="mb-1 w-10"
-            >
-                <p>
-                    <span :class="row.attributes[0].name.class">{{
-                        row.attributes[0].name.value
-                    }}</span>
-                    <span class="text-gray-500 dark:text-gray-400">=</span>
-                    <span :class="row.attributes[0].value.class">{{
-                        row.attributes[0].value.value
-                    }}</span>
-                    <span :class="row.attributes[0].unit.class">{{
-                        row.attributes[0].unit.value
-                    }}</span>
-                </p>
-            </div>
+            <AttributesPopover :attributes="row.attributes" />
         </template>
     </UTable>
 </template>

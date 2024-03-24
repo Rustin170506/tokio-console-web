@@ -13,18 +13,11 @@
                 />
             </div>
         </template>
+        <template #location-data="{ row }">
+            <LocationPopover :location="row.location" />
+        </template>
         <template #fields-data="{ row }">
-            <div v-if="row.fields && row.fields.length > 0" class="mb-1">
-                <p>
-                    <span class="text-blue-600 dark:text-blue-400">{{
-                        row.fields[0].name
-                    }}</span>
-                    <span class="text-gray-500 dark:text-gray-400">=</span>
-                    <span class="text-green-600 dark:text-green-400">{{
-                        row.fields[0].value.value
-                    }}</span>
-                </p>
-            </div>
+            <FieldsPopover :fields="row.fields" />
         </template>
         <template #state-data="{ row }">
             <UIcon :name="row.state" dynamic />
@@ -108,6 +101,7 @@ const columns = [
     {
         key: "fields",
         label: "Fields",
+        class: "w-1/4",
     },
 ];
 
