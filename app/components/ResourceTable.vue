@@ -21,10 +21,63 @@
         <template #visibilityIcon-data="{ row }">
             <UIcon :name="row.visibilityIcon" dynamic />
         </template>
+        <template #location-data="{ row }">
+            <UPopover
+                v-if="row.location && row.location.length > 50"
+                mode="hover"
+                :content="row.location"
+            >
+                <p>
+                    {{ row.location.substring(0, 50) + "..." }}
+                </p>
+                <template #panel>
+                    <div class="m-2">
+                        {{ row.location }}
+                    </div>
+                </template>
+            </UPopover>
+            <div v-else-if="row.location" class="mb-1">
+                {{ row.location }}
+            </div>
+        </template>
         <template #attributes-data="{ row }">
+            <UPopover
+                v-if="
+                    row.attributes &&
+                    row.attributes.length > 0 &&
+                    (row.attributes[0].value.value.length > 20 ||
+                        row.attributes.length > 1)
+                "
+                mode="hover"
+                :content="row.attributes[0].value.value"
+            >
+                ...
+                <template #panel>
+                    <div
+                        v-for="(attribute, index) in row.attributes"
+                        :key="index"
+                        class="m-2"
+                    >
+                        <p>
+                            <span :class="attribute.name.class">{{
+                                attribute.name.value
+                            }}</span>
+                            <span class="text-gray-500 dark:text-gray-400"
+                                >=</span
+                            >
+                            <span :class="attribute.value.class">{{
+                                attribute.value.value
+                            }}</span>
+                            <span :class="attribute.unit.class">{{
+                                attribute.unit.value
+                            }}</span>
+                        </p>
+                    </div>
+                </template>
+            </UPopover>
             <div
-                v-if="row.attributes && row.attributes.length > 0"
-                class="mb-1 w-10"
+                v-else-if="row.attributes && row.attributes.length > 0"
+                class="mb-1"
             >
                 <p>
                     <span :class="row.attributes[0].name.class">{{
