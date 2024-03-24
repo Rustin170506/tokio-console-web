@@ -22,9 +22,9 @@ function asyncOpUpdateToOps(asyncOpUpdate: AsyncOpUpdate) {
 
         let metaId;
         if (op.metadata) {
-            consola.warn("async op has no metadata id, skipping", op);
             metaId = op.metadata.id;
         } else {
+            consola.warn("async op has no metadata id, skipping", op);
             continue;
         }
 
