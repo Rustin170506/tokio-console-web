@@ -23,17 +23,20 @@
         </template>
         <template #attributes-data="{ row }">
             <div
-                v-for="(item, index) in row.attributes"
-                :key="index"
+                v-if="row.attributes && row.attributes.length > 0"
                 class="mb-1 w-10"
             >
                 <p>
-                    <span :class="item.name.class">{{ item.name.value }}</span>
-                    <span class="text-gray-500 dark:text-gray-400">=</span>
-                    <span :class="item.value.class">{{
-                        item.value.value
+                    <span :class="row.attributes[0].name.class">{{
+                        row.attributes[0].name.value
                     }}</span>
-                    <span :class="item.unit.class">{{ item.unit.value }}</span>
+                    <span class="text-gray-500 dark:text-gray-400">=</span>
+                    <span :class="row.attributes[0].value.class">{{
+                        row.attributes[0].value.value
+                    }}</span>
+                    <span :class="row.attributes[0].unit.class">{{
+                        row.attributes[0].unit.value
+                    }}</span>
                 </p>
             </div>
         </template>

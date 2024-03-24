@@ -14,14 +14,14 @@
             </div>
         </template>
         <template #fields-data="{ row }">
-            <div v-for="(item, index) in row.fields" :key="index" class="mb-1">
+            <div v-if="row.fields && row.fields.length > 0" class="mb-1">
                 <p>
                     <span class="text-blue-600 dark:text-blue-400">{{
-                        item.name
+                        row.fields[0].name
                     }}</span>
                     <span class="text-gray-500 dark:text-gray-400">=</span>
                     <span class="text-green-600 dark:text-green-400">{{
-                        item.value.value
+                        row.fields[0].value.value
                     }}</span>
                 </p>
             </div>
