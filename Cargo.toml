@@ -61,3 +61,5 @@ publish-prereleases = true
 
 [dev-dependencies]
 trycmd = "0.15.0"
+console-subscriber = { git = "https://github.com/tokio-rs/console", features = ["grpc-web"] }
+tokio = { version = "1.37", features = ["tracing"] }

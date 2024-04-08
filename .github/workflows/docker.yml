@@ -2,9 +2,9 @@ name: Docker Build
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   build:
@@ -17,5 +17,5 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./app/console.Dockerfile
+          file: ./example.Dockerfile
           load: false
