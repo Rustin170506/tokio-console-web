@@ -3,7 +3,7 @@
     <Bar :data="data" :options="chartOptions" />
 </template>
 
-<script>
+<script setup>
 import {
     Chart as ChartJS,
     Title,
@@ -25,62 +25,51 @@ ChartJS.register(
     Legend,
 );
 
-export default {
-    components: {
-        Bar,
+defineProps({
+    data: {
+        type: Object,
+        required: true,
     },
-    props: {
-        data: {
-            type: Object,
-            required: true,
-        },
-        options: {
-            type: Object,
-            default: () => ({}),
-        },
+    options: {
+        type: Object,
+        default: () => ({}),
     },
+});
 
-    setup() {
-        const colorMode = useColorMode();
+const colorMode = useColorMode();
 
-        // Computed property for dynamic chart options based on color mode.
-        const chartOptions = computed(() => {
-            const isDarkMode = colorMode.value === "dark";
-            return {
-                reactive: true,
-                maintainAspectRatio: false,
-                backgroundColor: isDarkMode ? "#F3F4F6" : "#4B5563",
-                scales: {
-                    x: {
-                        ticks: {
-                            color: isDarkMode ? "white" : "black",
-                        },
-                        grid: {
-                            display: false,
-                        },
-                    },
-                    y: {
-                        ticks: {
-                            color: isDarkMode ? "white" : "black",
-                        },
-                        grid: {
-                            color: isDarkMode ? "gray" : undefined,
-                        },
-                    },
+// Computed property for dynamic chart options based on color mode.
+const chartOptions = computed(() => {
+    const isDarkMode = colorMode.value === "dark";
+    return {
+        reactive: true,
+        maintainAspectRatio: false,
+        backgroundColor: isDarkMode ? "#F3F4F6" : "#4B5563",
+        scales: {
+            x: {
+                ticks: {
+                    color: isDarkMode ? "white" : "black",
                 },
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: isDarkMode ? "white" : "black",
-                        },
-                    },
+                grid: {
+                    display: false,
                 },
-            };
-        });
-
-        return {
-            chartOptions,
-        };
-    },
-};
+            },
+            y: {
+                ticks: {
+                    color: isDarkMode ? "white" : "black",
+                },
+                grid: {
+                    color: isDarkMode ? "gray" : undefined,
+                },
+            },
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    color: isDarkMode ? "white" : "black",
+                },
+            },
+        },
+    };
+});
 </script>
