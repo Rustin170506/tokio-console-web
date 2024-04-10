@@ -41,6 +41,8 @@ const colorMode = useColorMode();
 // Computed property for dynamic chart options based on color mode.
 const chartOptions = computed(() => {
     const isDarkMode = colorMode.value === "dark";
+    const color = isDarkMode ? "white" : "black";
+    const gridColor = isDarkMode ? "gray" : undefined;
     return {
         reactive: true,
         maintainAspectRatio: false,
@@ -48,7 +50,7 @@ const chartOptions = computed(() => {
         scales: {
             x: {
                 ticks: {
-                    color: isDarkMode ? "white" : "black",
+                    color,
                 },
                 grid: {
                     display: false,
@@ -56,17 +58,17 @@ const chartOptions = computed(() => {
             },
             y: {
                 ticks: {
-                    color: isDarkMode ? "white" : "black",
+                    color,
                 },
                 grid: {
-                    color: isDarkMode ? "gray" : undefined,
+                    color: gridColor,
                 },
             },
         },
         plugins: {
             legend: {
                 labels: {
-                    color: isDarkMode ? "white" : "black",
+                    color,
                 },
             },
         },
