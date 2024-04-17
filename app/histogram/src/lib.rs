@@ -80,7 +80,7 @@ impl Percentile {
 /// Deserializes the histogram from the given bytes.
 #[wasm_bindgen(js_name = deserializeHistogram)]
 pub fn deserialize_histogram(bytes: &[u8], width: isize) -> MiniHistogram {
-    if width == 0 {
+    if width <= 0 {
         return MiniHistogram::default();
     }
 
