@@ -21,6 +21,7 @@ macro_rules! console_log {
 
 /// Contains the serialized histogram and the min and max values.
 #[wasm_bindgen]
+#[derive(Default)]
 pub struct MiniHistogram {
     percentiles: Vec<Percentile>,
     data: Vec<DurationCount>,
@@ -79,13 +80,17 @@ impl Percentile {
 /// Deserializes the histogram from the given bytes.
 #[wasm_bindgen(js_name = deserializeHistogram)]
 pub fn deserialize_histogram(bytes: &[u8], width: isize) -> MiniHistogram {
+    if width <= 0 {
+        return MiniHistogram::default();
+    }
+
     let histogram: Histogram<u64> = hdrhistogram::serialization::Deserializer::new()
         .deserialize(&mut Cursor::new(&bytes))
         .expect("Failed to deserialize histogram");
 
     let min = histogram.min();
     let max = histogram.max();
-    let width = if width > 0 { width / 10 } else { 100 };
+    let width = width / 10;
     let step_size = ((max - min) as f64 / width as f64).ceil() as u64 + 1;
 
     let mut found_first_nonzero = false;
