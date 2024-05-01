@@ -60,6 +60,6 @@ allow-dirty = ["ci"]
 publish-prereleases = true
 
 [dev-dependencies]
-trycmd = "0.15.0"
+trycmd = "0.15.1"
 console-subscriber = { git = "https://github.com/tokio-rs/console", features = ["grpc-web"] }
 tokio = { version = "1.37", features = ["tracing"] }
