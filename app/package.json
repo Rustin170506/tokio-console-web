@@ -11,7 +11,7 @@
         "lint:fix": "eslint --fix --ext .js,.vue,.ts --ignore-path .gitignore .",
         "fmt": "prettier --check .",
         "fmt:fix": "prettier --write .",
-        "prepare": "husky install",
+        "prepare": "cd .. && husky app/.husky",
         "test": "vitest"
     },
     "devDependencies": {
