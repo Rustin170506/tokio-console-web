@@ -10,7 +10,7 @@
             <UButton
                 color="gray"
                 variant="ghost"
-                to="https://github.com/hi-rustin/console-web"
+                to="https://github.com/hi-rustin/tokio-console-web"
                 target="_blank"
                 size="lg"
                 icon="i-simple-icons-github"
