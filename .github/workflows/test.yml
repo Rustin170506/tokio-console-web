@@ -23,11 +23,11 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "21.x"
+          node-version: "20.13.0"
       - uses: pnpm/action-setup@v2
         name: Install pnpm
         with:
-          version: 8
+          version: 9.1.0
           run_install: false
       - name: Get pnpm store directory
         shell: bash
