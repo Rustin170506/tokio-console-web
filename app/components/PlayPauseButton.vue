@@ -8,7 +8,6 @@
 
 <script setup>
 import { useStorage } from "@vueuse/core";
-import { grpcClient } from "~/composables/grpcClient";
 
 // Store the paused state in local storage to avoid losing it on page reload.
 // See more: https://github.com/tokio-rs/console/issues/551
