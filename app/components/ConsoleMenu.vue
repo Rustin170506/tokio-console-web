@@ -20,7 +20,7 @@
                 </button>
             </NuxtLink>
             <div class="flex">
-                <UIcon name="i-heroicons-link" />
+                <PlayPauseButton />
             </div>
             <NuxtLink to="/resources">
                 <button
