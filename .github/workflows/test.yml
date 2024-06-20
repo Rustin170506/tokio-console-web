@@ -8,7 +8,7 @@ name: Unit Tests
 
 env:
   # renovate: datasource=npm depName=pnpm
-  PNPM_VERSION: 9.1.0
+  PNPM_VERSION: 9.4.0
 
 jobs:
   test:
