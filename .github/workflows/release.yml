@@ -43,6 +43,10 @@ on:
       - "**[0-9]+.[0-9]+.[0-9]+*"
   pull_request:
 
+env:
+  # renovate: datasource=npm depName=pnpm
+  PNPM_VERSION: 9.4.0
+
 jobs:
   # Run 'cargo dist plan' (or host) to determine what tasks we need to do
   plan:
@@ -115,7 +119,7 @@ jobs:
       - uses: pnpm/action-setup@v2
         name: Install pnpm
         with:
-          version: 9.1.0
+          version: ${{ env.PNPM_VERSION }}
           run_install: false
       - name: Get pnpm store directory
         shell: bash
