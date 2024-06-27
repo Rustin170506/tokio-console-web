@@ -1,18 +1,18 @@
 [package]
-name = "tokio-console-web"
-version = "0.1.1-beta.2"
-edition = "2021"
-include = ["src/*", "app/.output/public"]
-repository = "https://github.com/hi-rustin/tokio-console-web"
 authors = ["hi-rustin"]
 description = "A web console for tokio"
+edition = "2021"
+include = ["src/*", "app/.output/public"]
 license = "MIT"
+name = "tokio-console-web"
+repository = "https://github.com/hi-rustin/tokio-console-web"
+version = "0.1.1-beta.2"
 
 [package.metadata.wix]
-upgrade-guid = "EF6E06AE-4AB9-4FAD-85F5-9DA51A50BBC5"
-path-guid = "CF8775B9-F794-41B7-ACD7-CAFD7D0550AB"
-license = false
 eula = false
+license = false
+path-guid = "CF8775B9-F794-41B7-ACD7-CAFD7D0550AB"
+upgrade-guid = "EF6E06AE-4AB9-4FAD-85F5-9DA51A50BBC5"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -45,7 +45,12 @@ installers = ["shell", "powershell", "homebrew", "msi"]
 # A GitHub repo to push Homebrew formulas to
 tap = "hi-rustin/homebrew-tokio-console-web"
 # Target platforms to build apps for (Rust target-triple syntax)
-targets = ["aarch64-apple-darwin", "x86_64-apple-darwin", "x86_64-unknown-linux-gnu", "x86_64-pc-windows-msvc"]
+targets = [
+    "aarch64-apple-darwin",
+    "x86_64-apple-darwin",
+    "x86_64-unknown-linux-gnu",
+    "x86_64-pc-windows-msvc",
+]
 # The archive format to use for windows builds (defaults .zip)
 windows-archive = ".tar.gz"
 # The archive format to use for non-windows builds (defaults .tar.xz)
@@ -60,6 +65,6 @@ allow-dirty = ["ci"]
 publish-prereleases = true
 
 [dev-dependencies]
-trycmd = "0.15.0"
-console-subscriber = { git = "https://github.com/tokio-rs/console", features = ["grpc-web"] }
+console-subscriber = { version = "0.3.0", features = ["grpc-web"] }
 tokio = { version = "1.37", features = ["tracing"] }
+trycmd = "0.15.0"
