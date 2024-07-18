@@ -3,7 +3,7 @@
         :icon="'i-heroicons-exclamation-triangle-20-solid'"
         color="gray"
         variant="ghost"
-        aria-label="Theme"
+        aria-label="Warnings"
         @click="openSlideover"
     />
 </template>
