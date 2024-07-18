@@ -131,7 +131,7 @@ const menuStyle = computed(() => {
 <style scoped>
 #console-menu {
     width: 0;
-    z-index: 2147483645;
+    z-index: 49;
     position: fixed;
     transform-origin: center center;
     transform: translate(-50%, -50%) rotate(0);
