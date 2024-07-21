@@ -10,7 +10,7 @@ exports[`TaskDetails 1`] = `
           <div class="flex items-center align-center text-center w-full flex-row">
             <div class="flex border-gray-200 dark:border-gray-800 w-full border-t border-dotted"></div>
             <div class="font-medium text-gray-700 dark:text-gray-200 flex mx-3 whitespace-nowrap">
-              <div class="flex items-center text-black dark:text-white font-bold text-md"><span>Task</span><svg data-v-bc20b322="" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="icon" width="1em" height="1em" viewBox="0 0 24 24">
+              <div class="flex items-center text-black dark:text-white font-bold text-md"><span>Task</span><svg data-v-3612eda8="" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="icon" width="1em" height="1em" viewBox="0 0 24 24">
                   <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986z"></path>
                 </svg></div>
             </div>
