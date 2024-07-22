@@ -130,6 +130,14 @@ export class TokioTask {
         return this.stats.total !== undefined;
     }
 
+    isBlocking(): boolean {
+        return ["block_on", "blocking"].includes(this.kind);
+    }
+
+    totalPolls(): bigint {
+        return this.stats.polls;
+    }
+
     state(): TaskState {
         if (this.isCompleted()) {
             return TaskState.Completed;
