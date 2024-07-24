@@ -3,6 +3,7 @@ import { Duration, Timestamp } from "~/types/common/duration";
 import type { Metadata } from "~/types/common/metadata";
 import type { TokioResource } from "~/types/resource/tokioResource";
 import type { AsyncOp } from "~/types/asyncOp/asyncOp";
+import type { Warn } from "~/types/warning/warning";
 
 export class Ids {
     nextId: bigint;
@@ -42,12 +43,18 @@ export class Store<T> {
     }
 }
 
+export interface TaskState {
+    tasks: Store<TokioTask>;
+    pendingLint: Set<bigint>;
+    warnings: Array<Warn<TokioTask>>;
+}
+
 export interface State {
     // Metadata about a task.
     metas: Map<bigint, Metadata>;
     // How long to retain tasks after they're dropped.
     retainFor: Duration;
-    tasks: Store<TokioTask>;
+    taskState: TaskState;
     resources: Store<TokioResource>;
     asyncOps: Store<AsyncOp>;
     lastUpdatedAt: Ref<Timestamp | undefined>;
@@ -59,7 +66,11 @@ export const state: State = {
     metas: new Map(),
     // TODO: make this configurable.
     retainFor: new Duration(6n, 0),
-    tasks: new Store(),
+    taskState: {
+        tasks: new Store(),
+        pendingLint: new Set(),
+        warnings: [],
+    },
     resources: new Store(),
     asyncOps: new Store(),
     lastUpdatedAt: ref<Timestamp | undefined>(undefined),
