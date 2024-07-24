@@ -1,15 +1,17 @@
 import { TaskState, TokioTask } from "../task/tokioTask";
 import { Duration, Timestamp } from "../common/duration";
-import { type Warn, Warning } from "./warning";
+import { type Warn, Warning } from "./warn";
 
 const DEFAULT_DURATION: Duration = new Duration(1n, 0);
 
 // Warning for if a task has never yielded
 export class NeverYielded implements Warn<TokioTask> {
+    name: string;
     minDuration: Duration;
     description: string;
 
     constructor(minDuration: Duration = DEFAULT_DURATION) {
+        this.name = "NeverYielded";
         this.minDuration = minDuration;
         this.description = `tasks have never yielded (threshold ${minDuration.toString()}ms)`;
     }

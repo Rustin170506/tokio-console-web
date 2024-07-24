@@ -3,7 +3,8 @@ import { Duration, Timestamp } from "~/types/common/duration";
 import type { Metadata } from "~/types/common/metadata";
 import type { TokioResource } from "~/types/resource/tokioResource";
 import type { AsyncOp } from "~/types/asyncOp/asyncOp";
-import type { Warn } from "~/types/warning/warning";
+import type { Warn } from "~/types/warning/warn";
+import { NeverYielded } from "~/types/warning/neverYielded";
 
 export class Ids {
     nextId: bigint;
@@ -46,7 +47,7 @@ export class Store<T> {
 export interface TaskState {
     tasks: Store<TokioTask>;
     pendingLint: Set<bigint>;
-    warnings: Array<Warn<TokioTask>>;
+    linters: Array<Warn<TokioTask>>;
 }
 
 export interface State {
@@ -58,7 +59,6 @@ export interface State {
     resources: Store<TokioResource>;
     asyncOps: Store<AsyncOp>;
     lastUpdatedAt: Ref<Timestamp | undefined>;
-
     isUpdateWatched: boolean;
 }
 
@@ -69,7 +69,8 @@ export const state: State = {
     taskState: {
         tasks: new Store(),
         pendingLint: new Set(),
-        warnings: [],
+        // TODO: make this configurable.
+        linters: [new NeverYielded()],
     },
     resources: new Store(),
     asyncOps: new Store(),

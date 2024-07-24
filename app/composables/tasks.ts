@@ -6,7 +6,7 @@ import {
     formatLocation,
     FieldValueType,
 } from "~/types/common/field";
-import { TokioTask } from "~/types/task/tokioTask";
+import { TaskLintResult, TokioTask } from "~/types/task/tokioTask";
 import { Duration } from "~/types/common/duration";
 import { fromProtoTaskStats } from "~/types/task/tokioTaskStats";
 import {
@@ -21,7 +21,10 @@ import type { TaskUpdate } from "~/gen/tasks_pb";
  * @param update - The update from the server.
  * @returns An array of TokioTask.
  */
-const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
+const taskUpdateToTasks = (
+    update: TaskUpdate,
+    nextPendingLint: Set<bigint>,
+): TokioTask[] => {
     const result = new Array<TokioTask>();
     const { newTasks: tasks, statsUpdate } = update;
 
@@ -111,6 +114,11 @@ const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
             location,
             kind,
         );
+        if (
+            t.lint(state.taskState.linters) === TaskLintResult.RequiresRecheck
+        ) {
+            nextPendingLint.add(t.id);
+        }
         result.push(t);
     }
 
@@ -126,7 +134,8 @@ export function addTasks(update: Update) {
         return;
     }
 
-    const tasks = taskUpdateToTasks(update.taskUpdate);
+    const nextPendingLint: Set<bigint> = new Set();
+    const tasks = taskUpdateToTasks(update.taskUpdate, nextPendingLint);
     for (const task of tasks) {
         state.taskState.tasks.items.value.set(task.id, task);
     }
@@ -137,8 +146,29 @@ export function addTasks(update: Update) {
         if (task) {
             task.stats = fromProtoTaskStats(update.taskUpdate.statsUpdate[k]);
             state.taskState.tasks.items.value.set(task.id, task);
+            const lintResult = task.lint(state.taskState.linters);
+            if (lintResult === TaskLintResult.RequiresRecheck) {
+                nextPendingLint.add(task.id);
+            } else {
+                // Avoid linting this task again this cycle.
+                nextPendingLint.delete(task.id);
+            }
         }
     }
+
+    state.taskState.pendingLint.forEach((id) => {
+        const task = state.taskState.tasks.items.value.get(id);
+        if (task) {
+            if (
+                task.lint(state.taskState.linters) ===
+                TaskLintResult.RequiresRecheck
+            ) {
+                nextPendingLint.add(task.id);
+            }
+        }
+    });
+
+    state.taskState.pendingLint = nextPendingLint;
 }
 
 /**

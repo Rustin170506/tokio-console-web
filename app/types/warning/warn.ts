@@ -11,6 +11,7 @@ export enum Warning {
 
 // A warning for a particular type of monitored entity (e.g. task or resource).
 export interface Warn<T> {
+    name: string;
     // Returns if the warning applies to `val`.
     check(val: T): Warning;
     // Formats a description of the warning detected for a *specific* `val`.

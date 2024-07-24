@@ -7,6 +7,9 @@
 use std::net::Ipv4Addr;
 use std::time::Duration;
 
+use tokio::task::{self, yield_now};
+use tracing::info;
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     console_subscriber::ConsoleLayer::builder()
@@ -14,44 +17,39 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         .server_addr((Ipv4Addr::UNSPECIFIED, 9999))
         .init();
 
-    let task1 = tokio::task::Builder::new()
-        .name("task1")
-        .spawn(spawn_tasks(1, 10))
-        .unwrap();
-    let task2 = tokio::task::Builder::new()
-        .name("task2")
-        .spawn(spawn_tasks(10, 30))
+
+    let long_sleeps = task::Builder::new()
+        .name("long-sleeps")
+        .spawn(long_sleeps(5000))
         .unwrap();
 
-    let result = tokio::try_join! {
-        task1,
-        task2,
-    };
-    result?;
+    let sleep_forever = task::Builder::new()
+        .name("sleep-forever")
+        .spawn(sleep_forever(5000))
+        .unwrap();
+
+    match (long_sleeps.await, sleep_forever.await) {
+        (Ok(_), Ok(_)) => info!("Success"),
+        (_, _) => info!("Error awaiting tasks."),
+    }
+
+    tokio::time::sleep(Duration::from_millis(200)).await;
 
     Ok(())
 }
 
-#[tracing::instrument]
-async fn spawn_tasks(min: u64, max: u64) {
+async fn long_sleeps(inc: u64) {
+    let millis = inc;
     loop {
-        for i in min..max {
-            tracing::trace!(i, "spawning wait task");
-            tokio::task::Builder::new()
-                .name("wait")
-                .spawn(wait(i))
-                .unwrap();
+        std::thread::sleep(Duration::from_millis(millis));
 
-            let sleep = Duration::from_secs(max) - Duration::from_secs(i);
-            tracing::trace!(?sleep, "sleeping...");
-            tokio::time::sleep(sleep).await;
-        }
+        yield_now().await;
     }
 }
 
-#[tracing::instrument]
-async fn wait(seconds: u64) {
-    tracing::debug!("waiting...");
-    tokio::time::sleep(Duration::from_secs(seconds)).await;
-    tracing::trace!("done!");
+async fn sleep_forever(inc: u64) {
+    let millis = inc;
+    loop {
+        std::thread::sleep(Duration::from_millis(millis));
+    }
 }
