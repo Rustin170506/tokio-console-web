@@ -1,6 +1,6 @@
-import { TaskState, TokioTask } from "../task/tokioTask";
-import { Duration, Timestamp } from "../common/duration";
-import { type Warn, Warning } from "./warn";
+import { TaskState, TokioTask } from "../../task/tokioTask";
+import { Duration, Timestamp } from "../../common/duration";
+import { type Warn, Warning } from "../warn";
 
 const DEFAULT_DURATION: Duration = new Duration(1n, 0);
 

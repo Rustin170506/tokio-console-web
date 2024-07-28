@@ -4,7 +4,7 @@ import type { Metadata } from "~/types/common/metadata";
 import type { TokioResource } from "~/types/resource/tokioResource";
 import type { AsyncOp } from "~/types/asyncOp/asyncOp";
 import type { Warn } from "~/types/warning/warn";
-import { NeverYielded } from "~/types/warning/neverYielded";
+import { NeverYielded } from "~/types/warning/taskWarnings/neverYielded";
 
 export class Ids {
     nextId: bigint;
