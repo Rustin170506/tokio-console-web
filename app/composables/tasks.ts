@@ -21,10 +21,8 @@ import type { TaskUpdate } from "~/gen/tasks_pb";
  * @param update - The update from the server.
  * @returns An array of TokioTask.
  */
-const taskUpdateToTasks = (
-    update: TaskUpdate,
-    nextPendingLint: Set<bigint>,
-): TokioTask[] => {
+const taskUpdateToTasks = (update: TaskUpdate): [TokioTask[], Set<bigint>] => {
+    const nextPendingLint = new Set<bigint>();
     const result = new Array<TokioTask>();
     const { newTasks: tasks, statsUpdate } = update;
 
@@ -122,7 +120,7 @@ const taskUpdateToTasks = (
         result.push(t);
     }
 
-    return result;
+    return [result, nextPendingLint];
 };
 
 /**
@@ -134,11 +132,13 @@ export function addTasks(update: Update) {
         return;
     }
 
-    const nextPendingLint: Set<bigint> = new Set();
-    const tasks = taskUpdateToTasks(update.taskUpdate, nextPendingLint);
-    for (const task of tasks) {
+    const nextPendingLints: Set<bigint> = new Set();
+    const [tasks, pendingLints] = taskUpdateToTasks(update.taskUpdate);
+    pendingLints.forEach((lint) => nextPendingLints.add(lint));
+
+    tasks.forEach((task) => {
         state.taskState.tasks.items.value.set(task.id, task);
-    }
+    });
 
     for (const k in update.taskUpdate.statsUpdate) {
         const id = state.taskState.tasks.idFor(BigInt(k));
@@ -148,10 +148,10 @@ export function addTasks(update: Update) {
             state.taskState.tasks.items.value.set(task.id, task);
             const lintResult = task.lint(state.taskState.linters);
             if (lintResult === TaskLintResult.RequiresRecheck) {
-                nextPendingLint.add(task.id);
+                nextPendingLints.add(task.id);
             } else {
                 // Avoid linting this task again this cycle.
-                nextPendingLint.delete(task.id);
+                nextPendingLints.delete(task.id);
             }
         }
     }
@@ -163,12 +163,12 @@ export function addTasks(update: Update) {
                 task.lint(state.taskState.linters) ===
                 TaskLintResult.RequiresRecheck
             ) {
-                nextPendingLint.add(task.id);
+                nextPendingLints.add(task.id);
             }
         }
     });
 
-    state.taskState.pendingLints = nextPendingLint;
+    state.taskState.pendingLints = nextPendingLints;
 }
 
 /**
