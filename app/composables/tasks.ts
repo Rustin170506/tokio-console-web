@@ -156,7 +156,7 @@ export function addTasks(update: Update) {
         }
     }
 
-    state.taskState.pendingLint.forEach((id) => {
+    state.taskState.pendingLints.forEach((id) => {
         const task = state.taskState.tasks.items.value.get(id);
         if (task) {
             if (
@@ -168,7 +168,7 @@ export function addTasks(update: Update) {
         }
     });
 
-    state.taskState.pendingLint = nextPendingLint;
+    state.taskState.pendingLints = nextPendingLint;
 }
 
 /**

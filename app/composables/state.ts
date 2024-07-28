@@ -44,9 +44,12 @@ export class Store<T> {
     }
 }
 
+// The state of tasks.
 export interface TaskState {
     tasks: Store<TokioTask>;
-    pendingLint: Set<bigint>;
+    // The set of tasks that are pending linting.
+    pendingLints: Set<bigint>;
+    // The linters to run on tasks.
     linters: Array<Warn<TokioTask>>;
 }
 
@@ -68,7 +71,7 @@ export const state: State = {
     retainFor: new Duration(6n, 0),
     taskState: {
         tasks: new Store(),
-        pendingLint: new Set(),
+        pendingLints: new Set(),
         // TODO: make this configurable.
         linters: [new NeverYielded()],
     },

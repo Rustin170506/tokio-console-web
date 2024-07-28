@@ -141,6 +141,7 @@ export class Duration {
         return this.asMicroseconds();
     }
 
+    // fromNano returns a new Duration representing the given number of nanoseconds.
     static fromNano(nanos: bigint): Duration {
         const seconds = nanos / BigInt(1e9);
         const remainderNanos = nanos % BigInt(1e9);
@@ -148,11 +149,13 @@ export class Duration {
         return new Duration(seconds, Number(remainderNanos));
     }
 
+    // now returns a new Duration representing the current time.
     static now(): Duration {
         const now = new Date();
         return Duration.fromDate(now);
     }
 
+    // fromDate returns a new Duration representing the time since the given date.
     static fromDate(date: Date): Duration {
         const ms = date.getTime();
         const seconds = BigInt(Math.floor(ms / 1000));
