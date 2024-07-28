@@ -20,3 +20,5 @@ export interface Warn<T> {
     // displaying in a list of all detected warnings.
     summary(): string;
 }
+
+export type { Warn as Linter };

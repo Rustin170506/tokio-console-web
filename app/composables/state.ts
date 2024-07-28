@@ -3,7 +3,7 @@ import { Duration, Timestamp } from "~/types/common/duration";
 import type { Metadata } from "~/types/common/metadata";
 import type { TokioResource } from "~/types/resource/tokioResource";
 import type { AsyncOp } from "~/types/asyncOp/asyncOp";
-import type { Warn } from "~/types/warning/warn";
+import type { Linter } from "~/types/warning/warn";
 import { NeverYielded } from "~/types/warning/taskWarnings/neverYielded";
 
 export class Ids {
@@ -50,7 +50,7 @@ export interface TaskState {
     // The set of tasks that are pending linting.
     pendingLints: Set<bigint>;
     // The linters to run on tasks.
-    linters: Array<Warn<TokioTask>>;
+    linters: Array<Linter<TokioTask>>;
 }
 
 export interface State {

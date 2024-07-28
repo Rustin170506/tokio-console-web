@@ -1,6 +1,6 @@
 import { Duration, Timestamp } from "../common/duration";
 import type { Field } from "../common/field";
-import { Warning, type Warn } from "../warning/warn";
+import { Warning, type Linter, type Warn } from "../warning/warn";
 import type { TokioTaskStats } from "./tokioTaskStats";
 
 export enum TaskState {
@@ -201,7 +201,7 @@ export class TokioTask {
         return percent;
     }
 
-    lint(linters: Array<Warn<TokioTask>>): TaskLintResult {
+    lint(linters: Array<Linter<TokioTask>>): TaskLintResult {
         this.warnings.length = 0;
         let recheck = false;
         linters.forEach((linter) => {
