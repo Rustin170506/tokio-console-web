@@ -18,7 +18,7 @@ mockNuxtImport("useTasks", () => {
     };
 });
 
-it("WarningsSlideover View", async () => {
+it("WarningList View", async () => {
     const component = await mountSuspended(WarningList);
     expect(component.html()).toMatchSnapshot();
 });
