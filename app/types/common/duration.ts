@@ -79,6 +79,24 @@ export class Duration {
         );
     }
 
+    // greaterThanOrEqual checks if this duration is greater than or equal to another.
+    greaterThanOrEqual(other: Duration): boolean {
+        return !this.lessThan(other);
+    }
+
+    // equals checks if this duration is equal to another.
+    equals(other: Duration): boolean {
+        return this.seconds === other.seconds && this.nanos === other.nanos;
+    }
+
+    // lessThan checks if this duration is less than another.
+    lessThan(other: Duration): boolean {
+        return (
+            this.seconds < other.seconds ||
+            (this.seconds === other.seconds && this.nanos < other.nanos)
+        );
+    }
+
     toString(precision: number = 2): string {
         const totalSeconds = this.asSeconds();
         const units = [
@@ -123,11 +141,26 @@ export class Duration {
         return this.asMicroseconds();
     }
 
+    // fromNano returns a new Duration representing the given number of nanoseconds.
     static fromNano(nanos: bigint): Duration {
         const seconds = nanos / BigInt(1e9);
         const remainderNanos = nanos % BigInt(1e9);
         // After normalization, we can safely cast to number.
         return new Duration(seconds, Number(remainderNanos));
+    }
+
+    // now returns a new Duration representing the current time.
+    static now(): Duration {
+        const now = new Date();
+        return Duration.fromDate(now);
+    }
+
+    // fromDate returns a new Duration representing the time since the given date.
+    static fromDate(date: Date): Duration {
+        const ms = date.getTime();
+        const seconds = BigInt(Math.floor(ms / 1000));
+        const nanos = (ms % 1000) * 1e6;
+        return new Duration(seconds, nanos);
     }
 }
 

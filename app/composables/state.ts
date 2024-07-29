@@ -3,6 +3,8 @@ import { Duration, Timestamp } from "~/types/common/duration";
 import type { Metadata } from "~/types/common/metadata";
 import type { TokioResource } from "~/types/resource/tokioResource";
 import type { AsyncOp } from "~/types/asyncOp/asyncOp";
+import type { Linter } from "~/types/warning/warn";
+import { NeverYielded } from "~/types/warning/taskWarnings/neverYielded";
 
 export class Ids {
     nextId: bigint;
@@ -42,16 +44,24 @@ export class Store<T> {
     }
 }
 
+// The state of tasks.
+export interface TaskState {
+    tasks: Store<TokioTask>;
+    // The set of tasks that are pending linting.
+    pendingLints: Set<bigint>;
+    // The linters to run on tasks.
+    linters: Array<Linter<TokioTask>>;
+}
+
 export interface State {
     // Metadata about a task.
     metas: Map<bigint, Metadata>;
     // How long to retain tasks after they're dropped.
     retainFor: Duration;
-    tasks: Store<TokioTask>;
+    taskState: TaskState;
     resources: Store<TokioResource>;
     asyncOps: Store<AsyncOp>;
     lastUpdatedAt: Ref<Timestamp | undefined>;
-
     isUpdateWatched: boolean;
 }
 
@@ -59,7 +69,12 @@ export const state: State = {
     metas: new Map(),
     // TODO: make this configurable.
     retainFor: new Duration(6n, 0),
-    tasks: new Store(),
+    taskState: {
+        tasks: new Store(),
+        pendingLints: new Set(),
+        // TODO: make this configurable.
+        linters: [new NeverYielded()],
+    },
     resources: new Store(),
     asyncOps: new Store(),
     lastUpdatedAt: ref<Timestamp | undefined>(undefined),

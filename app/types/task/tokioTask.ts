@@ -1,5 +1,6 @@
 import { Duration, Timestamp } from "../common/duration";
 import type { Field } from "../common/field";
+import { Warning, type Linter, type Warn } from "../warning/warn";
 import type { TokioTaskStats } from "./tokioTaskStats";
 
 export enum TaskState {
@@ -8,6 +9,12 @@ export enum TaskState {
     Scheduled,
     Idle,
 }
+
+export enum TaskLintResult {
+    Linted,
+    RequiresRecheck,
+}
+
 export class TokioTask {
     // The task's pretty (console-generated, sequential) task ID.
     //
@@ -34,6 +41,9 @@ export class TokioTask {
     location: string;
     // The kind of task, currently one of task, blocking, block_on, local
     kind: string;
+    // Currently active warnings for this task.
+    /* eslint-disable no-use-before-define */
+    warnings: Array<Warn<TokioTask>>;
 
     constructor(
         id: bigint,
@@ -57,6 +67,7 @@ export class TokioTask {
         this.name = name;
         this.location = location;
         this.kind = kind;
+        this.warnings = [];
     }
 
     totalDuration(since: Timestamp): Duration {
@@ -116,6 +127,12 @@ export class TokioTask {
                 this.stats.lastPollEnded,
             );
         }
+        if (
+            this.stats.lastPollStarted &&
+            this.stats.lastPollEnded === undefined
+        ) {
+            return true;
+        }
         return false;
     }
 
@@ -128,6 +145,14 @@ export class TokioTask {
 
     isCompleted(): boolean {
         return this.stats.total !== undefined;
+    }
+
+    isBlocking(): boolean {
+        return ["block_on", "blocking"].includes(this.kind);
+    }
+
+    totalPolls(): bigint {
+        return this.stats.polls;
     }
 
     state(): TaskState {
@@ -174,5 +199,28 @@ export class TokioTask {
         }
 
         return percent;
+    }
+
+    lint(linters: Array<Linter<TokioTask>>): TaskLintResult {
+        this.warnings.length = 0;
+        let recheck = false;
+        linters.forEach((linter) => {
+            const result = linter.check(this);
+            switch (result) {
+                case Warning.Ok:
+                    break;
+                case Warning.Recheck:
+                    recheck = true;
+                    break;
+                case Warning.Warn:
+                    this.warnings.push(linter);
+                    break;
+            }
+        });
+        if (recheck) {
+            return TaskLintResult.RequiresRecheck;
+        } else {
+            return TaskLintResult.Linted;
+        }
     }
 }

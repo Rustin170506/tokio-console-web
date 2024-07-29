@@ -44,7 +44,7 @@ function asyncOpUpdateToOps(asyncOpUpdate: AsyncOpUpdate) {
         const asyncOpStats = fromProtoAsyncOpStats(
             stats,
             meta,
-            state.tasks.ids,
+            state.taskState.tasks.ids,
         );
 
         const id = state.asyncOps.idFor(spanId);
@@ -91,7 +91,11 @@ export function addAsyncOps(update: Update) {
         if (!meta) continue;
 
         const stats = update.asyncOpUpdate.statsUpdate[k];
-        const statsUpdate = fromProtoAsyncOpStats(stats, meta, state.tasks.ids);
+        const statsUpdate = fromProtoAsyncOpStats(
+            stats,
+            meta,
+            state.taskState.tasks.ids,
+        );
         op.stats = statsUpdate;
         state.asyncOps.items.value.set(op.id, op);
     }

@@ -6,7 +6,7 @@ import {
     formatLocation,
     FieldValueType,
 } from "~/types/common/field";
-import { TokioTask } from "~/types/task/tokioTask";
+import { TaskLintResult, TokioTask } from "~/types/task/tokioTask";
 import { Duration } from "~/types/common/duration";
 import { fromProtoTaskStats } from "~/types/task/tokioTaskStats";
 import {
@@ -21,7 +21,8 @@ import type { TaskUpdate } from "~/gen/tasks_pb";
  * @param update - The update from the server.
  * @returns An array of TokioTask.
  */
-const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
+const taskUpdateToTasks = (update: TaskUpdate): [TokioTask[], Set<bigint>] => {
+    const nextPendingLint = new Set<bigint>();
     const result = new Array<TokioTask>();
     const { newTasks: tasks, statsUpdate } = update;
 
@@ -89,7 +90,7 @@ const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
         const taskStats = fromProtoTaskStats(stats);
         const location = formatLocation(task.location);
 
-        const id = state.tasks.idFor(spanId);
+        const id = state.taskState.tasks.idFor(spanId);
         let shortDesc = "";
         if (taskId && name) {
             shortDesc = `${taskId} (${name})`;
@@ -111,10 +112,15 @@ const taskUpdateToTasks = (update: TaskUpdate): TokioTask[] => {
             location,
             kind,
         );
+        if (
+            t.lint(state.taskState.linters) === TaskLintResult.RequiresRecheck
+        ) {
+            nextPendingLint.add(t.id);
+        }
         result.push(t);
     }
 
-    return result;
+    return [result, nextPendingLint];
 };
 
 /**
@@ -126,19 +132,43 @@ export function addTasks(update: Update) {
         return;
     }
 
-    const tasks = taskUpdateToTasks(update.taskUpdate);
-    for (const task of tasks) {
-        state.tasks.items.value.set(task.id, task);
-    }
+    const nextPendingLints: Set<bigint> = new Set();
+    const [tasks, pendingLints] = taskUpdateToTasks(update.taskUpdate);
+    pendingLints.forEach((lint) => nextPendingLints.add(lint));
+
+    tasks.forEach((task) => {
+        state.taskState.tasks.items.value.set(task.id, task);
+    });
 
     for (const k in update.taskUpdate.statsUpdate) {
-        const id = state.tasks.idFor(BigInt(k));
-        const task = state.tasks.items.value.get(id);
+        const id = state.taskState.tasks.idFor(BigInt(k));
+        const task = state.taskState.tasks.items.value.get(id);
         if (task) {
             task.stats = fromProtoTaskStats(update.taskUpdate.statsUpdate[k]);
-            state.tasks.items.value.set(task.id, task);
+            state.taskState.tasks.items.value.set(task.id, task);
+            const lintResult = task.lint(state.taskState.linters);
+            if (lintResult === TaskLintResult.RequiresRecheck) {
+                nextPendingLints.add(task.id);
+            } else {
+                // Avoid linting this task again this cycle.
+                nextPendingLints.delete(task.id);
+            }
         }
     }
+
+    state.taskState.pendingLints.forEach((id) => {
+        const task = state.taskState.tasks.items.value.get(id);
+        if (task) {
+            if (
+                task.lint(state.taskState.linters) ===
+                TaskLintResult.RequiresRecheck
+            ) {
+                nextPendingLints.add(task.id);
+            }
+        }
+    });
+
+    state.taskState.pendingLints = nextPendingLints;
 }
 
 /**
@@ -147,7 +177,7 @@ export function addTasks(update: Update) {
  */
 export function retainTasks(retainFor: Duration) {
     const newTasks = new Map<bigint, TokioTask>();
-    for (const [id, task] of state.tasks.items.value) {
+    for (const [id, task] of state.taskState.tasks.items.value) {
         const shouldRetain =
             !task.stats.droppedAt ||
             state.lastUpdatedAt.value
@@ -157,7 +187,7 @@ export function retainTasks(retainFor: Duration) {
             newTasks.set(id, task);
         }
     }
-    state.tasks.items.value = newTasks;
+    state.taskState.tasks.items.value = newTasks;
 }
 
 /**
@@ -165,12 +195,12 @@ export function retainTasks(retainFor: Duration) {
  * state. It also starts a watch for updates if it hasn't already been started.
  */
 export function useTasks() {
-    const { isUpdateWatched, lastUpdatedAt, tasks } = state;
+    const { isUpdateWatched, lastUpdatedAt, taskState } = state;
 
     if (isUpdateWatched) {
         return {
             pending: ref<boolean>(false),
-            tasksData: tasks.items,
+            tasksData: taskState.tasks.items,
             lastUpdatedAt,
         };
     }
@@ -180,7 +210,7 @@ export function useTasks() {
     watchForUpdates(pending);
     return {
         pending,
-        tasksData: tasks.items,
+        tasksData: taskState.tasks.items,
         lastUpdatedAt,
     };
 }
@@ -193,7 +223,7 @@ export function useTasks() {
  */
 export function useTaskDetails(id: bigint, width: Ref<number>) {
     const pending = ref(true);
-    const task = state.tasks.items.value.get(id);
+    const task = state.taskState.tasks.items.value.get(id);
     const taskDetails: Ref<TokioTaskDetails> = ref({
         pollTimes: {
             percentiles: [],
