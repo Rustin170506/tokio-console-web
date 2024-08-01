@@ -53,7 +53,7 @@ importers:
         version: 3.14.0(@testing-library/vue@8.0.3(@vue/compiler-sfc@3.4.33)(vue@3.4.33(typescript@5.4.5)))(@vue/test-utils@2.4.5)(h3@1.12.0)(happy-dom@14.1.0)(magicast@0.3.4)(nitropack@2.9.6(@opentelemetry/api@1.8.0)(encoding@0.1.13))(rollup@4.17.2)(vite@5.2.11(@types/node@20.12.12)(terser@5.31.0))(vitest@1.4.0(@types/node@20.12.12)(happy-dom@14.1.0)(terser@5.31.0))(vue-router@4.3.2(vue@3.4.33(typescript@5.4.5)))(vue@3.4.33(typescript@5.4.5))
       '@nuxtjs/color-mode':
         specifier: ^3.3.2
-        version: 3.3.3(rollup@4.17.2)
+        version: 3.4.2(magicast@0.3.4)(rollup@4.17.2)
       '@nuxtjs/eslint-config-typescript':
         specifier: ^12.0.0
         version: 12.1.0(eslint@8.57.0)(typescript@5.4.5)
@@ -1100,9 +1100,6 @@ packages:
     engines: {node: ^14.18.0 || >=16.10.0}
     peerDependencies:
       vue: ^3.3.4
-
-  '@nuxtjs/color-mode@3.3.3':
-    resolution: {integrity: sha512-t6QM/tj1d/53xQ9JznNVIaqIfQWhjHRzNt5VqTxNeAJWG0HCdiHVezkUTMahPUgUbEJnBrtCoquUYwpyFhNF+Q==}
 
   '@nuxtjs/color-mode@3.4.2':
     resolution: {integrity: sha512-6A+lDP8R6fFXc1Ip5tDepKq9MJW6oxbRlz1plvW52yacnpeDFXv5S5rDS0ax31AuSFUPlgzHymFSdjcylBwZ6w==}
@@ -6515,7 +6512,7 @@ snapshots:
       nopt: 5.0.0
       npmlog: 5.0.1
       rimraf: 3.0.2
-      semver: 7.6.2
+      semver: 7.6.3
       tar: 6.2.1
     transitivePeerDependencies:
       - encoding
@@ -6674,7 +6671,7 @@ snapshots:
       pathe: 1.1.2
       pkg-types: 1.1.1
       scule: 1.3.0
-      semver: 7.6.2
+      semver: 7.6.3
       ufo: 1.5.3
       unctx: 2.3.1
       unimport: 3.7.1(rollup@4.17.2)
@@ -7020,17 +7017,9 @@ snapshots:
       - vti
       - vue-tsc
 
-  '@nuxtjs/color-mode@3.3.3(rollup@4.17.2)':
-    dependencies:
-      '@nuxt/kit': 3.11.1(rollup@4.17.2)
-      pathe: 1.1.2
-    transitivePeerDependencies:
-      - rollup
-      - supports-color
-
   '@nuxtjs/color-mode@3.4.2(magicast@0.3.4)(rollup@4.17.2)':
     dependencies:
-      '@nuxt/kit': 3.12.2(magicast@0.3.4)(rollup@4.17.2)
+      '@nuxt/kit': 3.12.4(magicast@0.3.4)(rollup@4.17.2)
       pathe: 1.1.2
       pkg-types: 1.1.3
       semver: 7.6.3
@@ -10231,7 +10220,7 @@ snapshots:
       rollup: 4.17.2
       rollup-plugin-visualizer: 5.12.0(rollup@4.17.2)
       scule: 1.3.0
-      semver: 7.6.2
+      semver: 7.6.3
       serve-placeholder: 2.0.1
       serve-static: 1.15.0
       std-env: 3.7.0
