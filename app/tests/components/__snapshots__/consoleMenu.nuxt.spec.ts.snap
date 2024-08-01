@@ -5,7 +5,7 @@ exports[`Console Menu 1`] = `
   <div data-v-d9380ae4="" id="console-menu" style="left: 512px; top: 10px; pointer-events: auto; --console-widget-bg: #ffffff; --console-widget-fg: #111; --console-widget-border: #efefef; --console-widget-shadow: rgba(128,128,128,0.1);">
     <div data-v-d9380ae4="" class="console-glowing"></div>
     <div data-v-d9380ae4="" class="console-panel" style="display: flex;"><a data-v-d9380ae4="" href="/"><button data-v-d9380ae4="" class="console-icon-button m-4 text-blue-500 dark:text-blue-500" title="Tasks"> Tasks </button></a>
-      <div data-v-d9380ae4="" class="flex"><svg data-v-3612eda8="" data-v-d9380ae4="" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="icon" width="1em" height="1em" viewBox="0 0 24 24">
+      <div data-v-d9380ae4="" class="flex"><svg data-v-232a4b47="" data-v-d9380ae4="" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="icon" width="1em" height="1em" viewBox="0 0 24 24">
           <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.75 5.25v13.5m-7.5-13.5v13.5"></path>
         </svg></div><a data-v-d9380ae4="" href="/resources"><button data-v-d9380ae4="" class="console-icon-button m-2" title="Resources"> Resources </button></a>
     </div>
