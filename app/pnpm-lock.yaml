@@ -16,7 +16,7 @@ importers:
         version: 1.4.0(@bufbuild/protobuf@1.10.0)(@connectrpc/connect@1.4.0(@bufbuild/protobuf@1.10.0))
       '@iconify-json/simple-icons':
         specifier: ^1.1.82
-        version: 1.1.109
+        version: 1.1.111
       '@nuxt/ui':
         specifier: ^2.17.0
         version: 2.17.0(focus-trap@7.5.4)(magicast@0.3.4)(rollup@4.17.2)(vite@5.2.11(@types/node@20.12.12)(terser@5.31.0))(vue@3.4.33(typescript@5.4.5))
@@ -891,8 +891,8 @@ packages:
   '@iconify-json/heroicons@1.1.21':
     resolution: {integrity: sha512-A+3L4KN+TjH3V8fQ2N2dkOOnLLxMgMBzO8RDT0P9YL+YzvLMIbe/lkDLSB8NB8x0DKWmkvTimoo1l4DKMwi7Zg==}
 
-  '@iconify-json/simple-icons@1.1.109':
-    resolution: {integrity: sha512-vIhIJQDdbS5R6kSyIHVBRCaR2jiFjVlbVtB4PAoLjQL45vJRHMTwkrFa536XcX7yW69HbQkoanydcyDjknI6pw==}
+  '@iconify-json/simple-icons@1.1.111':
+    resolution: {integrity: sha512-9+d69tCopShQB4a/mlQjP6uqkzJnDfeLNVwly11QMvucLIFfCG08xBXcWSyPCnfsR2bX/G50e43LaUXubNyYuw==}
 
   '@iconify/collections@1.0.435':
     resolution: {integrity: sha512-RKaHaUhFDtNRoV/IGw+0W4ygviGB2+Gxsmo+2N938pynRV9VbD/lM+lQ7BWdgoxrDZctb6BX8h5yDHTkaWqZ9g==}
@@ -6394,7 +6394,7 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
-  '@iconify-json/simple-icons@1.1.109':
+  '@iconify-json/simple-icons@1.1.111':
     dependencies:
       '@iconify/types': 2.0.0
 
