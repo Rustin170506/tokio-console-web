@@ -41,7 +41,7 @@ export function useTasks() {
  */
 export function useTaskDetails(id: bigint, width: Ref<number>) {
     const pending = ref(true);
-    const task = state.taskState.tasks.items.value.get(id);
+    const task = state.taskState.tasks.getById(id);
     const taskDetails: Ref<TokioTaskDetails> = ref({
         pollTimes: {
             percentiles: [],

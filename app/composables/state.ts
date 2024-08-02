@@ -48,6 +48,10 @@ export class Store<T> {
         return this.ids.idFor(spanId);
     }
 
+    getById(id: bigint): T | undefined {
+        return this.items.value.get(id);
+    }
+
     getBySpanId(spanId: bigint): T | undefined {
         const id = this.ids.map.get(spanId);
         return this.items.value.get(id!);
