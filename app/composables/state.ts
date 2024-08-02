@@ -62,7 +62,7 @@ export class TaskState {
     // The linters to run on tasks.
     linters: Array<Linter<TokioTask>>;
 
-    constructor(linters: Array<Linter<TokioTask>>) {
+    constructor(...linters: Array<Linter<TokioTask>>) {
         this.tasks = new Store();
         this.pendingLints = new Set();
         this.linters = linters;
@@ -71,9 +71,13 @@ export class TaskState {
     /**
      * Convert a TaskUpdate to an array of TokioTask.
      * @param update - The update from the server.
+     * @param metas - The metadata for the tasks.
      * @returns An array of TokioTask and a set of pending lints.
      */
-    taskUpdateToTasks(update: TaskUpdate): [TokioTask[], Set<bigint>] {
+    taskUpdateToTasks(
+        update: TaskUpdate,
+        metas: Map<bigint, Metadata>,
+    ): [TokioTask[], Set<bigint>] {
         const nextPendingLint = new Set<bigint>();
         const result = new Array<TokioTask>();
         const { newTasks: tasks, statsUpdate } = update;
@@ -91,7 +95,7 @@ export class TaskState {
                 continue;
             }
 
-            const meta = state.metas.get(metaId);
+            const meta = metas.get(metaId);
             if (!meta) {
                 consola.warn("no metadata for task, skipping", task);
                 continue;
@@ -176,14 +180,18 @@ export class TaskState {
     /**
      * Add tasks to the state.
      * @param update - The update from the server.
+     * @param metas - The metadata for the tasks.
      */
-    addTasks(update: Update) {
+    addTasks(update: Update, metas: Map<bigint, Metadata>) {
         if (!update.taskUpdate) {
             return;
         }
 
         const nextPendingLints: Set<bigint> = new Set();
-        const [tasks, pendingLints] = this.taskUpdateToTasks(update.taskUpdate);
+        const [tasks, pendingLints] = this.taskUpdateToTasks(
+            update.taskUpdate,
+            metas,
+        );
         pendingLints.forEach((lint) => nextPendingLints.add(lint));
 
         tasks.forEach((task) => {
@@ -225,13 +233,17 @@ export class TaskState {
     /**
      * Retain tasks for a given duration.
      * @param retainFor - The duration to retain the tasks for.
+     * @param lastUpdatedAt - The last time the tasks were updated.
      */
-    retainTasks(retainFor: Duration) {
+    retainTasks(
+        retainFor: Duration,
+        lastUpdatedAt: Ref<Timestamp | undefined>,
+    ) {
         const newTasks = new Map<bigint, TokioTask>();
         for (const [id, task] of this.tasks.items.value) {
             const shouldRetain =
                 !task.stats.droppedAt ||
-                state.lastUpdatedAt.value
+                lastUpdatedAt.value
                     ?.subtract(task.stats.droppedAt)
                     .greaterThan(retainFor) === false;
             if (shouldRetain) {
@@ -259,7 +271,7 @@ export const state: State = {
     // TODO: make this configurable.
     retainFor: new Duration(6n, 0),
     // TODO: make this configurable.
-    taskState: new TaskState([new NeverYielded()]),
+    taskState: new TaskState(new NeverYielded()),
     resources: new Store(),
     asyncOps: new Store(),
     lastUpdatedAt: ref<Timestamp | undefined>(undefined),

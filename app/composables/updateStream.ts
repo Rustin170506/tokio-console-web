@@ -46,7 +46,9 @@ const addMetadata = (update: Update) => {
  * @param pending - A ref to indicate if the request is pending.
  */
 export async function watchForUpdates(pending: Ref<boolean>) {
-    if (state.isUpdateWatched) {
+    const { isUpdateWatched, metas, lastUpdatedAt, retainFor, taskState } =
+        state;
+    if (isUpdateWatched) {
         pending.value = false;
         return;
     }
@@ -66,12 +68,12 @@ export async function watchForUpdates(pending: Ref<boolean>) {
                     }
                     updateLastUpdatedAt(value);
                     addMetadata(value);
-                    state.taskState.addTasks(value);
-                    state.taskState.retainTasks(state.retainFor);
+                    taskState.addTasks(value, metas);
+                    taskState.retainTasks(retainFor, lastUpdatedAt);
                     addResources(value);
-                    retainResources(state.retainFor);
+                    retainResources(retainFor);
                     addAsyncOps(value);
-                    retainAsyncOps(state.retainFor);
+                    retainAsyncOps(retainFor);
                 }
             },
             {
