@@ -1,7 +1,11 @@
 import { consola } from "consola";
 import { Duration, Timestamp } from "~/types/common/duration";
 import type { Metadata } from "~/types/common/metadata";
-import type { TokioResource } from "~/types/resource/tokioResource";
+import {
+    kindFromProto,
+    TokioResource,
+    Visibility,
+} from "~/types/resource/tokioResource";
 import type { AsyncOp } from "~/types/asyncOp/asyncOp";
 import { NeverYielded } from "~/types/warning/taskWarnings/neverYielded";
 import {
@@ -15,6 +19,8 @@ import { fromProtoTaskStats } from "~/types/task/tokioTaskStats";
 import { type Update } from "~/gen/instrument_pb";
 import type { TaskUpdate } from "~/gen/tasks_pb";
 import type { Linter } from "~/types/warning/warn";
+import type { ResourceUpdate } from "~/gen/resources_pb";
+import { fromProtoResourceStats } from "~/types/resource/tokioResourceStats";
 
 export class Ids {
     nextId: bigint;
@@ -258,13 +264,186 @@ export class TaskState {
     }
 }
 
+export class ResourceState {
+    resources: Store<TokioResource>;
+
+    constructor() {
+        this.resources = new Store();
+    }
+
+    /**
+     *  Convert the resource update from the server to resources.
+     * @param update - The update from the server.
+     * @param metas - The metadata for the resources.
+     * @returns The resources.
+     */
+    resourceUpdateToResources(
+        update: ResourceUpdate,
+        metas: Map<bigint, Metadata>,
+    ) {
+        const result = new Array<TokioResource>();
+        const { newResources: resources, statsUpdate } = update;
+
+        // Get the parents of the resources.
+        const parents: Map<bigint, TokioResource> = resources.reduce(
+            (map, resource) => {
+                const parentId = resource.parentResourceId?.id;
+                if (parentId) {
+                    const parent = this.resources.getBySpanId(parentId);
+                    if (parent) {
+                        map.set(parentId, parent);
+                    }
+                }
+                return map;
+            },
+            new Map<bigint, TokioResource>(),
+        );
+
+        for (const resource of resources) {
+            if (!resource.id) {
+                consola.warn("skipping resource with no id", resource);
+                continue;
+            }
+
+            let metaId;
+            if (resource.metadata) {
+                metaId = resource.metadata.id;
+            } else {
+                consola.warn("resource has no metadata id, skipping", resource);
+                continue;
+            }
+
+            const meta = metas.get(metaId);
+            if (!meta) {
+                consola.warn("no metadata for resource, skipping", resource);
+                continue;
+            }
+
+            if (!resource.kind) {
+                continue;
+            }
+            let kind;
+            try {
+                kind = kindFromProto(resource.kind);
+            } catch (e) {
+                consola.warn(
+                    "resource kind cannot ve parsed",
+                    resource.kind,
+                    e,
+                );
+                continue;
+            }
+
+            const spanId = resource.id.id;
+            const stats = statsUpdate[spanId.toString()];
+            if (!stats) {
+                continue;
+            }
+            // Delete
+            delete statsUpdate[spanId.toString()];
+            const resourceStats = fromProtoResourceStats(stats, meta);
+
+            const id = this.resources.idFor(spanId);
+            let parentId = resource.parentResourceId?.id;
+            let parentIdStr = "N/A";
+            let parentStr = "N/A";
+            if (parentId) {
+                parentId = this.resources.idFor(parentId);
+                parentIdStr = parentId.toString();
+                const parent = parents.get(parentId);
+                if (parent) {
+                    parentStr = `${parent.id} (${parent.target}::${parent.concreteType})`;
+                }
+            }
+
+            const location = formatLocation(resource.location);
+            let visibility;
+            if (resource.isInternal) {
+                visibility = Visibility.Internal;
+            } else {
+                visibility = Visibility.Public;
+            }
+
+            const r = new TokioResource(
+                id,
+                spanId,
+                parentStr,
+                parentIdStr,
+                metaId,
+                kind,
+                resourceStats,
+                meta.target,
+                resource.concreteType,
+                location,
+                visibility,
+            );
+            result.push(r);
+        }
+
+        return result;
+    }
+
+    /**
+     * Add resources to the state.
+     * @param update - The update from the server.
+     * @param metas - The metadata for the resources.
+     */
+    addResources(update: Update, metas: Map<bigint, Metadata>) {
+        if (!update.resourceUpdate) return;
+        const resources = this.resourceUpdateToResources(
+            update.resourceUpdate,
+            metas,
+        );
+        resources.forEach((resource) =>
+            this.resources.items.value.set(resource.id, resource),
+        );
+
+        Object.entries(update.resourceUpdate.statsUpdate).forEach(
+            ([spanId, statsUpdate]) => {
+                const resource = this.resources.getBySpanId(BigInt(spanId));
+                if (!resource) return;
+
+                const meta = metas.get(resource.metaId);
+                if (!meta) return;
+
+                resource.stats = fromProtoResourceStats(statsUpdate, meta);
+                this.resources.items.value.set(resource.id, resource);
+            },
+        );
+    }
+
+    /**
+     * Retain the resources for the given duration.
+     * This will remove the resources that are older than the given duration.
+     * @param retainFor - The duration to retain the resources.
+     * @param lastUpdatedAt - The last updated at time.
+     */
+    retainResources(
+        retainFor: Duration,
+        lastUpdatedAt: Ref<Timestamp | undefined>,
+    ) {
+        const newResources = new Map<bigint, TokioResource>();
+        for (const [id, resource] of this.resources.items.value) {
+            const shouldRetain =
+                !resource.stats.droppedAt ||
+                lastUpdatedAt.value
+                    ?.subtract(resource.stats.droppedAt)
+                    .greaterThan(retainFor) === false;
+            if (shouldRetain) {
+                newResources.set(id, resource);
+            }
+        }
+        this.resources.items.value = newResources;
+    }
+}
+
 export interface State {
     // Metadata about a task.
     metas: Map<bigint, Metadata>;
     // How long to retain tasks after they're dropped.
     retainFor: Duration;
     taskState: TaskState;
-    resources: Store<TokioResource>;
+    resourceState: ResourceState;
     asyncOps: Store<AsyncOp>;
     lastUpdatedAt: Ref<Timestamp | undefined>;
     isUpdateWatched: boolean;
@@ -276,7 +455,7 @@ export const state: State = {
     retainFor: new Duration(6n, 0),
     // TODO: make this configurable.
     taskState: new TaskState(new NeverYielded()),
-    resources: new Store(),
+    resourceState: new ResourceState(),
     asyncOps: new Store(),
     lastUpdatedAt: ref<Timestamp | undefined>(undefined),
     isUpdateWatched: false,
