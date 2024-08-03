@@ -51,7 +51,9 @@ function asyncOpUpdateToOps(asyncOpUpdate: AsyncOpUpdate) {
         if (!op.resourceId) {
             continue;
         }
-        const resourceId = state.resources.idFor(op.resourceId.id);
+        const resourceId = state.resourceState.resources.idFor(
+            op.resourceId.id,
+        );
         let parentIdStr = "N/A";
         if (op.parentAsyncOpId) {
             parentIdStr = state.asyncOps
