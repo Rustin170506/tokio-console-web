@@ -6,7 +6,7 @@ import {
     TokioResource,
     Visibility,
 } from "~/types/resource/tokioResource";
-import type { AsyncOp } from "~/types/asyncOp/asyncOp";
+import { AsyncOp } from "~/types/asyncOp/asyncOp";
 import { NeverYielded } from "~/types/warning/taskWarnings/neverYielded";
 import {
     FieldValue,
@@ -21,6 +21,8 @@ import type { TaskUpdate } from "~/gen/tasks_pb";
 import type { Linter } from "~/types/warning/warn";
 import type { ResourceUpdate } from "~/gen/resources_pb";
 import { fromProtoResourceStats } from "~/types/resource/tokioResourceStats";
+import type { AsyncOpUpdate } from "~/gen/async_ops_pb";
+import { fromProtoAsyncOpStats } from "~/types/asyncOp/asyncOpStats";
 
 export class Ids {
     nextId: bigint;
@@ -280,7 +282,7 @@ export class ResourceState {
     resourceUpdateToResources(
         update: ResourceUpdate,
         metas: Map<bigint, Metadata>,
-    ) {
+    ): TokioResource[] {
         const result = new Array<TokioResource>();
         const { newResources: resources, statsUpdate } = update;
 
@@ -437,6 +439,153 @@ export class ResourceState {
     }
 }
 
+export class AsyncOpState {
+    asyncOps: Store<AsyncOp>;
+
+    constructor() {
+        this.asyncOps = new Store();
+    }
+
+    /**
+     * Convert the async op update from the server to async ops.
+     * @param asyncOpUpdate - The async op update from the server.
+     * @param metas - The metadata for the async ops.
+     * @param taskState - The task state.
+     * @param resourceState - The resource state.
+     * @returns The async ops.
+     */
+    asyncOpUpdateToOps(
+        asyncOpUpdate: AsyncOpUpdate,
+        metas: Map<bigint, Metadata>,
+        taskState: TaskState,
+        resourceState: ResourceState,
+    ): AsyncOp[] {
+        const result = new Array<AsyncOp>();
+        const { newAsyncOps: ops, statsUpdate } = asyncOpUpdate;
+
+        for (const op of ops) {
+            if (!op.id) {
+                consola.warn("skipping async op with no id", op);
+                continue;
+            }
+
+            let metaId;
+            if (op.metadata) {
+                metaId = op.metadata.id;
+            } else {
+                consola.warn("async op has no metadata id, skipping", op);
+                continue;
+            }
+
+            const meta = metas.get(metaId);
+            if (!meta) {
+                consola.warn("no metadata for async op, skipping", op, metaId);
+                continue;
+            }
+
+            const spanId = op.id.id;
+            const stats = statsUpdate[spanId.toString()];
+            if (!stats) {
+                continue;
+            }
+            // Delete
+            delete statsUpdate[spanId.toString()];
+            const asyncOpStats = fromProtoAsyncOpStats(
+                stats,
+                meta,
+                taskState.tasks.ids,
+            );
+
+            const id = this.asyncOps.idFor(spanId);
+            if (!op.resourceId) {
+                continue;
+            }
+            const resourceId = resourceState.resources.idFor(op.resourceId.id);
+            let parentIdStr = "N/A";
+            if (op.parentAsyncOpId) {
+                parentIdStr = this.asyncOps
+                    .idFor(op.parentAsyncOpId.id)
+                    .toString();
+            }
+            const source = op.source;
+
+            const o = new AsyncOp(
+                id,
+                parentIdStr,
+                resourceId,
+                metaId,
+                source,
+                asyncOpStats,
+            );
+            result.push(o);
+        }
+        return result;
+    }
+
+    /**
+     * Add async ops to the state.
+     * @param update - The update from the server.
+     */
+    addAsyncOps(
+        update: Update,
+        metas: Map<bigint, Metadata>,
+        taskState: TaskState,
+        resourceState: ResourceState,
+    ) {
+        if (!update.asyncOpUpdate) return;
+
+        const ops = this.asyncOpUpdateToOps(
+            update.asyncOpUpdate,
+            metas,
+            taskState,
+            resourceState,
+        );
+        ops.forEach((op) => this.asyncOps.items.value.set(op.id, op));
+
+        for (const k in update.asyncOpUpdate.statsUpdate) {
+            const op = this.asyncOps.getBySpanId(BigInt(k));
+            if (!op) continue;
+
+            const meta = metas.get(op.metaId);
+            if (!meta) continue;
+
+            const stats = update.asyncOpUpdate.statsUpdate[k];
+            const statsUpdate = fromProtoAsyncOpStats(
+                stats,
+                meta,
+                taskState.tasks.ids,
+            );
+            op.stats = statsUpdate;
+            this.asyncOps.items.value.set(op.id, op);
+        }
+    }
+
+    /**
+     * Retain the async ops for the specified duration.
+     * This will remove async ops that are older than the specified duration.
+     * @param retainFor - The duration to retain the async ops.
+     * @param lastUpdatedAt - The last updated at time.
+     */
+    retainAsyncOps(
+        retainFor: Duration,
+        lastUpdatedAt: Ref<Timestamp | undefined>,
+    ) {
+        const newOps = new Map<bigint, AsyncOp>();
+        for (const [id, op] of this.asyncOps.items.value) {
+            const shouldRetain =
+                !op.stats.droppedAt ||
+                lastUpdatedAt.value
+                    ?.subtract(op.stats.droppedAt)
+                    .greaterThan(retainFor) === false;
+
+            if (shouldRetain) {
+                newOps.set(id, op);
+            }
+        }
+        this.asyncOps.items.value = newOps;
+    }
+}
+
 export interface State {
     // Metadata about a task.
     metas: Map<bigint, Metadata>;
@@ -444,7 +593,7 @@ export interface State {
     retainFor: Duration;
     taskState: TaskState;
     resourceState: ResourceState;
-    asyncOps: Store<AsyncOp>;
+    asyncOpsState: AsyncOpState;
     lastUpdatedAt: Ref<Timestamp | undefined>;
     isUpdateWatched: boolean;
 }
@@ -456,7 +605,7 @@ export const state: State = {
     // TODO: make this configurable.
     taskState: new TaskState(new NeverYielded()),
     resourceState: new ResourceState(),
-    asyncOps: new Store(),
+    asyncOpsState: new AsyncOpState(),
     lastUpdatedAt: ref<Timestamp | undefined>(undefined),
     isUpdateWatched: false,
 };
