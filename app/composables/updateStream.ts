@@ -52,7 +52,8 @@ export async function watchForUpdates(pending: Ref<boolean>) {
         lastUpdatedAt,
         retainFor,
         taskState,
-        resourceState: resources,
+        asyncOpsState,
+        resourceState,
     } = state;
     if (isUpdateWatched) {
         pending.value = false;
@@ -76,10 +77,15 @@ export async function watchForUpdates(pending: Ref<boolean>) {
                     addMetadata(value);
                     taskState.addTasks(value, metas);
                     taskState.retainTasks(retainFor, lastUpdatedAt);
-                    resources.addResources(value, metas);
-                    resources.retainResources(retainFor, lastUpdatedAt);
-                    addAsyncOps(value);
-                    retainAsyncOps(retainFor);
+                    resourceState.addResources(value, metas);
+                    resourceState.retainResources(retainFor, lastUpdatedAt);
+                    asyncOpsState.addAsyncOps(
+                        value,
+                        metas,
+                        taskState,
+                        resourceState,
+                    );
+                    asyncOpsState.retainAsyncOps(retainFor, lastUpdatedAt);
                 }
             },
             {
