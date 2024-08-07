@@ -282,7 +282,7 @@ export class ResourceState {
     resourceUpdateToResources(
         update: ResourceUpdate,
         metas: Map<bigint, Metadata>,
-    ) {
+    ): TokioResource[] {
         const result = new Array<TokioResource>();
         const { newResources: resources, statsUpdate } = update;
 
@@ -459,7 +459,7 @@ export class AsyncOpState {
         metas: Map<bigint, Metadata>,
         taskState: TaskState,
         resourceState: ResourceState,
-    ) {
+    ): AsyncOp[] {
         const result = new Array<AsyncOp>();
         const { newAsyncOps: ops, statsUpdate } = asyncOpUpdate;
 
