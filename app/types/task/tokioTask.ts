@@ -151,6 +151,26 @@ export class TokioTask {
         return ["block_on", "blocking"].includes(this.kind);
     }
 
+    // Returns whether this task has signaled via its waker to run again.
+    // Once the task has been polled, this is changed back to false.
+    isAwakened(): boolean {
+        // Before the first poll, the task is waiting on the executor to run it
+        // for the first time.
+        if (this.totalPolls() === 0n) {
+            return true;
+        }
+
+        if (this.stats.lastWake && this.stats.lastPollStarted) {
+            return this.stats.lastWake.greaterThan(this.stats.lastPollStarted);
+        }
+
+        if (this.stats.lastWake && this.stats.lastPollStarted === undefined) {
+            return true;
+        }
+
+        return false;
+    }
+
     totalPolls(): bigint {
         return this.stats.polls;
     }
