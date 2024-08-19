@@ -5,6 +5,7 @@ import WarningList from "~/components/WarningList.vue";
 import { TokioTask } from "~/types/task/tokioTask";
 import { Timestamp } from "~/types/common/duration";
 import { NeverYielded } from "~/types/warning/taskWarnings/neverYielded";
+import { LostWaker } from "~/types/warning/taskWarnings/lostWaker";
 
 mockNuxtImport("useTasks", () => {
     return () => {
@@ -12,6 +13,7 @@ mockNuxtImport("useTasks", () => {
         const tasksData = ref<Map<bigint, TokioTask>>(new Map());
         const task = createTask();
         task.warnings.push(new NeverYielded());
+        task.warnings.push(new LostWaker());
         tasksData.value.set(1n, task);
         const lastUpdatedAt = ref<Timestamp>(new Timestamp(1000n, 0));
         return { pending, tasksData, lastUpdatedAt };
