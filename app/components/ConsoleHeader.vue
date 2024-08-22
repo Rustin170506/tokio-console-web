@@ -27,6 +27,12 @@
                 aria-label="GitHub"
             />
             <CColorMode />
+            <UButton
+                color="gray"
+                variant="ghost"
+                icon="i-heroicons-cog-6-tooth"
+                aria-label="Settings"
+            />
         </template>
     </CHeader>
 </template>
