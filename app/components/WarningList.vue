@@ -26,20 +26,5 @@
 </template>
 
 <script setup lang="ts">
-import { toTaskWarningItems, type WarningItem } from "~/types/warningItem";
-
-const { tasksData, lastUpdatedAt } = useTasks();
-const warnings = computed(() => {
-    const lastUpdated = lastUpdatedAt.value;
-    if (!lastUpdated) {
-        return [];
-    }
-    return Array.from(tasksData.value.values()).reduce((acc, task) => {
-        const taskWarningItems = toTaskWarningItems(task.warnings);
-        if (taskWarningItems) {
-            acc.push(...taskWarningItems);
-        }
-        return acc;
-    }, [] as WarningItem[]);
-});
+const { warnings } = useWarnings();
 </script>
