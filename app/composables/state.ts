@@ -24,6 +24,7 @@ import { fromProtoResourceStats } from "~/types/resource/tokioResourceStats";
 import type { AsyncOpUpdate } from "~/gen/async_ops_pb";
 import { fromProtoAsyncOpStats } from "~/types/asyncOp/asyncOpStats";
 import { LostWaker } from "~/types/warning/taskWarnings/lostWaker";
+import { SelfWakePercent } from "~/types/warning/taskWarnings/selfWakePercent";
 
 export class Ids {
     nextId: bigint;
@@ -604,7 +605,11 @@ export const state: State = {
     // TODO: make this configurable.
     retainFor: new Duration(6n, 0),
     // TODO: make this configurable.
-    taskState: new TaskState(new NeverYielded(), new LostWaker()),
+    taskState: new TaskState(
+        new NeverYielded(),
+        new LostWaker(),
+        new SelfWakePercent(),
+    ),
     resourceState: new ResourceState(),
     asyncOpsState: new AsyncOpState(),
     lastUpdatedAt: ref<Timestamp | undefined>(undefined),
