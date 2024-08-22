@@ -221,6 +221,21 @@ export class TokioTask {
         return percent;
     }
 
+    selfWakePercent(): number {
+        const wakes = this.wakes();
+        const selfWakes = this.selfWakes();
+        if (wakes === 0n) return 0;
+        return Number((selfWakes * 100n) / wakes);
+    }
+
+    wakes(): bigint {
+        return this.stats.wakes;
+    }
+
+    selfWakes(): bigint {
+        return this.stats.selfWakes;
+    }
+
     lint(linters: Array<Linter<TokioTask>>): TaskLintResult {
         this.warnings.length = 0;
         let recheck = false;
