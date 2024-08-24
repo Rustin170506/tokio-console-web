@@ -3,6 +3,10 @@ import { createGrpcWebTransport } from "@connectrpc/connect-web";
 import { Instrument } from "~/gen/instrument_connect";
 import { useSettingsStore } from "~/stores/settings";
 
+/**
+ * Create a gRPC client for the instrument service.
+ * Cache the client to avoid creating multiple clients.
+ */
 export const useGrpcClient = useMemoize(() => {
     const nuxtApp = useNuxtApp();
     const settingsStore = useSettingsStore(nuxtApp.$pinia);
