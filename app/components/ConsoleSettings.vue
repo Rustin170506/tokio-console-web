@@ -9,11 +9,13 @@
                     <UInput
                         v-model="state.targetUrl"
                         placeholder="http://127.0.0.1:9999"
+                        color="blue"
                     />
                 </UFormGroup>
                 <div class="flex justify-end mt-6">
                     <UButton
                         type="submit"
+                        color="blue"
                         variant="soft"
                         icon="i-heroicons-rocket-launch"
                     >
