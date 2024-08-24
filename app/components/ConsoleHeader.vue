@@ -30,19 +30,21 @@
             <UButton
                 color="gray"
                 variant="ghost"
-                icon="i-heroicons-cog-6-tooth"
+                icon="i-heroicons-adjustments-horizontal"
                 aria-label="Settings"
+                @click="openSettings"
             />
         </template>
     </CHeader>
+    <ConsoleSettings />
 </template>
 
-<script>
-import CHeader from "./CHeader.vue";
+<script setup lang="ts">
+import { useSettingsStore } from "~/stores/settings";
 
-export default {
-    components: {
-        CHeader,
-    },
-};
+const settingsStore = useSettingsStore();
+
+function openSettings() {
+    settingsStore.openSettingsModal();
+}
 </script>

@@ -56,7 +56,7 @@ export function useTaskDetails(id: bigint, width: Ref<number>) {
     // Async function to watch for details.
     const watchForDetails = async ({ spanId }: TokioTask) => {
         try {
-            const client = await grpcClient();
+            const client = useGrpcClient();
             const abort = new AbortController();
             const detailsStream = client.watchTaskDetails(
                 new TaskDetailsRequest({
