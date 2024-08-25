@@ -55,7 +55,7 @@ The `tokio-console-web` can be accessed by navigating to `http://127.0.01:3333` 
 $ tokio-console-web --help
 A web console for tokio
 
-Usage: tokio-console-web [OPTIONS]
+Usage: tokio-console-web[EXE] [OPTIONS]
 
 Options:
       --host <HOST>  The address to listen on [default: 127.0.0.1]
