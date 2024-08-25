@@ -20,6 +20,7 @@ describe("SettingsCard", () => {
         expect(component.find("form").exists()).toBe(true);
         expect(component.find("label").exists()).toBe(true);
         expect(component.find('input[name="targetUrl"]').exists()).toBe(true);
+        expect(component.find('input[name="retainFor"]').exists()).toBe(true);
         expect(component.find('button[type="submit"]').exists()).toBe(true);
     });
 
@@ -45,14 +46,17 @@ describe("SettingsCard", () => {
 
         const settingsStore = useSettingsStore();
         const form = component.find("form");
-        const input = component.find("input");
+        const targetUrlInput = component.find('input[name="targetUrl"]');
+        const retainForInput = component.find('input[name="retainFor"]');
 
-        await input.setValue("http://test.com");
+        await targetUrlInput.setValue("http://test.com");
+        await retainForInput.setValue("10");
         await form.trigger("submit");
 
         expect(settingsStore.setTargetUrl).toHaveBeenCalledWith(
             "http://test.com",
         );
+        expect(settingsStore.setRetainFor).toHaveBeenCalledWith(10);
         expect(settingsStore.closeSettingsModal).toHaveBeenCalled();
     });
 
@@ -68,9 +72,46 @@ describe("SettingsCard", () => {
         });
 
         const form = component.find("form");
+        // Change the retain for to a negative number.
+        const retainForInput = component.find('input[name="retainFor"]');
+        await retainForInput.setValue("-1");
         await form.trigger("submit");
 
-        // Assuming UForm displays error messages
         expect(component.text()).toContain("Target URL is required");
+        expect(component.text()).toContain(
+            "Retain For must be a positive number",
+        );
+    });
+
+    it("reloads page when target URL changes", async () => {
+        const component = await mountSuspended(SettingsCard, {
+            global: {
+                plugins: [
+                    createTestingPinia({
+                        createSpy: vi.fn,
+                    }),
+                ],
+            },
+        });
+
+        const settingsStore = useSettingsStore();
+        settingsStore.targetUrl = "http://old.com";
+
+        const form = component.find("form");
+        const targetUrlInput = component.find('input[name="targetUrl"]');
+        const retainForInput = component.find('input[name="retainFor"]');
+
+        await targetUrlInput.setValue("http://new.com");
+        await retainForInput.setValue("10");
+
+        const reloadSpy = vi
+            .spyOn(window.location, "reload")
+            .mockImplementation(() => {});
+
+        await form.trigger("submit");
+
+        expect(reloadSpy).toHaveBeenCalled();
+
+        reloadSpy.mockRestore();
     });
 });
