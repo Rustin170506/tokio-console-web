@@ -25,6 +25,7 @@ import type { AsyncOpUpdate } from "~/gen/async_ops_pb";
 import { fromProtoAsyncOpStats } from "~/types/asyncOp/asyncOpStats";
 import { LostWaker } from "~/types/warning/taskWarnings/lostWaker";
 import { SelfWakePercent } from "~/types/warning/taskWarnings/selfWakePercent";
+import { useSettingsStore } from "~/stores/settings";
 
 export class Ids {
     nextId: bigint;
@@ -592,7 +593,7 @@ export interface State {
     // Metadata about a task.
     metas: Map<bigint, Metadata>;
     // How long to retain tasks after they're dropped.
-    retainFor: Duration;
+    retainFor: Ref<Duration>;
     taskState: TaskState;
     resourceState: ResourceState;
     asyncOpsState: AsyncOpState;
@@ -602,8 +603,7 @@ export interface State {
 
 export const state: State = {
     metas: new Map(),
-    // TODO: make this configurable.
-    retainFor: new Duration(6n, 0),
+    retainFor: computed(() => useSettingsStore().retainFor),
     // TODO: make this configurable.
     taskState: new TaskState(
         new NeverYielded(),

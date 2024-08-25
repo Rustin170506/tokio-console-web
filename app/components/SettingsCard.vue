@@ -11,6 +11,15 @@
                     color="blue"
                 />
             </UFormGroup>
+            <UFormGroup label="Retain For (seconds)" name="retainFor">
+                <UInput
+                    v-model="state.retainFor"
+                    type="number"
+                    min="1"
+                    placeholder="6"
+                    color="blue"
+                />
+            </UFormGroup>
             <div class="flex justify-end mt-6">
                 <UButton
                     type="submit"
@@ -18,7 +27,7 @@
                     variant="soft"
                     icon="i-heroicons-rocket-launch"
                 >
-                    Launch Changes
+                    Apply Changes
                 </UButton>
             </div>
         </UForm>
@@ -57,11 +66,11 @@
 <script setup lang="ts">
 import type { FormError, FormSubmitEvent } from "#ui/types";
 import { useSettingsStore } from "~/stores/settings";
-
 const settingsStore = useSettingsStore();
 
 const state = reactive({
     targetUrl: settingsStore.targetUrl,
+    retainFor: settingsStore.retainFor.seconds.toString(),
 });
 
 const validate = (state: any): FormError[] => {
@@ -69,12 +78,24 @@ const validate = (state: any): FormError[] => {
     if (!state.targetUrl) {
         errors.push({ path: "targetUrl", message: "Target URL is required" });
     }
+    if (!state.retainFor || parseInt(state.retainFor) < 1) {
+        errors.push({
+            path: "retainFor",
+            message: "Retain For must be a positive number",
+        });
+    }
     return errors;
 };
 
 function saveSettings(_event: FormSubmitEvent<any>) {
+    const needsReload = state.targetUrl !== settingsStore.targetUrl;
+
     settingsStore.setTargetUrl(state.targetUrl);
+    settingsStore.setRetainFor(parseInt(state.retainFor));
     settingsStore.closeSettingsModal();
-    window.location.reload();
+
+    if (needsReload) {
+        window.location.reload();
+    }
 }
 </script>

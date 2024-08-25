@@ -76,16 +76,22 @@ export async function watchForUpdates(pending: Ref<boolean>) {
                     updateLastUpdatedAt(value);
                     addMetadata(value);
                     taskState.addTasks(value, metas);
-                    taskState.retainTasks(retainFor, lastUpdatedAt);
+                    taskState.retainTasks(retainFor.value, lastUpdatedAt);
                     resourceState.addResources(value, metas);
-                    resourceState.retainResources(retainFor, lastUpdatedAt);
+                    resourceState.retainResources(
+                        retainFor.value,
+                        lastUpdatedAt,
+                    );
                     asyncOpsState.addAsyncOps(
                         value,
                         metas,
                         taskState,
                         resourceState,
                     );
-                    asyncOpsState.retainAsyncOps(retainFor, lastUpdatedAt);
+                    asyncOpsState.retainAsyncOps(
+                        retainFor.value,
+                        lastUpdatedAt,
+                    );
                 }
             },
             {
