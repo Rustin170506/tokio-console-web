@@ -25,6 +25,37 @@
                     color="blue"
                 />
             </UFormGroup>
+            <UFormGroup label="Enabled Linters" name="enabledLinters">
+                <div class="space-y-2">
+                    <div class="flex items-center space-x-3">
+                        <UToggle
+                            v-model="state.enabledLinters.neverYielded"
+                            color="blue"
+                        />
+                        <label class="text-sm font-medium text-gray-700"
+                            >Never Yielded</label
+                        >
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <UToggle
+                            v-model="state.enabledLinters.lostWaker"
+                            color="blue"
+                        />
+                        <label class="text-sm font-medium text-gray-700"
+                            >Lost Waker</label
+                        >
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <UToggle
+                            v-model="state.enabledLinters.selfWakePercent"
+                            color="blue"
+                        />
+                        <label class="text-sm font-medium text-gray-700"
+                            >Self Wake Percent</label
+                        >
+                    </div>
+                </div>
+            </UFormGroup>
             <div class="flex justify-end mt-6">
                 <UButton
                     type="submit"
@@ -76,6 +107,7 @@ const settingsStore = useSettingsStore();
 const state = reactive({
     targetUrl: settingsStore.targetUrl,
     retainFor: settingsStore.retainFor.seconds.toString(),
+    enabledLinters: { ...settingsStore.enabledLinters },
 });
 
 const validate = (state: any): FormError[] => {
@@ -97,6 +129,7 @@ function saveSettings(_event: FormSubmitEvent<any>) {
 
     settingsStore.setTargetUrl(state.targetUrl);
     settingsStore.setRetainFor(parseInt(state.retainFor));
+    settingsStore.setEnabledLinters(state.enabledLinters);
     settingsStore.closeSettingsModal();
 
     if (needsReload) {
