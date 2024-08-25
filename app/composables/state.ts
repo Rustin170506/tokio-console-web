@@ -601,7 +601,11 @@ export interface State {
     resourceState: ResourceState;
     asyncOpsState: AsyncOpState;
     lastUpdatedAt: Ref<Timestamp | undefined>;
-    isUpdateWatched: boolean;
+    // Tracks if the update stream is started.
+    // To avoid starting the update stream twice, we track if it's started.
+    isWatchStarted: boolean;
+    // Tracks if an update is pending from the async update stream.
+    isUpdatePending: Ref<boolean>;
 }
 
 export const state: State = {
@@ -611,7 +615,8 @@ export const state: State = {
     resourceState: new ResourceState(),
     asyncOpsState: new AsyncOpState(),
     lastUpdatedAt: ref<Timestamp | undefined>(undefined),
-    isUpdateWatched: false,
+    isWatchStarted: false,
+    isUpdatePending: ref(true),
 };
 
 export function initState() {

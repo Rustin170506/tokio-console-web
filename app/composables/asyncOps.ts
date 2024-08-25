@@ -4,12 +4,12 @@
  * @returns The async ops and the last updated at timestamp.
  */
 export function useAsyncOps() {
-    const { isUpdateWatched, asyncOpsState, lastUpdatedAt } = state;
-    const pending = ref<boolean>(!isUpdateWatched);
-
-    if (!isUpdateWatched) {
-        // Async function to watch for updates.
-        watchForUpdates(pending);
+    const { isUpdatePending, asyncOpsState, lastUpdatedAt, isWatchStarted } =
+        state;
+    const pending = isUpdatePending;
+    // Async function to watch for updates.
+    if (!isWatchStarted) {
+        watchForUpdates();
     }
 
     return {

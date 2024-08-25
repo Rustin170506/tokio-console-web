@@ -13,19 +13,12 @@ import { TaskDetailsRequest } from "~/gen/instrument_pb";
  * state. It also starts a watch for updates if it hasn't already been started.
  */
 export function useTasks() {
-    const { isUpdateWatched, lastUpdatedAt, taskState } = state;
-
-    if (isUpdateWatched) {
-        return {
-            pending: ref<boolean>(false),
-            tasksData: taskState.tasks.items,
-            lastUpdatedAt,
-        };
-    }
-
-    const pending = ref<boolean>(true);
+    const { isUpdatePending, lastUpdatedAt, taskState, isWatchStarted } = state;
+    const pending = isUpdatePending;
     // Async function to watch for updates.
-    watchForUpdates(pending);
+    if (!isWatchStarted) {
+        watchForUpdates();
+    }
     return {
         pending,
         tasksData: taskState.tasks.items,
