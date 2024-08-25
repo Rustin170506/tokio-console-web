@@ -1,14 +1,33 @@
 import { defineStore } from "pinia";
 import { Duration } from "~/types/common/duration";
+import { NeverYielded } from "~/types/warning/taskWarnings/neverYielded";
+import { LostWaker } from "~/types/warning/taskWarnings/lostWaker";
+import { SelfWakePercent } from "~/types/warning/taskWarnings/selfWakePercent";
+import type { Linter } from "~/types/warning/warn";
+import type { TokioTask } from "~/types/task/tokioTask";
 
 export const useSettingsStore = defineStore("settings", {
     state: () => ({
         targetUrl: "",
         isSettingsModalOpen: false,
         retainFor: new Duration(6n, 0),
+        enabledLinters: {
+            neverYielded: true,
+            lostWaker: true,
+            selfWakePercent: true,
+        },
     }),
     getters: {
         isConfigured: (state) => !!state.targetUrl,
+        activeLinters: (state): Array<Linter<TokioTask>> => {
+            const linters: Array<Linter<TokioTask>> = [];
+            if (state.enabledLinters.neverYielded)
+                linters.push(new NeverYielded());
+            if (state.enabledLinters.lostWaker) linters.push(new LostWaker());
+            if (state.enabledLinters.selfWakePercent)
+                linters.push(new SelfWakePercent());
+            return linters;
+        },
     },
     actions: {
         setTargetUrl(url: string) {
@@ -39,6 +58,23 @@ export const useSettingsStore = defineStore("settings", {
                 const retainFor = localStorage.getItem("retainFor");
                 if (retainFor) {
                     this.retainFor = new Duration(BigInt(retainFor), 0);
+                }
+            }
+        },
+        setEnabledLinters(linters: { [key: string]: boolean }) {
+            this.enabledLinters = { ...this.enabledLinters, ...linters };
+            if (process.client) {
+                localStorage.setItem(
+                    "enabledLinters",
+                    JSON.stringify(this.enabledLinters),
+                );
+            }
+        },
+        loadEnabledLinters() {
+            if (process.client) {
+                const storedLinters = localStorage.getItem("enabledLinters");
+                if (storedLinters) {
+                    this.enabledLinters = JSON.parse(storedLinters);
                 }
             }
         },

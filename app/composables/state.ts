@@ -7,7 +7,6 @@ import {
     Visibility,
 } from "~/types/resource/tokioResource";
 import { AsyncOp } from "~/types/asyncOp/asyncOp";
-import { NeverYielded } from "~/types/warning/taskWarnings/neverYielded";
 import {
     FieldValue,
     Field,
@@ -23,8 +22,6 @@ import type { ResourceUpdate } from "~/gen/resources_pb";
 import { fromProtoResourceStats } from "~/types/resource/tokioResourceStats";
 import type { AsyncOpUpdate } from "~/gen/async_ops_pb";
 import { fromProtoAsyncOpStats } from "~/types/asyncOp/asyncOpStats";
-import { LostWaker } from "~/types/warning/taskWarnings/lostWaker";
-import { SelfWakePercent } from "~/types/warning/taskWarnings/selfWakePercent";
 import { useSettingsStore } from "~/stores/settings";
 
 export class Ids {
@@ -75,12 +72,17 @@ export class TaskState {
     // The set of tasks that are pending linting.
     pendingLints: Set<bigint>;
     // The linters to run on tasks.
-    linters: Array<Linter<TokioTask>>;
+    linters: Ref<Array<Linter<TokioTask>>>;
 
-    constructor(...linters: Array<Linter<TokioTask>>) {
+    constructor() {
         this.tasks = new Store();
         this.pendingLints = new Set();
-        this.linters = linters;
+        this.linters = ref([]);
+    }
+
+    initLinters() {
+        const settingsStore = useSettingsStore();
+        this.linters = computed(() => settingsStore.activeLinters);
     }
 
     /**
@@ -183,7 +185,7 @@ export class TaskState {
                 location,
                 kind,
             );
-            if (t.lint(this.linters) === TaskLintResult.RequiresRecheck) {
+            if (t.lint(this.linters.value) === TaskLintResult.RequiresRecheck) {
                 nextPendingLint.add(t.id);
             }
             result.push(t);
@@ -221,7 +223,7 @@ export class TaskState {
                     update.taskUpdate.statsUpdate[k],
                 );
                 this.tasks.items.value.set(task.id, task);
-                const lintResult = task.lint(this.linters);
+                const lintResult = task.lint(this.linters.value);
                 if (lintResult === TaskLintResult.RequiresRecheck) {
                     nextPendingLints.add(task.id);
                 } else {
@@ -235,7 +237,8 @@ export class TaskState {
             const task = this.tasks.items.value.get(id);
             if (task) {
                 if (
-                    task.lint(this.linters) === TaskLintResult.RequiresRecheck
+                    task.lint(this.linters.value) ===
+                    TaskLintResult.RequiresRecheck
                 ) {
                     nextPendingLints.add(task.id);
                 }
@@ -603,15 +606,16 @@ export interface State {
 
 export const state: State = {
     metas: new Map(),
-    retainFor: computed(() => useSettingsStore().retainFor),
-    // TODO: make this configurable.
-    taskState: new TaskState(
-        new NeverYielded(),
-        new LostWaker(),
-        new SelfWakePercent(),
-    ),
+    retainFor: ref(new Duration(6n, 0)),
+    taskState: new TaskState(),
     resourceState: new ResourceState(),
     asyncOpsState: new AsyncOpState(),
     lastUpdatedAt: ref<Timestamp | undefined>(undefined),
     isUpdateWatched: false,
 };
+
+export function initState() {
+    const settingsStore = useSettingsStore();
+    state.retainFor = computed(() => settingsStore.retainFor);
+    state.taskState.initLinters();
+}
