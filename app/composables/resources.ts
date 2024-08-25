@@ -3,12 +3,12 @@
  * @returns The resources data and the last updated time.
  */
 export function useResources() {
-    const { isUpdateWatched, resourceState, lastUpdatedAt } = state;
-    const pending = ref<boolean>(!isUpdateWatched);
-
-    if (isUpdateWatched) {
-        // Async function to watch for updates.
-        watchForUpdates(pending);
+    const { isUpdatePending, resourceState, lastUpdatedAt, isWatchStarted } =
+        state;
+    const pending = isUpdatePending;
+    // Async function to watch for updates.
+    if (!isWatchStarted) {
+        watchForUpdates();
     }
 
     return {

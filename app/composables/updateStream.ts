@@ -45,9 +45,9 @@ const addMetadata = (update: Update) => {
  *  Watch for updates from the server and update the state.
  * @param pending - A ref to indicate if the request is pending.
  */
-export async function watchForUpdates(pending: Ref<boolean>) {
+export async function watchForUpdates() {
     const {
-        isUpdateWatched,
+        isWatchStarted,
         metas,
         lastUpdatedAt,
         retainFor,
@@ -55,10 +55,10 @@ export async function watchForUpdates(pending: Ref<boolean>) {
         asyncOpsState,
         resourceState,
     } = state;
-    if (isUpdateWatched) {
-        pending.value = false;
+    if (isWatchStarted) {
         return;
     }
+    state.isWatchStarted = true;
 
     try {
         await backOff(
@@ -69,9 +69,8 @@ export async function watchForUpdates(pending: Ref<boolean>) {
                 );
 
                 for await (const value of updateStream) {
-                    if (pending.value) {
-                        pending.value = false;
-                        state.isUpdateWatched = true;
+                    if (state.isUpdatePending.value) {
+                        state.isUpdatePending.value = false;
                     }
                     updateLastUpdatedAt(value);
                     addMetadata(value);
@@ -96,10 +95,7 @@ export async function watchForUpdates(pending: Ref<boolean>) {
             },
             {
                 retry: () => {
-                    // Set pending to true to display a loading indicator until reconnection.
-                    if (!pending.value) {
-                        pending.value = true;
-                    }
+                    state.isUpdatePending.value = true;
                     return true;
                 },
             },
@@ -107,6 +103,6 @@ export async function watchForUpdates(pending: Ref<boolean>) {
     } catch (err) {
         handleConnectError(err);
     } finally {
-        pending.value = false;
+        state.isWatchStarted = false;
     }
 }
