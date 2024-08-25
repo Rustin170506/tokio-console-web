@@ -15,7 +15,7 @@
             <div class="flex flex-col items-center justify-center p-4">
                 <UIcon
                     name="i-heroicons-check-circle"
-                    class="w-16 h-16 text-green-500"
+                    class="w-16 h-16 text-blue-500"
                 />
                 <h3 class="mt-2 text-lg font-medium text-gray-900">
                     No Warnings
