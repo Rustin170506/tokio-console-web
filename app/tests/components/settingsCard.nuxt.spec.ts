@@ -114,4 +114,65 @@ describe("SettingsCard", () => {
 
         reloadSpy.mockRestore();
     });
+
+    it("contains linter toggle elements with correct labels", async () => {
+        const component = await mountSuspended(SettingsCard, {
+            global: {
+                plugins: [
+                    createTestingPinia({
+                        createSpy: vi.fn,
+                    }),
+                ],
+            },
+        });
+
+        // Check for the presence of toggle buttons
+        expect(component.findAll('button[role="switch"]')).toHaveLength(3);
+
+        // Check for the presence of labels
+        const labels = component.findAll(
+            "label.text-sm.font-medium.text-gray-700",
+        );
+        expect(labels).toHaveLength(3);
+
+        const labelTexts = labels.map((label) => label.text());
+        expect(labelTexts).toContain("Never Yielded");
+        expect(labelTexts).toContain("Lost Waker");
+        expect(labelTexts).toContain("Self Wake Percent");
+    });
+
+    it("updates store with linter settings on form submission", async () => {
+        const component = await mountSuspended(SettingsCard, {
+            global: {
+                plugins: [
+                    createTestingPinia({
+                        createSpy: vi.fn,
+                    }),
+                ],
+            },
+        });
+
+        // Set other fields to some values
+        const targetUrlInput = component.find('input[name="targetUrl"]');
+        await targetUrlInput.setValue("http://test.com");
+        const retainForInput = component.find('input[name="retainFor"]');
+        await retainForInput.setValue("10");
+
+        const settingsStore = useSettingsStore();
+        const form = component.find("form");
+        const toggleButtons = component.findAll('button[role="switch"]');
+
+        // Toggle the buttons (this will change their state)
+        await toggleButtons[0].trigger("click");
+        await toggleButtons[1].trigger("click");
+        // We leave the third toggle as is
+
+        await form.trigger("submit");
+
+        expect(settingsStore.setEnabledLinters).toHaveBeenCalledWith({
+            neverYielded: false, // Toggled from true to false
+            lostWaker: false, // Toggled from true to false
+            selfWakePercent: true, // Unchanged
+        });
+    });
 });
