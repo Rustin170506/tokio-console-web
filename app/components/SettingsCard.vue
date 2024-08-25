@@ -3,7 +3,12 @@
         <template #header>
             <h3 class="text-xl font-semibold">Settings</h3>
         </template>
-        <UForm :validate="validate" :state="state" @submit="saveSettings">
+        <UForm
+            :validate="validate"
+            :state="state"
+            class="space-y-4"
+            @submit="saveSettings"
+        >
             <UFormGroup label="Target URL" name="targetUrl">
                 <UInput
                     v-model="state.targetUrl"
