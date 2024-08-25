@@ -15,7 +15,7 @@ import { useStorage } from "@vueuse/core";
 const paused = useStorage("paused", false);
 
 const toggle = async () => {
-    const client = await grpcClient();
+    const client = useGrpcClient();
     if (paused.value) {
         await client.resume();
     } else {

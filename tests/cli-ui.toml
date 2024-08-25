@@ -4,10 +4,7 @@ stdin = ""
 stdout = """
 A web console for tokio
 
-Usage: tokio-console-web[EXE] [OPTIONS] [TARGET_ADDR]
-
-Arguments:
-  [TARGET_ADDR]  The address of a console-enabled process to connect to. [default: http://127.0.0.1:9999]
+Usage: tokio-console-web[EXE] [OPTIONS]
 
 Options:
       --host <HOST>  The address to listen on [default: 127.0.0.1]

@@ -9,3 +9,10 @@
         <USlideovers />
     </UCard>
 </template>
+
+<script setup>
+import { useSettingsStore } from "~/stores/settings";
+
+const settingsStore = useSettingsStore();
+settingsStore.loadTargetUrl();
+</script>

@@ -1,20 +1,23 @@
 import { createPromiseClient } from "@connectrpc/connect";
 import { createGrpcWebTransport } from "@connectrpc/connect-web";
 import { Instrument } from "~/gen/instrument_connect";
+import { useSettingsStore } from "~/stores/settings";
 
 /**
- * Create a gRPC client for the Instrument service.
+ * Create a gRPC client for the instrument service.
  * Cache the client to avoid creating multiple clients.
  */
-export const grpcClient = useMemoize(async () => {
-    // Retrieve the subscriber.json file to obtain the subscriberBaseUrl.
-    // This is a temporary solution for setting the base URL in the command line interface.
-    // The nuxt build process will place `subscriber.json` in the root directory of the output.
-    const res = await fetch("/subscriber.json");
-    const config = await res.json();
-    const transport = createGrpcWebTransport({
-        baseUrl: config.targetAddr,
-    });
+export const useGrpcClient = useMemoize(() => {
+    const nuxtApp = useNuxtApp();
+    const settingsStore = useSettingsStore(nuxtApp.$pinia);
 
+    if (!settingsStore.targetUrl) {
+        settingsStore.openSettingsModal();
+        throw new Error("Target URL is not set. Please configure in settings.");
+    }
+
+    const transport = createGrpcWebTransport({
+        baseUrl: settingsStore.targetUrl,
+    });
     return createPromiseClient(Instrument, transport);
 });
