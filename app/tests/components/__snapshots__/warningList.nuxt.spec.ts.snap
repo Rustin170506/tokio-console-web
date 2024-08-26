@@ -28,7 +28,7 @@ exports[`WarningList View 1`] = `
     <div class="flex gap-3 items-start"><span class="i-heroicons-exclamation-triangle-20-solid flex-shrink-0 w-5 h-5"></span>
       <!--v-if-->
       <div class="w-0 flex-1">
-        <p class="text-sm font-medium">NeverYielded</p>
+        <p class="text-sm font-medium">SelfWakePercent</p>
         <div class="text-sm opacity-90 mt-0 leading-5">tasks have woken themselves over 50% of the time</div>
         <!--v-if-->
       </div>

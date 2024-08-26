@@ -20,12 +20,21 @@ export interface TaskTableItem {
     location: string;
     fields: Array<Field>;
     class?: string;
+    warnings: Array<{
+        name: string;
+        message: string;
+    }>;
 }
 
 export function toTaskTableItem(
     task: TokioTask,
     lastUpdatedAt: Timestamp,
 ): TaskTableItem {
+    const warnings = task.warnings.map((warn) => ({
+        name: warn.name,
+        message: warn.format(task),
+    }));
+
     return {
         id: task.id,
         idString: task.taskId?.toString() ?? "",
@@ -43,6 +52,7 @@ export function toTaskTableItem(
             task.state() === TaskState.Completed
                 ? "bg-slate-50 dark:bg-slate-950 animate-pulse"
                 : undefined,
+        warnings,
     };
 }
 

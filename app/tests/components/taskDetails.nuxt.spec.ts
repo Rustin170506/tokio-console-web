@@ -1,10 +1,10 @@
 import { expect, it } from "vitest";
 import { mockNuxtImport, mountSuspended } from "@nuxt/test-utils/runtime";
+import { createTask } from "./createTask";
 import TaskDetails from "~/components/TaskDetails.vue";
 import { Duration, Timestamp } from "~/types/common/duration";
-import { TokioTask } from "~/types/task/tokioTask";
 import type { TokioTaskDetails } from "~/types/task/tokioTaskDetails";
-import { Field, FieldValue, FieldValueType } from "~/types/common/field";
+import { SelfWakePercent } from "~/types/warning/taskWarnings/selfWakePercent";
 
 mockNuxtImport("useRoute", () => {
     return () => {
@@ -19,38 +19,9 @@ mockNuxtImport("useRoute", () => {
 mockNuxtImport("useTaskDetails", () => {
     return (_id: bigint, _width: Ref<number>) => {
         const pending = ref<boolean>(false);
-        const formattedFields = [
-            new Field(
-                "target",
-                new FieldValue(FieldValueType.Str, "tokio:task"),
-            ),
-        ];
-        const stats = {
-            polls: 100n,
-            createdAt: new Duration(1000n, 0),
-            busy: new Duration(500n, 0),
-            scheduled: new Duration(300n, 0),
-            lastPollStarted: new Duration(1000n, 0),
-            lastPollEnded: new Timestamp(0n, 0),
-            idle: new Duration(200n, 0),
-            wakes: 1n,
-            wakerClones: 199n,
-            wakerDrops: 198n,
-            selfWakes: 100n,
-            lastWake: new Duration(1000n, 0),
-        };
-        const task = new TokioTask(
-            2n,
-            1n,
-            1n,
-            "some task",
-            formattedFields,
-            stats,
-            "tokio:task",
-            "task1",
-            "app.rs/68:10",
-            "task",
-        );
+        const task = createTask();
+        // Add warnings to the task.
+        task.warnings.push(new SelfWakePercent(0.01));
         const taskDetails = ref<TokioTaskDetails>({
             pollTimes: {
                 percentiles: [

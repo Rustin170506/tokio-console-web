@@ -12,6 +12,16 @@
         </div>
 
         <div v-else>
+            <UAlert
+                v-for="warning in taskBasicInfo.warnings"
+                :key="`${taskBasicInfo.id}-${warning.name}`"
+                color="yellow"
+                icon="i-heroicons-exclamation-triangle"
+                :title="warning.name"
+                :description="warning.message"
+                variant="outline"
+                class="mb-2"
+            />
             <UCard
                 :ui="{
                     body: {
