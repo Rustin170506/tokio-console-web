@@ -7,7 +7,7 @@ exports[`TaskDetails 1`] = `
       <div class="flex gap-3 items-start"><span class="i-heroicons-exclamation-triangle flex-shrink-0 w-5 h-5"></span>
         <!--v-if-->
         <div class="w-0 flex-1">
-          <p class="text-sm font-medium">NeverYielded</p>
+          <p class="text-sm font-medium">SelfWakePercent</p>
           <div class="text-sm opacity-90 mt-0 leading-5">This task has woken itself for more than 0.01% of its total wakeups (100%)</div>
           <!--v-if-->
         </div>

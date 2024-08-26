@@ -9,7 +9,7 @@ export class SelfWakePercent implements Warn<TokioTask> {
     description: string;
 
     constructor(minPercent: number = DEFAULT_PERCENT) {
-        this.name = "NeverYielded";
+        this.name = "SelfWakePercent";
         this.minPercent = minPercent;
         this.description = `tasks have woken themselves over ${minPercent}% of the time`;
     }
