@@ -21,9 +21,33 @@ fn main() {
         panic!("pnpm is not installed. Please install pnpm to continue.");
     }
 
-    let output = Command::new("sh")
-        .arg("-c")
-        .arg("cd app && pnpm build")
+    // Check if wasm-pack is installed
+    if !check_command_exists("wasm-pack") {
+        // Install wasm-pack if not present
+        let install_wasm_pack = Command::new("pnpm")
+            .args(&["install", "-g", "wasm-pack"])
+            .output()
+            .expect("Failed to install wasm-pack");
+
+        if !install_wasm_pack.status.success() {
+            panic!("Failed to install wasm-pack");
+        }
+    }
+
+    // Run wasm-pack build for histogram (which is inside app directory)
+    let wasm_pack_build = Command::new("wasm-pack")
+        .current_dir("app")
+        .args(&["build", "histogram"])
+        .output()
+        .expect("Failed to execute wasm-pack build");
+
+    if !wasm_pack_build.status.success() {
+        panic!("wasm-pack build failed");
+    }
+
+    let output = Command::new("pnpm")
+        .current_dir("app")
+        .arg("build")
         .output()
         .expect("Failed to execute pnpm build");
 
