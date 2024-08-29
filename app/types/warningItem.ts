@@ -1,16 +1,27 @@
 import type { TokioTask } from "./task/tokioTask";
 import type { Warn } from "./warning/warn";
 
-export interface WarningItem {
-    title: string;
-    description: string;
+export interface WarningStatItem {
+    name: string;
+    count: number;
+    summary: string;
 }
 
-export function toTaskWarningItems(
+export function toWarningStats(
     taskWarnings: Array<Warn<TokioTask>>,
-): Array<WarningItem> {
-    return taskWarnings.map((warn) => ({
-        title: warn.name,
-        description: warn.summary(),
-    }));
+): Array<WarningStatItem> {
+    const stats: Record<string, WarningStatItem> = {};
+
+    taskWarnings.forEach((warn) => {
+        if (!stats[warn.name]) {
+            stats[warn.name] = {
+                name: warn.name,
+                count: 0,
+                summary: warn.summary(),
+            };
+        }
+        stats[warn.name].count++;
+    });
+
+    return Object.values(stats);
 }
