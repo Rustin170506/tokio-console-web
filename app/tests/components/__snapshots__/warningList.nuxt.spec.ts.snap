@@ -8,7 +8,7 @@ exports[`WarningList View 1`] = `
       <div class="w-0 flex-1">
         <p class="text-sm font-medium">NeverYielded</p>
         <div class="text-sm opacity-90 mt-0 leading-5">
-          <p>1 tasks have never yielded (threshold 1.00sms)</p>
+          <p>1 tasks have never yielded (threshold 1.00s)</p>
         </div>
         <!--v-if-->
       </div>
