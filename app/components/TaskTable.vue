@@ -42,6 +42,20 @@
                 {{ row.idle.toString() }}
             </p>
         </template>
+        <template #idString-data="{ row }">
+            <div class="flex items-center">
+                <span>{{ row.idString }}</span>
+                <div
+                    v-if="row.warnings.length > 0"
+                    class="ml-2 flex items-center"
+                >
+                    <UIcon
+                        name="i-heroicons-exclamation-triangle"
+                        class="text-yellow-500 mr-1"
+                    />
+                </div>
+            </div>
+        </template>
     </UTable>
 </template>
 

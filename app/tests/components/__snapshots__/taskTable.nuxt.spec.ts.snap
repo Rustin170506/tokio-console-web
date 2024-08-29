@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`TaskTable View 1`] = `
+exports[`TaskTable > renders correctly 1`] = `
 <tbody
   class="divide-y divide-gray-200 dark:divide-gray-800"
 >
@@ -14,7 +14,20 @@ exports[`TaskTable View 1`] = `
       class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm"
     >
       
-      1
+      <div
+        class="flex items-center"
+      >
+        <span>
+          1
+        </span>
+        <div
+          class="ml-2 flex items-center"
+        >
+          <span
+            class="i-heroicons-exclamation-triangle text-yellow-500 mr-1"
+          />
+        </div>
+      </div>
       
     </td>
     <td
