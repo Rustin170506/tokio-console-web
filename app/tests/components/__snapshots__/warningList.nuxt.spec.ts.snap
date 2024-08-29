@@ -7,7 +7,9 @@ exports[`WarningList View 1`] = `
       <!--v-if-->
       <div class="w-0 flex-1">
         <p class="text-sm font-medium">NeverYielded</p>
-        <div class="text-sm opacity-90 mt-0 leading-5">tasks have never yielded (threshold 1.00sms)</div>
+        <div class="text-sm opacity-90 mt-0 leading-5">
+          <p>1 tasks have never yielded (threshold 1.00s)</p>
+        </div>
         <!--v-if-->
       </div>
       <!--v-if-->
@@ -18,7 +20,9 @@ exports[`WarningList View 1`] = `
       <!--v-if-->
       <div class="w-0 flex-1">
         <p class="text-sm font-medium">LostWaker</p>
-        <div class="text-sm opacity-90 mt-0 leading-5">tasks have lost their wakers</div>
+        <div class="text-sm opacity-90 mt-0 leading-5">
+          <p>1 tasks have lost their wakers</p>
+        </div>
         <!--v-if-->
       </div>
       <!--v-if-->
@@ -29,7 +33,9 @@ exports[`WarningList View 1`] = `
       <!--v-if-->
       <div class="w-0 flex-1">
         <p class="text-sm font-medium">SelfWakePercent</p>
-        <div class="text-sm opacity-90 mt-0 leading-5">tasks have woken themselves over 50% of the time</div>
+        <div class="text-sm opacity-90 mt-0 leading-5">
+          <p>1 tasks have woken themselves over 50% of the time</p>
+        </div>
         <!--v-if-->
       </div>
       <!--v-if-->

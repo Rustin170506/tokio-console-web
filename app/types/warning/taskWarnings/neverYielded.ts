@@ -13,7 +13,7 @@ export class NeverYielded implements Warn<TokioTask> {
     constructor(minDuration: Duration = DEFAULT_DURATION) {
         this.name = "NeverYielded";
         this.minDuration = minDuration;
-        this.description = `tasks have never yielded (threshold ${minDuration.toString()}ms)`;
+        this.description = `tasks have never yielded (threshold ${minDuration.toString()})`;
     }
 
     check(task: TokioTask): Warning {

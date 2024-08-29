@@ -11,34 +11,34 @@ mockNuxtImport("useSlideover", () => {
 });
 
 // Mock the useWarnings composable
-const mockWarningsCount = vi.fn(() => 0);
+const mockTotalWarningsCount = vi.fn(() => 0);
 mockNuxtImport("useWarnings", () => {
     return () => ({
-        warningsCount: mockWarningsCount(),
+        totalWarningsCount: mockTotalWarningsCount(),
     });
 });
 
 describe("WarningsButton", () => {
-    it("renders UButton when warningsCount is 0", async () => {
-        mockWarningsCount.mockReturnValue(0);
+    it("renders UButton when totalWarningsCount is 0", async () => {
+        mockTotalWarningsCount.mockReturnValue(0);
         const component = await mountSuspended(WarningsButton);
         expect(component.find("button").exists()).toBe(true);
-        // Check if the warning indicator is not present.
+        // Check if the warning indicator (UChip) is not present.
         expect(component.find(".absolute").exists()).toBe(false);
     });
 
-    it("renders warning indicator with UButton when warningsCount is greater than 0", async () => {
-        mockWarningsCount.mockReturnValue(1);
+    it("renders warning indicator with UButton when totalWarningsCount is greater than 0", async () => {
+        mockTotalWarningsCount.mockReturnValue(1);
         const component = await mountSuspended(WarningsButton);
         // Use nextTick to wait for the component to update
         await component.vm.$nextTick();
-        // Check if the warning indicator is present.
+        // Check if the warning indicator (UChip) is present.
         expect(component.find(".absolute").exists()).toBe(true);
         expect(component.find("button").exists()).toBe(true);
     });
 
     it("calls openSlideover when button is clicked", async () => {
-        mockWarningsCount.mockReturnValue(0);
+        mockTotalWarningsCount.mockReturnValue(0);
         const component = await mountSuspended(WarningsButton);
         const button = component.find("button");
         await button.trigger("click");

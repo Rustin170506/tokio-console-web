@@ -1,6 +1,6 @@
 <template>
     <UChip
-        v-if="warningsCount > 0"
+        v-if="totalWarningsCount > 0"
         inset
         color="yellow"
         position="bottom-right"
@@ -27,7 +27,7 @@
 import WarningsSlideover from "./WarningsSlideover.vue";
 
 const slideover = useSlideover();
-const { warningsCount } = useWarnings();
+const { totalWarningsCount } = useWarnings();
 
 function openSlideover() {
     slideover.open(WarningsSlideover);

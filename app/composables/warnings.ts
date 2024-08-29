@@ -1,31 +1,29 @@
-import { toTaskWarningItems, type WarningItem } from "~/types/warningItem";
+import { toWarningStats, type WarningStatItem } from "~/types/warningItem";
 
 /**
- * useWarnings is a composable function that returns the warnings.
- * If the warnings are not updated, it will watch for updates.
- * @returns The warnings and the warnings count.
+ * useWarnings is a composable function that returns the warning statistics.
+ * @returns The warning statistics and the total warnings count.
  */
 export function useWarnings() {
     const { tasksData, lastUpdatedAt } = useTasks();
 
-    const warnings = computed(() => {
+    const warningStats = computed<WarningStatItem[]>(() => {
         const lastUpdated = lastUpdatedAt.value;
         if (!lastUpdated) {
             return [];
         }
-        return Array.from(tasksData.value.values()).reduce((acc, task) => {
-            const taskWarningItems = toTaskWarningItems(task.warnings);
-            if (taskWarningItems) {
-                acc.push(...taskWarningItems);
-            }
-            return acc;
-        }, [] as WarningItem[]);
+        const allWarnings = Array.from(tasksData.value.values()).flatMap(
+            (task) => task.warnings,
+        );
+        return toWarningStats(allWarnings);
     });
 
-    const warningsCount = computed(() => warnings.value.length);
+    const totalWarningsCount = computed(() =>
+        warningStats.value.reduce((sum, stat) => sum + stat.count, 0),
+    );
 
     return {
-        warnings,
-        warningsCount,
+        warningStats,
+        totalWarningsCount,
     };
 }
