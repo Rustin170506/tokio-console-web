@@ -1,13 +1,9 @@
 use std::process::Command;
 
 fn check_command_exists(command: &str) -> bool {
-    let command_to_run = if cfg!(target_os = "windows") {
-        Command::new("where").arg(command).output()
-    } else {
-        Command::new("which").arg(command).output()
-    };
-
-    command_to_run
+    Command::new("which")
+        .arg(command)
+        .output()
         .map(|output| output.status.success())
         .unwrap_or(false)
 }
