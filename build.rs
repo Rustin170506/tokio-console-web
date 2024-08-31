@@ -23,15 +23,7 @@ fn main() {
 
     // Check if wasm-pack is installed
     if !check_command_exists("wasm-pack") {
-        // Install wasm-pack if not present
-        let install_wasm_pack = Command::new("pnpm")
-            .args(&["install", "-g", "wasm-pack"])
-            .output()
-            .expect("Failed to install wasm-pack");
-
-        if !install_wasm_pack.status.success() {
-            panic!("Failed to install wasm-pack");
-        }
+        panic!("wasm-pack is not installed. Please install wasm-pack to continue.");
     }
 
     // Run wasm-pack build for histogram (which is inside app directory)
