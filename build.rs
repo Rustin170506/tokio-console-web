@@ -8,57 +8,44 @@ fn check_command_exists(command: &str) -> bool {
         .unwrap_or(false)
 }
 
-fn main() {
-    if !check_command_exists("node") {
-        eprintln!("Error: Node.js is not installed. Please install Node.js to continue.");
-        exit(1);
-    }
-
-    if !check_command_exists("pnpm") {
-        eprintln!("Error: pnpm is not installed. Please install pnpm to continue.");
-        exit(1);
-    }
-
-    // Check if wasm-pack is installed
-    if !check_command_exists("wasm-pack") {
-        eprintln!("Error: wasm-pack is not installed. Please install wasm-pack to continue.");
-        eprintln!("You can install it using: cargo install wasm-pack");
-        exit(1);
-    }
-
-    // Run wasm-pack build for histogram (which is inside app directory)
-    let wasm_pack_build = Command::new("wasm-pack")
-        .current_dir("app")
-        .args(&["build", "histogram"])
+fn run_command(name: &str, dir: &str, args: &[&str]) -> Result<(), String> {
+    let output = Command::new(name)
+        .current_dir(dir)
+        .args(args)
         .output()
-        .expect("Failed to execute wasm-pack build");
-
-    if !wasm_pack_build.status.success() {
-        eprintln!("Error: wasm-pack build failed");
-        exit(1);
-    }
-
-    // Install dependencies
-    let pnpm_install = Command::new("pnpm")
-        .current_dir("app")
-        .arg("install")
-        .output()
-        .expect("Failed to execute pnpm install");
-
-    if !pnpm_install.status.success() {
-        eprintln!("Error: pnpm install failed");
-        exit(1);
-    }
-
-    let output = Command::new("pnpm")
-        .current_dir("app")
-        .arg("build")
-        .output()
-        .expect("Failed to execute pnpm build");
+        .map_err(|e| format!("Failed to execute {}: {}", name, e))?;
 
     if !output.status.success() {
-        eprintln!("Error: pnpm build failed");
-        exit(1);
+        return Err(format!("Error: {} failed", name));
+    }
+    Ok(())
+}
+
+fn main() {
+    // Check for required commands
+    let required_commands = ["node", "pnpm", "wasm-pack"];
+    for &cmd in required_commands.iter() {
+        if !check_command_exists(cmd) {
+            eprintln!("Error: {} is not installed. Please install it to continue.", cmd);
+            if cmd == "wasm-pack" {
+                eprintln!("You can install it using: cargo install wasm-pack");
+            }
+            exit(1);
+        }
+    }
+
+    // Run build commands
+    let build_steps = [
+        ("wasm-pack", "app", &["build", "histogram"][..]),
+        ("pnpm", "app", &["install"][..]),
+        ("pnpm", "app", &["build"][..]),
+    ];
+
+    for (cmd, dir, args) in build_steps.iter() {
+        if let Err(e) = run_command(cmd, dir, args) {
+            eprintln!("{}", e);
+            exit(1);
+        }
     }
 
     println!("cargo:rerun-if-changed=app");
