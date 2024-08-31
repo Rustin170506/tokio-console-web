@@ -103,7 +103,7 @@ describe("formatLocation", () => {
 
     test("should truncate the registry path when file contains a specific registry path", () => {
         const loc = {
-            file: "/Users/hi-rustin/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tokio-1.25.3/src/runtime/blocking/shutdown.rs:22:20",
+            file: "/Users/Rustin170506/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tokio-1.25.3/src/runtime/blocking/shutdown.rs:22:20",
         };
         expect(formatLocation(new Location(loc))).toBe(
             "<cargo>/tokio-1.25.3/src/runtime/blocking/shutdown.rs:22:20",

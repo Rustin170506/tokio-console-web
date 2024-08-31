@@ -9,7 +9,7 @@
 
 <div align="center">
 
-[Homepage](https://github.com/hi-rustin/tokio-console-web)
+[Homepage](https://github.com/Rustin170506/tokio-console-web)
 | [Discord](https://discord.gg/EeF3cQw)
 | [Contributing](#️-contributing)
 
@@ -26,19 +26,19 @@ The `tokio-console-web` can be installed using the following methods:
 For a direct download and installation, execute the following command:
 
 ```sh
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/hi-rustin/tokio-console-web/releases/download/v0.1.1-beta.2/tokio-console-web-installer.sh | sh
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/Rustin170506/tokio-console-web/releases/download/v0.1.1-beta.2/tokio-console-web-installer.sh | sh
 ```
 
 If you're using `powershell`, the following command can be used:
 
 ```powershell
-powershell -c "irm https://github.com/hi-rustin/tokio-console-web/releases/download/v0.1.1-beta.2/tokio-console-web-installer.ps1 | iex"
+powershell -c "irm https://github.com/Rustin170506/tokio-console-web/releases/download/v0.1.1-beta.2/tokio-console-web-installer.ps1 | iex"
 ```
 
 For those using homebrew, the following command will install `tokio-console-web`:
 
 ```sh
-brew install hi-rustin/homebrew-tokio-console-web/tokio-console-web
+brew install Rustin170506/homebrew-tokio-console-web/tokio-console-web
 ```
 
 Additional installation methods for `tokio-console-web` can be found on the release page.
