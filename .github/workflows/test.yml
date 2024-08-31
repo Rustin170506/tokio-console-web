@@ -44,9 +44,6 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
-      - name: Add pnpm to PATH
-        shell: bash
-        run: echo "PATH=$PATH:$(pnpm global bin)" >> $GITHUB_ENV
       - name: Install dependencies
         run: pnpm install
       - name: Lint
