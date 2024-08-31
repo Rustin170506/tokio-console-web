@@ -38,6 +38,18 @@ fn main() {
         exit(1);
     }
 
+    // Install dependencies
+    let pnpm_install = Command::new("pnpm")
+        .current_dir("app")
+        .arg("install")
+        .output()
+        .expect("Failed to execute pnpm install");
+
+    if !pnpm_install.status.success() {
+        eprintln!("Error: pnpm install failed");
+        exit(1);
+    }
+
     let output = Command::new("pnpm")
         .current_dir("app")
         .arg("build")
