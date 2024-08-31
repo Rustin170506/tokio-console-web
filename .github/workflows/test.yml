@@ -24,6 +24,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.13.0" 
       - uses: pnpm/action-setup@v2
         name: Install pnpm
         with:
@@ -40,10 +44,9 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20.13.0" 
+      - name: Add pnpm to PATH
+        shell: bash
+        run: echo "PATH=$PATH:$(pnpm global bin)" >> $GITHUB_ENV
       - name: Install dependencies
         run: pnpm install
       - name: Lint
