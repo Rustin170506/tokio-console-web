@@ -238,7 +238,7 @@ jobs:
         with:
           submodules: recursive
       - name: Install cargo-dist
-        run: "curl --proto '=https' --tlsv1.2 -LsSf https://github.com/axodotdev/cargo-dist/releases/download/v0.11.1/cargo-dist-installer.sh | sh"
+        run: "curl --proto '=https' --tlsv1.2 -LsSf https://github.com/axodotdev/cargo-dist/releases/download/v0.22.0/cargo-dist-installer.sh | sh"
       # Fetch artifacts from scratch-storage
       - name: Fetch artifacts
         uses: actions/download-artifact@v4
