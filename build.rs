@@ -1,4 +1,4 @@
-use std::process::Command;
+use std::process::{exit, Command};
 
 fn check_command_exists(command: &str) -> bool {
     Command::new("which")
@@ -10,16 +10,20 @@ fn check_command_exists(command: &str) -> bool {
 
 fn main() {
     if !check_command_exists("node") {
-        panic!("Node.js is not installed. Please install Node.js to continue.");
+        eprintln!("Error: Node.js is not installed. Please install Node.js to continue.");
+        exit(1);
     }
 
     if !check_command_exists("pnpm") {
-        panic!("pnpm is not installed. Please install pnpm to continue.");
+        eprintln!("Error: pnpm is not installed. Please install pnpm to continue.");
+        exit(1);
     }
 
     // Check if wasm-pack is installed
     if !check_command_exists("wasm-pack") {
-        panic!("wasm-pack is not installed. Please install wasm-pack to continue.");
+        eprintln!("Error: wasm-pack is not installed. Please install wasm-pack to continue.");
+        eprintln!("You can install it using: cargo install wasm-pack");
+        exit(1);
     }
 
     // Run wasm-pack build for histogram (which is inside app directory)
@@ -30,7 +34,8 @@ fn main() {
         .expect("Failed to execute wasm-pack build");
 
     if !wasm_pack_build.status.success() {
-        panic!("wasm-pack build failed");
+        eprintln!("Error: wasm-pack build failed");
+        exit(1);
     }
 
     let output = Command::new("pnpm")
@@ -40,7 +45,8 @@ fn main() {
         .expect("Failed to execute pnpm build");
 
     if !output.status.success() {
-        panic!("pnpm build failed");
+        eprintln!("Error: pnpm build failed");
+        exit(1);
     }
 
     println!("cargo:rerun-if-changed=app");
