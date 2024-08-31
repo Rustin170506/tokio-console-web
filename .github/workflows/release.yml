@@ -132,12 +132,6 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
-      - name: Install dependencies
-        run: pnpm install
-        working-directory: ./app
-      - name: Generate
-        run: pnpm run gen
-        working-directory: ./app
       - name: Setup Rust
         uses: actions-rs/toolchain@v1
         with:
@@ -146,12 +140,6 @@ jobs:
       - uses: swatinem/rust-cache@v2
       - name: Install wasm-pack
         run: cargo install wasm-pack
-      - name: Run wasm-pack build
-        run: wasm-pack build histogram
-        working-directory: ./app
-      - name: Build
-        run: pnpm run build
-        working-directory: ./app
       - name: Install cargo-dist
         run: ${{ matrix.install_dist }}
       # Get the dist-manifest
