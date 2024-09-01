@@ -73,18 +73,19 @@ To use `tokio-console-web`, follow these steps:
 
    For more options:
 
-   ```console
-   $ tokio-console-web --help
-   A web console for tokio
+```console
+$ tokio-console-web --help
+A web console for tokio
 
-   Usage: tokio-console-web[EXE] [OPTIONS]
+Usage: tokio-console-web[EXE] [OPTIONS]
 
-   Options:
-         --host <HOST>  The address to listen on [default: 127.0.0.1]
-         --port <PORT>  The port to listen on [default: 3333]
-     -h, --help         Print help
-     -V, --version      Print version
-   ```
+Options:
+      --host <HOST>  The address to listen on [default: 127.0.0.1]
+      --port <PORT>  The port to listen on [default: 3333]
+  -h, --help         Print help
+  -V, --version      Print version
+
+```
 
 ## 🛠️ Contributing
 
