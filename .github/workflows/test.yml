@@ -60,10 +60,11 @@ jobs:
         run: wasm-pack build histogram --out-dir ../gen/histogram
       - name: Check for changes in generated files
         run: |
-          if git diff --ignore-matching-lines="app/gen/histogram/.gitignore" --exit-code; then
+          if git diff --exit-code -- . ':(exclude)gen/histogram/.gitignore' ':(exclude)gen/histogram/histogram_bg.wasm'; then
             echo "No changes detected in generated files."
           else
             echo "Error: Generated files have changed unexpectedly."
+            git diff -- . ':(exclude)gen/histogram/.gitignore' ':(exclude)gen/histogram/histogram_bg.wasm'
             exit 1
           fi
       - name: Build
