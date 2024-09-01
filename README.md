@@ -71,7 +71,7 @@ To use `tokio-console-web`, follow these steps:
 
    Access the web console at `http://127.0.0.1:3333` in your browser.
 
-   For more options:
+For more options:
 
 ```console
 $ tokio-console-web --help
