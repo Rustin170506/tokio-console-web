@@ -73,8 +73,8 @@ importers:
         specifier: ^11.0.0
         version: 11.0.3(vue@3.4.35(typescript@5.4.5))
       '@vueuse/nuxt':
-        specifier: ^10.9.0
-        version: 10.11.1(magicast@0.3.4)(nuxt@3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.12)(encoding@0.1.13)(eslint@8.57.0)(ioredis@5.4.1)(optionator@0.9.3)(rollup@4.17.2)(terser@5.31.0)(typescript@5.4.5)(vite@5.2.11(@types/node@20.12.12)(terser@5.31.0))(vue-tsc@1.8.27(typescript@5.4.5)))(rollup@4.17.2)(vue@3.4.35(typescript@5.4.5))
+        specifier: ^11.0.0
+        version: 11.0.3(magicast@0.3.4)(nuxt@3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.12)(encoding@0.1.13)(eslint@8.57.0)(ioredis@5.4.1)(optionator@0.9.3)(rollup@4.17.2)(terser@5.31.0)(typescript@5.4.5)(vite@5.2.11(@types/node@20.12.12)(terser@5.31.0))(vue-tsc@1.8.27(typescript@5.4.5)))(rollup@4.17.2)(vue@3.4.35(typescript@5.4.5))
       eslint:
         specifier: 8.57.0
         version: 8.57.0
@@ -1963,8 +1963,8 @@ packages:
   '@vueuse/metadata@11.0.3':
     resolution: {integrity: sha512-+FtbO4SD5WpsOcQTcC0hAhNlOid6QNLzqedtquTtQ+CRNBoAt9GuV07c6KNHK1wCmlq8DFPwgiLF2rXwgSHX5Q==}
 
-  '@vueuse/nuxt@10.11.1':
-    resolution: {integrity: sha512-UiaYSIwOkmUVn8Gl1AqtLWYR12flO+8sEu9X0Y1fNjSR7EWy9jMuiCvOGqwtoeTsqfHrivl0d5HfMzr11GFnMA==}
+  '@vueuse/nuxt@11.0.3':
+    resolution: {integrity: sha512-1tZGM9lvFl6HqmSQNM6hsHbAzLkBitoh8RsVC8kIG/93d3Pb5dEqUdt1k+OfHyR8V2rfSOwCfJx+wlUTlY0A2g==}
     peerDependencies:
       nuxt: ^3.0.0
 
@@ -7940,11 +7940,11 @@ snapshots:
 
   '@vueuse/metadata@11.0.3': {}
 
-  '@vueuse/nuxt@10.11.1(magicast@0.3.4)(nuxt@3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.12)(encoding@0.1.13)(eslint@8.57.0)(ioredis@5.4.1)(optionator@0.9.3)(rollup@4.17.2)(terser@5.31.0)(typescript@5.4.5)(vite@5.2.11(@types/node@20.12.12)(terser@5.31.0))(vue-tsc@1.8.27(typescript@5.4.5)))(rollup@4.17.2)(vue@3.4.35(typescript@5.4.5))':
+  '@vueuse/nuxt@11.0.3(magicast@0.3.4)(nuxt@3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.12)(encoding@0.1.13)(eslint@8.57.0)(ioredis@5.4.1)(optionator@0.9.3)(rollup@4.17.2)(terser@5.31.0)(typescript@5.4.5)(vite@5.2.11(@types/node@20.12.12)(terser@5.31.0))(vue-tsc@1.8.27(typescript@5.4.5)))(rollup@4.17.2)(vue@3.4.35(typescript@5.4.5))':
     dependencies:
       '@nuxt/kit': 3.13.0(magicast@0.3.4)(rollup@4.17.2)
-      '@vueuse/core': 10.11.1(vue@3.4.35(typescript@5.4.5))
-      '@vueuse/metadata': 10.11.1
+      '@vueuse/core': 11.0.3(vue@3.4.35(typescript@5.4.5))
+      '@vueuse/metadata': 11.0.3
       local-pkg: 0.5.0
       nuxt: 3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.12)(encoding@0.1.13)(eslint@8.57.0)(ioredis@5.4.1)(optionator@0.9.3)(rollup@4.17.2)(terser@5.31.0)(typescript@5.4.5)(vite@5.2.11(@types/node@20.12.12)(terser@5.31.0))(vue-tsc@1.8.27(typescript@5.4.5))
       vue-demi: 0.14.10(vue@3.4.35(typescript@5.4.5))
