@@ -71,7 +71,7 @@ importers:
         version: 8.1.0(@vue/compiler-sfc@3.4.38)(vue@3.4.35(typescript@5.4.5))
       '@vueuse/core':
         specifier: ^10.9.0
-        version: 10.11.0(vue@3.4.35(typescript@5.4.5))
+        version: 10.11.1(vue@3.4.35(typescript@5.4.5))
       '@vueuse/nuxt':
         specifier: ^10.9.0
         version: 10.11.1(magicast@0.3.4)(nuxt@3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.12)(encoding@0.1.13)(eslint@8.57.0)(ioredis@5.4.1)(optionator@0.9.3)(rollup@4.17.2)(terser@5.31.0)(typescript@5.4.5)(vite@5.2.11(@types/node@20.12.12)(terser@5.31.0))(vue-tsc@1.8.27(typescript@5.4.5)))(rollup@4.17.2)(vue@3.4.35(typescript@5.4.5))
@@ -6855,7 +6855,7 @@ snapshots:
       '@tailwindcss/container-queries': 0.1.1(tailwindcss@3.4.4)
       '@tailwindcss/forms': 0.5.7(tailwindcss@3.4.4)
       '@tailwindcss/typography': 0.5.13(tailwindcss@3.4.4)
-      '@vueuse/core': 10.11.0(vue@3.4.35(typescript@5.4.5))
+      '@vueuse/core': 10.11.1(vue@3.4.35(typescript@5.4.5))
       '@vueuse/integrations': 10.11.0(focus-trap@7.5.4)(fuse.js@6.6.2)(vue@3.4.35(typescript@5.4.5))
       '@vueuse/math': 10.11.0(vue@3.4.35(typescript@5.4.5))
       defu: 6.1.4
