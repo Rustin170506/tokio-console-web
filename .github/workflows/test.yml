@@ -6,10 +6,6 @@ on:
 
 name: Unit Tests
 
-env:
-  # renovate: datasource=npm depName=pnpm
-  PNPM_VERSION: 9.4.0
-
 jobs:
   test:
     runs-on: ${{ matrix.os }}
@@ -27,11 +23,11 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20.13.0" 
+          node-version: 'lts/*'
       - uses: pnpm/action-setup@v2
         name: Install pnpm
         with:
-          version: ${{ env.PNPM_VERSION }}
+          version: 8
           run_install: false
       - name: Get pnpm store directory
         shell: bash

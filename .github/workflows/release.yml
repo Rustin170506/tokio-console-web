@@ -43,9 +43,6 @@ on:
   push:
     tags:
       - '**[0-9]+.[0-9]+.[0-9]+*'
-env:
-  # renovate: datasource=npm depName=pnpm
-  PNPM_VERSION: 9.4.0
 
 jobs:
   # Run 'cargo dist plan' (or host) to determine what tasks we need to do
@@ -127,11 +124,11 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20.13.0"
+          node-version: 'lts/*'
       - uses: pnpm/action-setup@v2
         name: Install pnpm
         with:
-          version: ${{ env.PNPM_VERSION }}
+          version: 9
           run_install: false
       - name: Get pnpm store directory
         shell: bash
