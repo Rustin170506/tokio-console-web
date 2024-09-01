@@ -6,7 +6,7 @@ include = ["src/*", "app/.output/public"]
 license = "MIT"
 name = "tokio-console-web"
 repository = "https://github.com/Rustin170506/tokio-console-web"
-version = "0.1.1-beta.2"
+version = "0.1.1-beta.3"
 
 [package.metadata.wix]
 eula = false
