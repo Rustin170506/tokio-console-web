@@ -1,11 +1,11 @@
 [package]
-authors = ["hi-rustin"]
+authors = ["Rustin170506"]
 description = "A web console for tokio"
 edition = "2021"
 include = ["src/*", "app/.output/public"]
 license = "MIT"
 name = "tokio-console-web"
-repository = "https://github.com/hi-rustin/tokio-console-web"
+repository = "https://github.com/Rustin170506/tokio-console-web"
 version = "0.1.1-beta.2"
 
 [package.metadata.wix]
@@ -37,13 +37,13 @@ lto = "thin"
 # Config for 'cargo dist'
 [workspace.metadata.dist]
 # The preferred cargo-dist version to use in CI (Cargo.toml SemVer syntax)
-cargo-dist-version = "0.11.1"
+cargo-dist-version = "0.22.0"
 # CI backends to support
-ci = ["github"]
+ci = "github"
 # The installers to generate for each app
 installers = ["shell", "powershell", "homebrew", "msi"]
 # A GitHub repo to push Homebrew formulas to
-tap = "hi-rustin/homebrew-tokio-console-web"
+tap = "Rustin170506/homebrew-tokio-console-web"
 # Target platforms to build apps for (Rust target-triple syntax)
 targets = [
     "aarch64-apple-darwin",
@@ -57,12 +57,16 @@ windows-archive = ".tar.gz"
 unix-archive = ".tar.gz"
 # Publish jobs to run in CI
 publish-jobs = ["homebrew"]
-# Publish jobs to run in CI
+# Which actions to run on pull requests
 pr-run-mode = "upload"
 # Skip checking whether the specified configuration files are up to date
 allow-dirty = ["ci"]
 # Whether to publish prereleases to package managers
 publish-prereleases = true
+# Path that installers should place binaries in
+install-path = "CARGO_HOME"
+# Whether to install an updater program
+install-updater = false
 
 [dev-dependencies]
 console-subscriber = { version = "0.3.0", features = ["grpc-web"] }

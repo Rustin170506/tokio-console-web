@@ -27,7 +27,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20.13.0"
+          node-version: "20.13.0" 
       - uses: pnpm/action-setup@v2
         name: Install pnpm
         with:
@@ -59,7 +59,7 @@ jobs:
           override: true
       - uses: swatinem/rust-cache@v2
       - name: Install wasm-pack
-        run: pnpm install -g wasm-pack
+        run: cargo install wasm-pack
       - name: Run wasm-pack build
         run: wasm-pack build histogram
       - name: Build
@@ -69,7 +69,10 @@ jobs:
       - name: Move to parent directory
         run: mv dist ..
       - name: Test CLI
-        run: cargo test
+        run: |
+          cd ..
+          cargo test
       - name: Try Cargo Package
-        # We need `--allow-dirty` because we don't want to commit the `public` directory
-        run: cargo package --allow-dirty
+        run: |
+          cd ..
+          cargo package --allow-dirty
