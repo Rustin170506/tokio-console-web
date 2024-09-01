@@ -21,7 +21,27 @@ Welcome to the `tokio-console-web` project! This project is a web-based console 
 
 ## 🚀 Getting Started
 
-The `tokio-console-web` can be installed using the following methods:
+To use `tokio-console-web`, follow these steps:
+
+1. Enable the `grpc_web` feature in your `console-subscriber` dependency:
+
+```toml
+[dependencies]
+console-subscriber = { version = "0.4.0", features = ["grpc-web"] }
+```
+
+2. Configure your application to use the `ConsoleLayer` with gRPC-Web enabled:
+
+```rust
+use std::net::Ipv4Addr;
+
+console_subscriber::ConsoleLayer::builder()
+    .enable_grpc_web(true)
+    .server_addr((Ipv4Addr::UNSPECIFIED, 9999))
+    .init();
+```
+
+3. Install `tokio-console-web` using one of the following methods:
 
 For a direct download and installation, execute the following command:
 
@@ -42,6 +62,8 @@ brew install Rustin170506/homebrew-tokio-console-web/tokio-console-web
 ```
 
 Additional installation methods for `tokio-console-web` can be found on the release page.
+
+4. Start the `tokio-console-web` server:
 
 After installation, the `tokio-console-web` can be started using the following command:
 
