@@ -41,25 +41,11 @@ To use `tokio-console-web`, follow these steps:
        .init();
    ```
 
-3. Install `tokio-console-web` using one of the following methods:
+3. Install `tokio-console-web` using Cargo:
 
-   - Direct download (Unix-like systems):
-
-     ```sh
-     curl --proto '=https' --tlsv1.2 -LsSf https://github.com/Rustin170506/tokio-console-web/releases/download/v0.1.1-beta.2/tokio-console-web-installer.sh | sh
-     ```
-
-   - PowerShell:
-
-     ```powershell
-     powershell -c "irm https://github.com/Rustin170506/tokio-console-web/releases/download/v0.1.1-beta.2/tokio-console-web-installer.ps1 | iex"
-     ```
-
-   - Homebrew:
-
-     ```sh
-     brew install Rustin170506/homebrew-tokio-console-web/tokio-console-web
-     ```
+   ```sh
+   cargo install tokio-console-web
+   ```
 
    Additional installation methods can be found on the [release page](https://github.com/Rustin170506/tokio-console-web/releases).
 
