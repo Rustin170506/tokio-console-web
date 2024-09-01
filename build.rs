@@ -1,8 +1,21 @@
 use std::env;
 use std::process::{exit, Command};
 
+fn get_pnpm_command() -> &'static str {
+    if cfg!(target_os = "windows") {
+        "pnpm.cmd"
+    } else {
+        "pnpm"
+    }
+}
+
 fn check_command_exists(command: &str) -> bool {
-    Command::new(command)
+    let cmd = if command == "pnpm" {
+        get_pnpm_command()
+    } else {
+        command
+    };
+    Command::new(cmd)
         .arg("--version")
         .output()
         .map(|output| output.status.success())
@@ -10,7 +23,12 @@ fn check_command_exists(command: &str) -> bool {
 }
 
 fn run_command(name: &str, dir: &str, args: &[&str]) -> Result<(), String> {
-    let output = Command::new(name)
+    let cmd = if name == "pnpm" {
+        get_pnpm_command()
+    } else {
+        name
+    };
+    let output = Command::new(cmd)
         .current_dir(dir)
         .args(args)
         .output()
