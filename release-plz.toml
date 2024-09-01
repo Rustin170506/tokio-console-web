@@ -1,0 +1,6 @@
+[workspace]
+changelog_config = "cliff.toml"
+
+[[package]]
+name = "tokio-console-web"
+publish_allow_dirty = true
