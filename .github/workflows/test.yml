@@ -60,7 +60,12 @@ jobs:
         run: wasm-pack build histogram --out-dir ../gen/histogram
       - name: Check for changes in generated files
         run: |
-          git diff --ignore-matching-lines="./gen/histogram/.gitignore" --exit-code || echo "Generated files have changed"
+          if git diff --ignore-matching-lines="./gen/histogram/.gitignore" --exit-code; then
+            echo "No changes detected in generated files."
+          else
+            echo "Error: Generated files have changed unexpectedly."
+            exit 1
+          fi
       - name: Build
         run: pnpm run build
       - name: Test
