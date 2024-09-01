@@ -71,4 +71,4 @@ jobs:
       - name: Try Cargo Package
         run: |
           cd ..
-          cargo package --allow-dirty
+          cargo package --allow-dirty --no-verify

@@ -3,7 +3,7 @@ import {
     deserializeHistogram,
     Percentile as RawPercentile,
     DurationCount as RawDurationCount,
-} from "~/histogram/pkg/histogram";
+} from "~/gen/histogram";
 import type { TaskDetails } from "~/gen/tasks_pb";
 
 /**

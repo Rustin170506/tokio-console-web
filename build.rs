@@ -2,12 +2,9 @@ use std::process::{exit, Command};
 
 const PNPM_WINDOWS: &str = "pnpm.cmd";
 const PNPM_UNIX: &str = "pnpm";
-const REQUIRED_COMMANDS: [&str; 3] = ["node", "pnpm", "wasm-pack"];
-const BUILD_STEPS: [(&str, &str, &[&str]); 3] = [
-    ("wasm-pack", "app", &["build", "histogram"]),
-    ("pnpm", "app", &["install"]),
-    ("pnpm", "app", &["build"]),
-];
+const REQUIRED_COMMANDS: [&str; 2] = ["node", "pnpm"];
+const BUILD_STEPS: [(&str, &str, &[&str]); 2] =
+    [("pnpm", "app", &["install"]), ("pnpm", "app", &["build"])];
 
 fn get_pnpm_command() -> &'static str {
     if cfg!(target_os = "windows") {
@@ -37,7 +34,10 @@ fn run_command(name: &str, dir: &str, args: &[&str]) -> Result<(), String> {
         name
     };
 
-    println!("Running command: {} in directory: {} with arguments: {:?}", cmd, dir, args);
+    println!(
+        "Running command: {} in directory: {} with arguments: {:?}",
+        cmd, dir, args
+    );
 
     let output = Command::new(cmd)
         .current_dir(dir)
@@ -46,11 +46,17 @@ fn run_command(name: &str, dir: &str, args: &[&str]) -> Result<(), String> {
         .map_err(|e| format!("Failed to execute {}: {}", name, e))?;
 
     if !output.status.success() {
-        eprintln!("Command stderr: {}", String::from_utf8_lossy(&output.stderr));
+        eprintln!(
+            "Command stderr: {}",
+            String::from_utf8_lossy(&output.stderr)
+        );
         return Err(format!("Error: {} failed", name));
     }
 
-    println!("Command stdout: {}", String::from_utf8_lossy(&output.stdout));
+    println!(
+        "Command stdout: {}",
+        String::from_utf8_lossy(&output.stdout)
+    );
     Ok(())
 }
 
