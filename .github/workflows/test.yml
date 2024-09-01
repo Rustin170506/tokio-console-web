@@ -58,6 +58,9 @@ jobs:
         run: cargo install wasm-pack
       - name: Run wasm-pack build
         run: wasm-pack build histogram --out-dir ../gen/histogram
+      - name: Check for changes in generated files
+        run: |
+          git diff --exit-code || echo "Generated files have changed"
       - name: Build
         run: pnpm run build
       - name: Test
