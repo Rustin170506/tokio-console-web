@@ -2,7 +2,6 @@
 authors = ["Rustin170506"]
 description = "A web console for tokio"
 edition = "2021"
-include = ["src/*", "app/.output/public"]
 license = "MIT"
 name = "tokio-console-web"
 repository = "https://github.com/Rustin170506/tokio-console-web"
