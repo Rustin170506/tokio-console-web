@@ -36,6 +36,9 @@ fn run_command(name: &str, dir: &str, args: &[&str]) -> Result<(), String> {
     } else {
         name
     };
+
+    println!("Running command: {} in directory: {} with arguments: {:?}", cmd, dir, args);
+
     let output = Command::new(cmd)
         .current_dir(dir)
         .args(args)
@@ -43,8 +46,11 @@ fn run_command(name: &str, dir: &str, args: &[&str]) -> Result<(), String> {
         .map_err(|e| format!("Failed to execute {}: {}", name, e))?;
 
     if !output.status.success() {
+        eprintln!("Command stderr: {}", String::from_utf8_lossy(&output.stderr));
         return Err(format!("Error: {} failed", name));
     }
+
+    println!("Command stdout: {}", String::from_utf8_lossy(&output.stdout));
     Ok(())
 }
 
