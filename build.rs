@@ -68,9 +68,6 @@ fn main() {
                 "Error: {} is not installed or not in PATH. Please install it to continue.",
                 cmd
             );
-            if cmd == "wasm-pack" {
-                eprintln!("You can install it using: cargo install wasm-pack");
-            }
             exit(1);
         }
     }
