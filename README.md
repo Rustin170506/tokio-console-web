@@ -21,35 +21,43 @@ Welcome to the `tokio-console-web` project! This project is a web-based console 
 
 ## 🚀 Getting Started
 
-The `tokio-console-web` can be installed using the following methods:
+To use `tokio-console-web`, follow these steps:
 
-For a direct download and installation, execute the following command:
+1. Enable the `grpc_web` feature in your `console-subscriber` dependency:
 
-```sh
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/Rustin170506/tokio-console-web/releases/download/v0.1.1-beta.2/tokio-console-web-installer.sh | sh
-```
+   ```toml
+   [dependencies]
+   console-subscriber = { version = "0.4.0", features = ["grpc-web"] }
+   ```
 
-If you're using `powershell`, the following command can be used:
+2. Configure your application to use the `ConsoleLayer` with gRPC-Web enabled:
 
-```powershell
-powershell -c "irm https://github.com/Rustin170506/tokio-console-web/releases/download/v0.1.1-beta.2/tokio-console-web-installer.ps1 | iex"
-```
+   ```rust
+   use std::net::Ipv4Addr;
 
-For those using homebrew, the following command will install `tokio-console-web`:
+   console_subscriber::ConsoleLayer::builder()
+       .enable_grpc_web(true)
+       .server_addr((Ipv4Addr::UNSPECIFIED, 9999))
+       .init();
+   ```
 
-```sh
-brew install Rustin170506/homebrew-tokio-console-web/tokio-console-web
-```
+3. Install `tokio-console-web` using Cargo:
 
-Additional installation methods for `tokio-console-web` can be found on the release page.
+   ```sh
+   cargo install tokio-console-web
+   ```
 
-After installation, the `tokio-console-web` can be started using the following command:
+   Additional installation methods can be found on the [release page](https://github.com/Rustin170506/tokio-console-web/releases).
 
-```sh
-tokio-console-web
-```
+4. Start the `tokio-console-web` server:
 
-The `tokio-console-web` can be accessed by navigating to `http://127.0.01:3333` in your web browser.
+   ```sh
+   tokio-console-web
+   ```
+
+   Access the web console at `http://127.0.0.1:3333` in your browser.
+
+For more options:
 
 ```console
 $ tokio-console-web --help
