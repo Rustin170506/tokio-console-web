@@ -69,6 +69,6 @@ install-path = "CARGO_HOME"
 install-updater = false
 
 [dev-dependencies]
-console-subscriber = { version = "0.3.0", features = ["grpc-web"] }
+console-subscriber = { version = "0.4.0", features = ["grpc-web"] }
 tokio = { version = "1.37", features = ["tracing"] }
 trycmd = "0.15.0"
