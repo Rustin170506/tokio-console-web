@@ -1,11 +1,19 @@
-use std::env;
 use std::process::{exit, Command};
+
+const PNPM_WINDOWS: &str = "pnpm.cmd";
+const PNPM_UNIX: &str = "pnpm";
+const REQUIRED_COMMANDS: [&str; 3] = ["node", "pnpm", "wasm-pack"];
+const BUILD_STEPS: [(&str, &str, &[&str]); 3] = [
+    ("wasm-pack", "app", &["build", "histogram"]),
+    ("pnpm", "app", &["install"]),
+    ("pnpm", "app", &["build"]),
+];
 
 fn get_pnpm_command() -> &'static str {
     if cfg!(target_os = "windows") {
-        "pnpm.cmd"
+        PNPM_WINDOWS
     } else {
-        "pnpm"
+        PNPM_UNIX
     }
 }
 
@@ -42,14 +50,8 @@ fn run_command(name: &str, dir: &str, args: &[&str]) -> Result<(), String> {
 
 fn main() {
     // Check for required commands
-    let required_commands = ["node", "pnpm", "wasm-pack"];
-    for &cmd in required_commands.iter() {
+    for &cmd in REQUIRED_COMMANDS.iter() {
         if !check_command_exists(cmd) {
-            eprintln!(
-                "Error: {} is not found in PATH. Current PATH: {:?}",
-                cmd,
-                env::var("PATH")
-            );
             eprintln!(
                 "Error: {} is not installed or not in PATH. Please install it to continue.",
                 cmd
@@ -62,13 +64,7 @@ fn main() {
     }
 
     // Run build commands
-    let build_steps = [
-        ("wasm-pack", "app", &["build", "histogram"][..]),
-        ("pnpm", "app", &["install"][..]),
-        ("pnpm", "app", &["build"][..]),
-    ];
-
-    for (cmd, dir, args) in build_steps.iter() {
+    for &(cmd, dir, args) in BUILD_STEPS.iter() {
         if let Err(e) = run_command(cmd, dir, args) {
             eprintln!("{}", e);
             exit(1);
