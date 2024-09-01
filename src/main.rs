@@ -36,7 +36,7 @@ async fn main() {
         .with(tracing_subscriber::fmt::layer())
         .with(
             tracing_subscriber::EnvFilter::try_from_default_env()
-                .unwrap_or_else(|_| "tokio_console_web=debug,tower_http=debug".parse().unwrap()),
+                .unwrap_or_else(|_| "tokio_console_web=info,tower_http=info".parse().unwrap()),
         )
         .init();
 
