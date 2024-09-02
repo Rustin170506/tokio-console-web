@@ -1493,7 +1493,7 @@ dependencies = [
 
 [[package]]
 name = "tokio-console-web"
-version = "0.1.1-beta.2"
+version = "0.1.1"
 dependencies = [
  "axum",
  "clap",
