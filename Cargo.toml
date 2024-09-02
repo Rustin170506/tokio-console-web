@@ -1,6 +1,7 @@
 [package]
 authors = ["Rustin170506"]
 description = "A web console for tokio"
+include = ["src/main.rs", "app/.output/public"]
 edition = "2021"
 license = "MIT"
 name = "tokio-console-web"
