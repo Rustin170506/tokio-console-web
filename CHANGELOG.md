@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.1.2 - (2024-09-09)
+
+
+### Ci
+
+- Only check diff on macos-latest ([#325](https://github.com/Rustin170506/tokio-console-web/pull/325)) ([5f2cac2](https://github.com/Rustin170506/tokio-console-web/commit/5f2cac2dcfb492bc89ce49d70b9c9f67a9537b31))
+
+
 ## 0.1.1 - (2024-09-02)
 
 
