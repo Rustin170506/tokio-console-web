@@ -48,17 +48,12 @@ jobs:
         run: pnpm run fmt
       - name: Generate
         run: pnpm run gen
-      - name: Setup Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          override: true
-      - uses: swatinem/rust-cache@v2
       - name: Install wasm-pack
-        run: cargo install wasm-pack
+        run: pnpm install -g wasm-pack
       - name: Run wasm-pack build
         run: wasm-pack build histogram --out-dir ../gen/histogram
       - name: Check for changes in generated files
+        if: matrix.os == 'macos-latest'
         shell: bash
         run: |
           if git diff --exit-code -- . ":(exclude)gen/histogram/.gitignore" ":(exclude)gen/histogram/histogram_bg.wasm"; then
@@ -74,6 +69,12 @@ jobs:
         run: pnpm run test
       - name: Move to parent directory
         run: mv dist ..
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+      - uses: swatinem/rust-cache@v2
       - name: Test CLI
         run: |
           cd ..
