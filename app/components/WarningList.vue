@@ -20,7 +20,9 @@
                     name="i-heroicons-check-circle"
                     class="w-16 h-16 text-blue-500"
                 />
-                <h3 class="mt-2 text-lg font-medium text-gray-900">
+                <h3
+                    class="mt-2 text-lg font-medium text-gray-900 dark:text-gray-100"
+                >
                     No Warnings
                 </h3>
             </div>
