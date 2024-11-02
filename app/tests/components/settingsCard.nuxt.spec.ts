@@ -72,6 +72,8 @@ describe("SettingsCard", () => {
         });
 
         const form = component.find("form");
+        const targetUrlInput = component.find('input[name="targetUrl"]');
+        await targetUrlInput.setValue("");
         // Change the retain for to a negative number.
         const retainForInput = component.find('input[name="retainFor"]');
         await retainForInput.setValue("-1");
