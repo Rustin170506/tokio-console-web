@@ -25,53 +25,43 @@ To use `tokio-console-web`, follow these steps:
 
 1. Enable the `grpc_web` feature in your `console-subscriber` dependency:
 
-   ```toml
-   [dependencies]
-   console-subscriber = { version = "0.4.0", features = ["grpc-web"] }
-   ```
+    ```toml
+    [dependencies]
+    console-subscriber = { version = "0.4.0", features = ["grpc-web"] }
+    ```
 
 2. Configure your application to use the `ConsoleLayer` with gRPC-Web enabled:
 
-   ```rust
-   use std::net::Ipv4Addr;
+    ```rust
+    use std::net::Ipv4Addr;
 
-   console_subscriber::ConsoleLayer::builder()
-       .enable_grpc_web(true)
-       .server_addr((Ipv4Addr::UNSPECIFIED, 9999))
-       .init();
-   ```
+    console_subscriber::ConsoleLayer::builder()
+        .enable_grpc_web(true)
+        .server_addr((Ipv4Addr::UNSPECIFIED, 9999))
+        .init();
+    ```
 
-3. Install `tokio-console-web` using Cargo:
+3. Clone this repository and run `pnpm install` to install the dependencies.
 
-   ```sh
-   cargo install tokio-console-web
-   ```
+    ```sh
+    git clone https://github.com/Rustin170506/tokio-console-web.git
+    cd tokio-console-web
+    pnpm install
+    ```
 
-   Additional installation methods can be found on the [release page](https://github.com/Rustin170506/tokio-console-web/releases).
+4. Install `wasm-pack` to build the histogram wasm module.
 
-4. Start the `tokio-console-web` server:
+    ```sh
+    pnpm install -g wasm-pack
+    ```
 
-   ```sh
-   tokio-console-web
-   ```
+5. Run `pnpm dev` to start the development server.
 
-   Access the web console at `http://127.0.0.1:3333` in your browser.
+    ```sh
+    pnpm dev
+    ```
 
-For more options:
-
-```console
-$ tokio-console-web --help
-A web console for tokio
-
-Usage: tokio-console-web[EXE] [OPTIONS]
-
-Options:
-      --host <HOST>  The address to listen on [default: 127.0.0.1]
-      --port <PORT>  The port to listen on [default: 3333]
-  -h, --help         Print help
-  -V, --version      Print version
-
-```
+6. Access the web console at `http://127.0.0.1:0000` in your browser.
 
 ## 🛠️ Contributing
 
@@ -81,7 +71,7 @@ Contributions are welcome! Please feel free to submit a Pull Request. If you hav
 
 Licensed under either of these:
 
-- Apache License, Version 2.0, ([LICENSE-APACHE](./LICENSE-APACHE) or https://www.apache.org/licenses/LICENSE-2.0)
-- MIT license ([LICENSE-MIT](./LICENSE-MIT) or https://opensource.org/licenses/MIT)
+-   Apache License, Version 2.0, ([LICENSE-APACHE](./LICENSE-APACHE) or https://www.apache.org/licenses/LICENSE-2.0)
+-   MIT license ([LICENSE-MIT](./LICENSE-MIT) or https://opensource.org/licenses/MIT)
 
 [console-subscriber]: https://crates.io/crates/console-subscriber

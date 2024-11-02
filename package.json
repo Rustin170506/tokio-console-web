@@ -3,10 +3,12 @@
     "private": true,
     "type": "module",
     "scripts": {
+        "prebuild": "pnpm gen",
+        "predev": "pnpm gen",
         "build": "nuxt generate",
         "dev": "nuxt dev",
         "postinstall": "nuxt prepare",
-        "gen": "buf generate proto",
+        "gen": "wasm-pack build histogram --out-dir ../gen/histogram && buf generate proto",
         "lint": "eslint --ext .js,.vue,.ts --ignore-path .gitignore --ignore-pattern gen .",
         "lint:fix": "eslint --fix --ext .js,.vue,.ts --ignore-path .gitignore --ignore-pattern gen .",
         "fmt": "prettier --check .",

@@ -34,6 +34,3 @@ logs
 .env
 .env.*
 !.env.example
-
-# rust
-target
