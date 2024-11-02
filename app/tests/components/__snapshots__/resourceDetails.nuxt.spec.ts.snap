@@ -19,7 +19,7 @@ exports[`ResourceDetails 1`] = `
         <div class="flex"><span class="font-bold text-black dark:text-white">Target</span><span class="mr-1">: </span><span class="">tokio::time::driver::sleep</span></div>
         <div class="flex"><span class="font-bold text-black dark:text-white">Type</span><span class="mr-1">: </span><span class="">Sleep</span></div>
         <div class="flex"><span class="font-bold text-black dark:text-white">Visibility</span><span class="mr-1">: </span>
-          <div class="flex justify-center items-center"><svg data-v-d18ba04c="" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="icon" width="1em" height="1em" viewBox="0 0 24 24">
+          <div class="flex justify-center items-center"><svg data-v-57190854="" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="icon" width="1em" height="1em" viewBox="0 0 24 24">
               <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
                 <path d="M2.036 12.322a1 1 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178c.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178"></path>
                 <path d="M15 12a3 3 0 1 1-6 0a3 3 0 0 1 6 0"></path>
