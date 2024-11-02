@@ -25,35 +25,35 @@ To use `tokio-console-web`, follow these steps:
 
 1. Enable the `grpc_web` feature in your `console-subscriber` dependency:
 
-   ```toml
-   [dependencies]
-   console-subscriber = { version = "0.4.0", features = ["grpc-web"] }
-   ```
+    ```toml
+    [dependencies]
+    console-subscriber = { version = "0.4.0", features = ["grpc-web"] }
+    ```
 
 2. Configure your application to use the `ConsoleLayer` with gRPC-Web enabled:
 
-   ```rust
-   use std::net::Ipv4Addr;
+    ```rust
+    use std::net::Ipv4Addr;
 
-   console_subscriber::ConsoleLayer::builder()
-       .enable_grpc_web(true)
-       .server_addr((Ipv4Addr::UNSPECIFIED, 9999))
-       .init();
-   ```
+    console_subscriber::ConsoleLayer::builder()
+        .enable_grpc_web(true)
+        .server_addr((Ipv4Addr::UNSPECIFIED, 9999))
+        .init();
+    ```
 
 3. Clone this repository and run `pnpm install` to install the dependencies.
 
-   ```sh
-   git clone https://github.com/Rustin170506/tokio-console-web.git
-   cd tokio-console-web
-   pnpm install
-   ```
+    ```sh
+    git clone https://github.com/Rustin170506/tokio-console-web.git
+    cd tokio-console-web
+    pnpm install
+    ```
 
 4. Run `pnpm dev` to start the development server.
 
-   ```sh
-   pnpm dev
-   ```
+    ```sh
+    pnpm dev
+    ```
 
 5. Access the web console at `http://127.0.0.1:0000` in your browser.
 
@@ -65,7 +65,7 @@ Contributions are welcome! Please feel free to submit a Pull Request. If you hav
 
 Licensed under either of these:
 
-- Apache License, Version 2.0, ([LICENSE-APACHE](./LICENSE-APACHE) or https://www.apache.org/licenses/LICENSE-2.0)
-- MIT license ([LICENSE-MIT](./LICENSE-MIT) or https://opensource.org/licenses/MIT)
+-   Apache License, Version 2.0, ([LICENSE-APACHE](./LICENSE-APACHE) or https://www.apache.org/licenses/LICENSE-2.0)
+-   MIT license ([LICENSE-MIT](./LICENSE-MIT) or https://opensource.org/licenses/MIT)
 
 [console-subscriber]: https://crates.io/crates/console-subscriber
