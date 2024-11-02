@@ -104,8 +104,10 @@ import type { FormError, FormSubmitEvent } from "#ui/types";
 import { useSettingsStore } from "~/stores/settings";
 const settingsStore = useSettingsStore();
 
+const defaultTargetUrl = "http://127.0.0.1:9999";
+
 const state = reactive({
-    targetUrl: settingsStore.targetUrl,
+    targetUrl: settingsStore.targetUrl || defaultTargetUrl,
     retainFor: settingsStore.retainFor.seconds.toString(),
     enabledLinters: { ...settingsStore.enabledLinters },
 });
