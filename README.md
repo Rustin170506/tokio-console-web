@@ -41,37 +41,21 @@ To use `tokio-console-web`, follow these steps:
        .init();
    ```
 
-3. Install `tokio-console-web` using Cargo:
+3. Clone this repository and run `pnpm install` to install the dependencies.
 
    ```sh
-   cargo install tokio-console-web
+   git clone https://github.com/Rustin170506/tokio-console-web.git
+   cd tokio-console-web
+   pnpm install
    ```
 
-   Additional installation methods can be found on the [release page](https://github.com/Rustin170506/tokio-console-web/releases).
-
-4. Start the `tokio-console-web` server:
+4. Run `pnpm dev` to start the development server.
 
    ```sh
-   tokio-console-web
+   pnpm dev
    ```
 
-   Access the web console at `http://127.0.0.1:3333` in your browser.
-
-For more options:
-
-```console
-$ tokio-console-web --help
-A web console for tokio
-
-Usage: tokio-console-web[EXE] [OPTIONS]
-
-Options:
-      --host <HOST>  The address to listen on [default: 127.0.0.1]
-      --port <PORT>  The port to listen on [default: 3333]
-  -h, --help         Print help
-  -V, --version      Print version
-
-```
+5. Access the web console at `http://127.0.0.1:0000` in your browser.
 
 ## 🛠️ Contributing
 
