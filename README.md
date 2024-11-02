@@ -49,13 +49,19 @@ To use `tokio-console-web`, follow these steps:
     pnpm install
     ```
 
-4. Run `pnpm dev` to start the development server.
+4. Install `wasm-pack` to build the histogram wasm module.
+
+    ```sh
+    pnpm install -g wasm-pack
+    ```
+
+5. Run `pnpm dev` to start the development server.
 
     ```sh
     pnpm dev
     ```
 
-5. Access the web console at `http://127.0.0.1:0000` in your browser.
+6. Access the web console at `http://127.0.0.1:0000` in your browser.
 
 ## 🛠️ Contributing
 
