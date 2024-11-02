@@ -42,7 +42,9 @@ describe("TaskTable", () => {
 
     it("displays warning icon for tasks with warnings", async () => {
         const component = await mountSuspended(TaskTable);
-        const warningIcon = component.find(".i-heroicons-exclamation-triangle");
+        const warningIcon = component.find(
+            ".i-heroicons\\:exclamation-triangle",
+        );
         expect(warningIcon.exists()).toBe(true);
     });
 });
