@@ -80,7 +80,7 @@ To use `tokio-console-web`, follow these steps:
         pnpm dev
         ```
 
-    7. Access the web console at `http://127.0.0.1:0000` in your browser.
+    7. Access the web console at `http://127.0.0.1:3000` in your browser.
 
 ## 🛠️ Contributing
 
