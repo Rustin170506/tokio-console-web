@@ -23,45 +23,64 @@ Welcome to the `tokio-console-web` project! This project is a web-based console 
 
 To use `tokio-console-web`, follow these steps:
 
-1. Enable the `grpc_web` feature in your `console-subscriber` dependency:
+1. **Using Docker (Recommended):**
 
-    ```toml
-    [dependencies]
-    console-subscriber = { version = "0.4.0", features = ["grpc-web"] }
-    ```
-
-2. Configure your application to use the `ConsoleLayer` with gRPC-Web enabled:
-
-    ```rust
-    use std::net::Ipv4Addr;
-
-    console_subscriber::ConsoleLayer::builder()
-        .enable_grpc_web(true)
-        .server_addr((Ipv4Addr::UNSPECIFIED, 9999))
-        .init();
-    ```
-
-3. Clone this repository and run `pnpm install` to install the dependencies.
+    You can quickly get started by pulling the Docker image:
 
     ```sh
-    git clone https://github.com/Rustin170506/tokio-console-web.git
-    cd tokio-console-web
-    pnpm install
+    docker pull ghcr.io/rustin170506/tokio-console-web:latest
+    docker run -p 3000:3000 ghcr.io/rustin170506/tokio-console-web:latest
     ```
 
-4. Install `wasm-pack` to build the histogram wasm module.
+2. **Manual Setup:**
 
-    ```sh
-    pnpm install -g wasm-pack
-    ```
+    If you prefer to set up manually, follow these steps:
 
-5. Run `pnpm dev` to start the development server.
+    1. Enable the `grpc_web` feature in your `console-subscriber` dependency:
 
-    ```sh
-    pnpm dev
-    ```
+        ```toml
+        [dependencies]
+        console-subscriber = { version = "0.4.0", features = ["grpc-web"] }
+        ```
 
-6. Access the web console at `http://127.0.0.1:0000` in your browser.
+    2. Configure your application to use the `ConsoleLayer` with gRPC-Web enabled:
+
+        ```rust
+        use std::net::Ipv4Addr;
+
+        console_subscriber::ConsoleLayer::builder()
+            .enable_grpc_web(true)
+            .server_addr((Ipv4Addr::UNSPECIFIED, 9999))
+            .init();
+        ```
+
+    3. Clone this repository and run `pnpm install` to install the dependencies.
+
+        ```sh
+        git clone https://github.com/Rustin170506/tokio-console-web.git
+        cd tokio-console-web
+        pnpm install
+        ```
+
+    4. Install Rust toolchain.
+
+        ```sh
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        ```
+
+    5. Install `wasm-pack` to build the histogram wasm module.
+
+        ```sh
+        pnpm install -g wasm-pack
+        ```
+
+    6. Run `pnpm dev` to start the development server.
+
+        ```sh
+        pnpm dev
+        ```
+
+    7. Access the web console at `http://127.0.0.1:3000` in your browser.
 
 ## 🛠️ Contributing
 
