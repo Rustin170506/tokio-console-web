@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0](https://github.com/Rustin170506/tokio-console-web/compare/v0.1.1...v0.2.0) (2024-11-03)
+
+
+### Features
+
+* add the default target URL ([#330](https://github.com/Rustin170506/tokio-console-web/issues/330)) ([15ee568](https://github.com/Rustin170506/tokio-console-web/commit/15ee568945af4f7065ecca78d5a03d93b7d01471))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @nuxt/ui to v2.18.7 ([#296](https://github.com/Rustin170506/tokio-console-web/issues/296)) ([51bd18d](https://github.com/Rustin170506/tokio-console-web/commit/51bd18d5ea870de041e7b51cbab4905b3e8f8acd))
+* update text color for 'No Warnings' message in WarningList component ([#326](https://github.com/Rustin170506/tokio-console-web/issues/326)) ([dba06a7](https://github.com/Rustin170506/tokio-console-web/commit/dba06a7814c8013f070424c7b9f934e9ca4671df))
+
 ## 0.1.1 - (2024-09-02)
 
 
@@ -186,5 +199,3 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - Version 0.1.1-alpha ([84424db](https://github.com/Rustin170506/tokio-console-web/commit/84424db237a37fa98da92925a8163179361ea611))
 - Version 0.1.1-alpha.1 ([a04681b](https://github.com/Rustin170506/tokio-console-web/commit/a04681b22dad05946e9048a9c4f5b7b13f9e9646))
-
-
