@@ -5,7 +5,7 @@
     "scripts": {
         "prebuild": "pnpm gen",
         "predev": "pnpm gen",
-        "build": "nuxt generate",
+        "build": "nuxt build",
         "dev": "nuxt dev",
         "postinstall": "nuxt prepare",
         "gen": "wasm-pack build histogram --out-dir ../gen/histogram && buf generate proto",
