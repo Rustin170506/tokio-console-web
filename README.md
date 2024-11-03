@@ -23,20 +23,9 @@ Welcome to the `tokio-console-web` project! This project is a web-based console 
 
 To use `tokio-console-web`, follow these steps:
 
-1. **Using Docker (Recommended):**
+1. **Enable gRPC-Web:**
 
-    You can quickly get started by pulling the Docker image:
-
-    ```sh
-    docker pull ghcr.io/rustin170506/tokio-console-web:latest
-    docker run -p 3000:3000 ghcr.io/rustin170506/tokio-console-web:latest
-    ```
-
-2. **Manual Setup:**
-
-    If you prefer to set up manually, follow these steps:
-
-    1. Enable the `grpc_web` feature in your `console-subscriber` dependency:
+    1. Enable the `grpc-web` feature in your `console-subscriber` dependency:
 
         ```toml
         [dependencies]
@@ -54,7 +43,20 @@ To use `tokio-console-web`, follow these steps:
             .init();
         ```
 
-    3. Clone this repository and run `pnpm install` to install the dependencies.
+2. **Using Docker (Recommended):**
+
+    You can quickly get started by pulling the Docker image:
+
+    ```sh
+    docker pull ghcr.io/rustin170506/tokio-console-web:latest
+    docker run -p 3000:3000 ghcr.io/rustin170506/tokio-console-web:latest
+    ```
+
+3. **Manual Setup:**
+
+    If you prefer to set up manually, follow these steps:
+
+    1. Clone this repository and run `pnpm install` to install the dependencies.
 
         ```sh
         git clone https://github.com/Rustin170506/tokio-console-web.git
@@ -62,19 +64,19 @@ To use `tokio-console-web`, follow these steps:
         pnpm install
         ```
 
-    4. Install Rust toolchain.
+    2. Install Rust toolchain.
 
         ```sh
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
         ```
 
-    5. Run `pnpm dev` to start the development server.
+    3. Run `pnpm dev` to start the development server.
 
         ```sh
         pnpm dev
         ```
 
-    6. Access the web console at `http://127.0.0.1:3000` in your browser.
+    4. Access the web console at `http://127.0.0.1:3000` in your browser.
 
 ## 🛠️ Contributing
 
