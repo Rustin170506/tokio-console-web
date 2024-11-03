@@ -13,7 +13,7 @@
         "lint:fix": "eslint --fix --ext .js,.vue,.ts --ignore-path .gitignore --ignore-pattern gen .",
         "fmt": "prettier --check .",
         "fmt:fix": "prettier --write .",
-        "prepare": "cd .. && husky app/.husky",
+        "prepare": "husky .husky",
         "test": "vitest"
     },
     "devDependencies": {
