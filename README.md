@@ -68,19 +68,13 @@ To use `tokio-console-web`, follow these steps:
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
         ```
 
-    5. Install `wasm-pack` to build the histogram wasm module.
-
-        ```sh
-        pnpm install -g wasm-pack
-        ```
-
-    6. Run `pnpm dev` to start the development server.
+    5. Run `pnpm dev` to start the development server.
 
         ```sh
         pnpm dev
         ```
 
-    7. Access the web console at `http://127.0.0.1:3000` in your browser.
+    6. Access the web console at `http://127.0.0.1:3000` in your browser.
 
 ## 🛠️ Contributing
 
