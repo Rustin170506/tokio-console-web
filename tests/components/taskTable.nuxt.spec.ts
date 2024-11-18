@@ -47,4 +47,11 @@ describe("TaskTable", () => {
         );
         expect(warningIcon.exists()).toBe(true);
     });
+
+    it("has total column sorted by default", async () => {
+        const component = await mountSuspended(TaskTable);
+        const totalHeader = component.find('th[aria-sort="descending"]');
+        expect(totalHeader.exists()).toBe(true);
+        expect(totalHeader.find("span").text()).toBe("Total");
+    });
 });
