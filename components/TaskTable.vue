@@ -1,8 +1,8 @@
 <template>
     <UTable
+        v-model:sort="sort"
         :columns="columns"
         :rows="tasks"
-        :sort="{ column: 'total', direction: 'desc' }"
         :loading="pending"
         @select="select"
     >
@@ -126,6 +126,11 @@ const select = (row: TaskTableItem) => {
     router.push(`/tasks/${row.id}`);
 };
 
+const sort = ref({
+    column: "total",
+    direction: "desc" as const,
+});
+
 // Fetch tasks and convert them to a table item.
 const { pending, tasksData, lastUpdatedAt } = useTasks();
 const tasks = computed(() => {
@@ -133,12 +138,8 @@ const tasks = computed(() => {
     if (!lastUpdated) {
         return [];
     }
-    return Array.from(tasksData.value.values()).reduce((acc, task) => {
-        const taskTableItem = toTaskTableItem(task, lastUpdated);
-        if (taskTableItem) {
-            acc.push(taskTableItem);
-        }
-        return acc;
-    }, [] as TaskTableItem[]);
+    return Array.from(tasksData.value.values())
+        .map((task) => toTaskTableItem(task, lastUpdated))
+        .filter(Boolean) as TaskTableItem[];
 });
 </script>
