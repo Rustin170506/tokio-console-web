@@ -1,4 +1,4 @@
-import { expect, it } from "vitest";
+import { expect, it, describe } from "vitest";
 import { mountSuspended, mockNuxtImport } from "@nuxt/test-utils/runtime";
 import ResourceTable from "~/components/ResourceTable.vue";
 import { Visibility, TokioResource } from "~/types/resource/tokioResource";
@@ -46,7 +46,16 @@ mockNuxtImport("useResources", () => {
     };
 });
 
-it("ResourceTable View", async () => {
-    const component = await mountSuspended(ResourceTable);
-    expect(component.element.querySelector("tbody")).toMatchSnapshot();
+describe("ResourceTable", () => {
+    it("ResourceTable View", async () => {
+        const component = await mountSuspended(ResourceTable);
+        expect(component.element.querySelector("tbody")).toMatchSnapshot();
+    });
+
+    it("has id column sorted by default", async () => {
+        const component = await mountSuspended(ResourceTable);
+        const idHeader = component.find('th[aria-sort="descending"]');
+        expect(idHeader.exists()).toBe(true);
+        expect(idHeader.find("span").text()).toBe("ID");
+    });
 });

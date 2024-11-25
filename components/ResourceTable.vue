@@ -1,8 +1,8 @@
 <template>
     <UTable
+        v-model:sort="sort"
         :columns="columns"
         :rows="resources"
-        :sort="{ column: 'id', direction: 'desc' }"
         :loading="pending"
         @select="select"
     >
@@ -91,8 +91,16 @@ const select = (row: ResourceTableItem) => {
 
 const { pending, resourcesData, lastUpdatedAt } = useResources();
 const resources = computed(() => {
+    const lastUpdated = lastUpdatedAt.value;
+    if (!lastUpdated) return [];
+
     return Array.from(resourcesData.value?.values() ?? [])
-        .map((resource) => toResourceTableItem(resource, lastUpdatedAt.value!))
+        .map((resource) => toResourceTableItem(resource, lastUpdated))
         .filter(Boolean) as ResourceTableItem[];
+});
+
+const sort = ref({
+    column: "id",
+    direction: "desc" as const,
 });
 </script>
