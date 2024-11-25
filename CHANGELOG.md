@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0](https://github.com/Rustin170506/tokio-console-web/compare/v0.2.0...v0.3.0) (2024-11-25)
+
+
+### Features
+
+* add the favicon.ico ([#343](https://github.com/Rustin170506/tokio-console-web/issues/343)) ([c31bdb4](https://github.com/Rustin170506/tokio-console-web/commit/c31bdb4942a421ef35e3c80f01b31695dae2d7f7))
+
+
+### Bug Fixes
+
+* add default sorting to ResourceTable and update tests ([#345](https://github.com/Rustin170506/tokio-console-web/issues/345)) ([08edb0a](https://github.com/Rustin170506/tokio-console-web/commit/08edb0a430e26f75bdf4418202a5eb6cd314db98))
+* add the wasm-pack as dev dependence ([#338](https://github.com/Rustin170506/tokio-console-web/issues/338)) ([ca0d892](https://github.com/Rustin170506/tokio-console-web/commit/ca0d8920d2a589b53d3bae0c2b29daa44fd9c8d9))
+* set the column sorting correctly ([#344](https://github.com/Rustin170506/tokio-console-web/issues/344)) ([58f4741](https://github.com/Rustin170506/tokio-console-web/commit/58f4741942f83a3385c1f60555e67dc33072da37))
+
 ## [0.2.0](https://github.com/Rustin170506/tokio-console-web/compare/v0.1.1...v0.2.0) (2024-11-03)
 
 
