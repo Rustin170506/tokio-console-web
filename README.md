@@ -86,7 +86,7 @@ Contributions are welcome! Please feel free to submit a Pull Request. If you hav
 
 Licensed under either of these:
 
--   Apache License, Version 2.0, ([LICENSE-APACHE](./LICENSE-APACHE) or https://www.apache.org/licenses/LICENSE-2.0)
--   MIT license ([LICENSE-MIT](./LICENSE-MIT) or https://opensource.org/licenses/MIT)
+- Apache License, Version 2.0, ([LICENSE-APACHE](./LICENSE-APACHE) or https://www.apache.org/licenses/LICENSE-2.0)
+- MIT license ([LICENSE-MIT](./LICENSE-MIT) or https://opensource.org/licenses/MIT)
 
 [console-subscriber]: https://crates.io/crates/console-subscriber
