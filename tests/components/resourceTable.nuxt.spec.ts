@@ -47,7 +47,7 @@ mockNuxtImport("useResources", () => {
 });
 
 describe("ResourceTable", () => {
-    it("ResourceTable View", async () => {
+    it("renders correctly", async () => {
         const component = await mountSuspended(ResourceTable);
         expect(component.element.querySelector("tbody")).toMatchSnapshot();
     });
