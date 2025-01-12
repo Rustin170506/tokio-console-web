@@ -21,8 +21,8 @@ importers:
         specifier: ^2.17.0
         version: 2.19.2(change-case@5.4.4)(magicast@0.3.5)(rollup@4.28.0)(vite@5.4.11(@types/node@22.10.1)(terser@5.36.0))(vue@3.5.13(typescript@5.6.3))
       '@pinia/nuxt':
-        specifier: ^0.8.0
-        version: 0.8.0(magicast@0.3.5)(pinia@2.2.8(typescript@5.6.3)(vue@3.5.13(typescript@5.6.3)))(rollup@4.28.0)
+        specifier: ^0.9.0
+        version: 0.9.0(magicast@0.3.5)(pinia@2.2.8(typescript@5.6.3)(vue@3.5.13(typescript@5.6.3)))(rollup@4.28.0)
       chart.js:
         specifier: ^4.4.1
         version: 4.4.7
@@ -1040,10 +1040,10 @@ packages:
     resolution: {integrity: sha512-i0GV1yJnm2n3Yq1qw6QrUrd/LI9bE8WEBOTtOkpCXHHdyN3TAGgqAK/DAT05z4fq2x04cARXt2pDmjWjL92iTQ==}
     engines: {node: '>= 10.0.0'}
 
-  '@pinia/nuxt@0.8.0':
-    resolution: {integrity: sha512-BWPUKOg3KGnRSgz54x9IUzCKTqUxZx4UJezPRbRwY5BVt18rfiP4Cqq8kxtR8WWDZa5PTRJpx0Jxz+qyUdLvjQ==}
+  '@pinia/nuxt@0.9.0':
+    resolution: {integrity: sha512-2yeRo7LeyCF68AbNeL3xu2h6uw0617RkcsYxmA8DJM0R0PMdz5wQHnc44KeENQxR/Mrq8T910XVT6buosqsjBQ==}
     peerDependencies:
-      pinia: ^2.2.7
+      pinia: ^2.3.0
 
   '@pinia/testing@0.1.7':
     resolution: {integrity: sha512-xcDq6Ry/kNhZ5bsUMl7DeoFXwdume1NYzDggCiDUDKoPQ6Mo0eH9VU7bJvBtlurqe6byAntWoX5IhVFqWzRz/Q==}
@@ -6485,9 +6485,9 @@ snapshots:
       '@parcel/watcher-win32-ia32': 2.5.0
       '@parcel/watcher-win32-x64': 2.5.0
 
-  '@pinia/nuxt@0.8.0(magicast@0.3.5)(pinia@2.2.8(typescript@5.6.3)(vue@3.5.13(typescript@5.6.3)))(rollup@4.28.0)':
+  '@pinia/nuxt@0.9.0(magicast@0.3.5)(pinia@2.2.8(typescript@5.6.3)(vue@3.5.13(typescript@5.6.3)))(rollup@4.28.0)':
     dependencies:
-      '@nuxt/kit': 3.14.1592(magicast@0.3.5)(rollup@4.28.0)
+      '@nuxt/kit': 3.15.0(magicast@0.3.5)(rollup@4.28.0)
       pinia: 2.2.8(typescript@5.6.3)(vue@3.5.13(typescript@5.6.3))
     transitivePeerDependencies:
       - magicast
