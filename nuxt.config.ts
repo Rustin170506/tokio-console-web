@@ -8,6 +8,11 @@ export default defineNuxtConfig({
     modules: ["@nuxt/ui", "@vueuse/nuxt", "@pinia/nuxt"],
     vite: {
         plugins: [wasm(), topLevelAwait()],
+        esbuild: {
+            supported: {
+                "top-level-await": true,
+            },
+        },
     },
     typescript: {
         typeCheck: true,
