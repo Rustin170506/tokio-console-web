@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1](https://github.com/Rustin170506/tokio-console-web/compare/v0.3.0...v0.3.1) (2025-01-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @iconify-json/simple-icons to v1.2.13 ([#352](https://github.com/Rustin170506/tokio-console-web/issues/352)) ([8afc6f9](https://github.com/Rustin170506/tokio-console-web/commit/8afc6f90a31d87343f73f608e0de23fdbcc4b7f4))
+* **deps:** update dependency @iconify-json/simple-icons to v1.2.20 ([#368](https://github.com/Rustin170506/tokio-console-web/issues/368)) ([8da8d78](https://github.com/Rustin170506/tokio-console-web/commit/8da8d78297cb5775fb396d605f5a497aadc15e6d))
+* **deps:** update dependency @nuxt/ui to v2.19.2 ([#364](https://github.com/Rustin170506/tokio-console-web/issues/364)) ([45e1646](https://github.com/Rustin170506/tokio-console-web/commit/45e1646825bd33e28d46afbec881cd1a655108d9))
+* **deps:** update dependency @nuxt/ui to v2.21.0 ([#375](https://github.com/Rustin170506/tokio-console-web/issues/375)) ([561aa4f](https://github.com/Rustin170506/tokio-console-web/commit/561aa4f92eceb240f3865a4d1298d3b7786554a1))
+* **deps:** update dependency @pinia/nuxt to ^0.8.0 ([#365](https://github.com/Rustin170506/tokio-console-web/issues/365)) ([14c0f4e](https://github.com/Rustin170506/tokio-console-web/commit/14c0f4e5603b274c745ca74ac5d3ff824e491c63))
+* **deps:** update dependency @pinia/nuxt to ^0.9.0 ([#376](https://github.com/Rustin170506/tokio-console-web/issues/376)) ([8c4b731](https://github.com/Rustin170506/tokio-console-web/commit/8c4b731aa0e523c72c56b97ffc2e970d391380f7))
+* **deps:** update dependency chart.js to v4.4.7 ([#363](https://github.com/Rustin170506/tokio-console-web/issues/363)) ([851c333](https://github.com/Rustin170506/tokio-console-web/commit/851c333de9952888744e4dd50bdebc0fdfb496a5))
+* **deps:** update dependency pinia to v2.2.8 ([#353](https://github.com/Rustin170506/tokio-console-web/issues/353)) ([8d4f12f](https://github.com/Rustin170506/tokio-console-web/commit/8d4f12fdb7805c822594045071908507553e5d91))
+* **deps:** update rust crate wasm-bindgen to v0.2.100 ([#369](https://github.com/Rustin170506/tokio-console-web/issues/369)) ([052b121](https://github.com/Rustin170506/tokio-console-web/commit/052b1214f329f0876b1b2458a698653f978a3e1d))
+* **deps:** update rust crate wasm-bindgen to v0.2.97 ([#355](https://github.com/Rustin170506/tokio-console-web/issues/355)) ([0b8dd9b](https://github.com/Rustin170506/tokio-console-web/commit/0b8dd9b3b3a53c6e46e271138dcd418029c82f37))
+
 ## [0.3.0](https://github.com/Rustin170506/tokio-console-web/compare/v0.2.0...v0.3.0) (2024-11-25)
 
 
