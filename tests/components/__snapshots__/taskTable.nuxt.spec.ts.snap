@@ -10,7 +10,6 @@ exports[`TaskTable > renders correctly 1`] = `
     class="hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer"
   >
     <!--v-if-->
-    <!--v-if-->
     
     <td
       class="whitespace-nowrap px-4 py-4 text-gray-500 dark:text-gray-400 text-sm"
